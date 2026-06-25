@@ -4,6 +4,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { validateEnv } from './config/env';
 import { HealthController } from './common/health/health.controller';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { HealthController } from './common/health/health.controller';
     }),
     ScheduleModule.forRoot(),
     EventEmitterModule.forRoot(),
+    DatabaseModule,
   ],
   controllers: [HealthController],
 })
