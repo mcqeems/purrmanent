@@ -5,6 +5,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { validateEnv } from './config/env';
 import { HealthController } from './common/health/health.controller';
 import { DatabaseModule } from './database/database.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { DatabaseModule } from './database/database.module';
     ScheduleModule.forRoot(),
     EventEmitterModule.forRoot(),
     DatabaseModule,
+    AuthModule,
   ],
   controllers: [HealthController],
 })
