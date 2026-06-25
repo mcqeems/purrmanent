@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 import { validateEnv } from './config/env';
 import { HealthController } from './common/health/health.controller';
 import { DatabaseModule } from './database/database.module';
@@ -25,6 +27,10 @@ import { LlmModule } from './common/llm/llm.module';
     }),
     ScheduleModule.forRoot(),
     EventEmitterModule.forRoot(),
+    // Global rate limit (plan §11/§8.4). Default 120 req/min per IP; sensitive
+    // routes override via @Throttle. Auth routes are rate-limited by
+    // better-auth itself (they bypass Nest guards — mounted on express).
+    ThrottlerModule.forRoot([{ ttl: 60_000, limit: 120 }]),
     DatabaseModule,
     LlmModule,
     AuthModule,
@@ -39,5 +45,6 @@ import { LlmModule } from './common/llm/llm.module';
     DemoModule,
   ],
   controllers: [HealthController],
+  providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
 })
 export class AppModule {}

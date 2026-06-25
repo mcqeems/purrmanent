@@ -121,6 +121,18 @@ export class AuthService implements OnModuleInit {
       },
       account: { modelName: 'accounts' },
       verification: { modelName: 'verifications' },
+      // Auth routes are mounted on express ahead of Nest guards, so they are
+      // rate-limited by better-auth itself (plan §2.7 / §8.4).
+      rateLimit: {
+        enabled: true,
+        window: 60,
+        max: 20,
+        customRules: {
+          '/sign-in/email': { window: 3600, max: 5 },
+          '/sign-up/email': { window: 3600, max: 5 },
+          '/forget-password': { window: 3600, max: 5 },
+        },
+      },
       advanced: {
         database: { useNumberId: true },
         ...(cookieDomain

@@ -1,4 +1,5 @@
 import { Body, Controller, Post, Res } from '@nestjs/common';
+import { Throttle } from '@nestjs/throttler';
 import type { Response } from 'express';
 import { CoachService } from './coach.service';
 import { ChatMessageDto } from './coach.schema';
@@ -12,7 +13,11 @@ export class CoachController {
    * Streamed Copilot chat (spec §2.4/§8.5). Manual SSE over POST: the browser
    * sends an already-resolved `contextMention` enum; the server streams token
    * deltas as `data:` events and a final `[DONE]` sentinel.
+   *
+   * Rate-limited to 100/min (proposal §8.4). ponytail: per-IP for the MVP;
+   * upgrade path = per-user key via a custom ThrottlerGuard getTracker.
    */
+  @Throttle({ default: { ttl: 60_000, limit: 100 } })
   @Post('chat')
   async chat(
     @CurrentUser('id') userId: number,
