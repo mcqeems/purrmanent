@@ -17,8 +17,8 @@ export const Roles = (...roles: Role[]) => SetMetadata(ROLES_KEY, roles);
 /** Injects the authenticated user attached by AuthGuard. */
 export const CurrentUser = createParamDecorator(
   (data: keyof SessionUser | undefined, ctx: ExecutionContext) => {
-    const req = ctx.switchToHttp().getRequest();
-    const user: SessionUser | undefined = req.user;
+    const req = ctx.switchToHttp().getRequest<{ user?: SessionUser }>();
+    const user = req.user;
     return data && user ? user[data] : user;
   },
 );

@@ -39,6 +39,8 @@ export class HealthCronService {
         'health_due',
       );
     }
-    this.logger.log(`Health due reminders: ${due.length} due, ${sent} delivered`);
+    this.logger.log(
+      `Health due reminders: ${due.length} due, ${sent} delivered`,
+    );
   }
 }

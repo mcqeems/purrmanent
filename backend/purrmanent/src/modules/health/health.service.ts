@@ -1,8 +1,4 @@
-import {
-  ForbiddenException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Cat, HealthRecord } from '../../entities';
@@ -40,13 +36,16 @@ export class HealthService {
     });
   }
 
-  async create(userId: number, dto: CreateHealthRecordInput): Promise<HealthRecord> {
+  async create(
+    userId: number,
+    dto: CreateHealthRecordInput,
+  ): Promise<HealthRecord> {
     await this.catsService.findOneForUser(userId, dto.catId);
     return this.records.save(
       this.records.create({
         catId: dto.catId,
         recordType: dto.recordType,
-        recordData: dto.recordData as Record<string, unknown>,
+        recordData: dto.recordData,
         recordedAt: dto.recordedAt,
         nextDueDate: dto.nextDueDate ?? null,
       }),

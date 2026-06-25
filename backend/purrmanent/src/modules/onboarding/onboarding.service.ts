@@ -25,7 +25,10 @@ export class OnboardingService {
    * (with generated_plan) -> run rule-based generatePlan -> seed Day-1 daily
    * checklist items from templates. Rolls back entirely on any failure.
    */
-  async submit(userId: number, dto: QuestionnaireDto): Promise<OnboardingResult> {
+  async submit(
+    userId: number,
+    dto: QuestionnaireDto,
+  ): Promise<OnboardingResult> {
     return this.dataSource.transaction(async (em) => {
       const plan = generatePlan({
         catPersonality: dto.catPersonality,

@@ -2,15 +2,27 @@ import { matchProtocol, loadProtocolSlides, PROTOCOLS } from './protocols';
 
 describe('matchProtocol (rule engine, spec §2.3)', () => {
   it('matches known symptom keywords to the right scenario', () => {
-    expect(matchProtocol('my cat is not eating')?.scenarioKey).toBe('fasting_24h');
-    expect(matchProtocol('she keeps hiding under the bed')?.scenarioKey).toBe('hiding_3d');
-    expect(matchProtocol('he is biting and hissing')?.scenarioKey).toBe('aggressive');
-    expect(matchProtocol('peeing outside the litter box')?.scenarioKey).toBe('urination');
-    expect(matchProtocol('very lethargic and weak')?.scenarioKey).toBe('lethargy');
+    expect(matchProtocol('my cat is not eating')?.scenarioKey).toBe(
+      'fasting_24h',
+    );
+    expect(matchProtocol('she keeps hiding under the bed')?.scenarioKey).toBe(
+      'hiding_3d',
+    );
+    expect(matchProtocol('he is biting and hissing')?.scenarioKey).toBe(
+      'aggressive',
+    );
+    expect(matchProtocol('peeing outside the litter box')?.scenarioKey).toBe(
+      'urination',
+    );
+    expect(matchProtocol('very lethargic and weak')?.scenarioKey).toBe(
+      'lethargy',
+    );
   });
 
   it('returns null for an unmatched prompt (triggers AI fallback)', () => {
-    expect(matchProtocol('my cat keeps meowing at the window at dawn')).toBeNull();
+    expect(
+      matchProtocol('my cat keeps meowing at the window at dawn'),
+    ).toBeNull();
   });
 });
 

@@ -40,7 +40,12 @@ export class Cat {
   @Column({ name: 'adoption_date', type: 'date' })
   adoptionDate: string;
 
-  @Column({ name: 'adoption_source', type: 'varchar', length: 50, nullable: true })
+  @Column({
+    name: 'adoption_source',
+    type: 'varchar',
+    length: 50,
+    nullable: true,
+  })
   adoptionSource: string | null;
 
   @Column({ name: 'photo_url', type: 'text', nullable: true })
@@ -82,22 +87,42 @@ export class QuestionnaireResponse {
   @Column({ name: 'cat_breed', type: 'varchar', length: 100, nullable: true })
   catBreed: string | null;
 
-  @Column({ name: 'adoption_source', type: 'varchar', length: 50, nullable: true })
+  @Column({
+    name: 'adoption_source',
+    type: 'varchar',
+    length: 50,
+    nullable: true,
+  })
   adoptionSource: string | null;
 
   @Column({ name: 'shelter_code', type: 'varchar', length: 50, nullable: true })
   shelterCode: string | null;
 
-  @Column({ name: 'cat_personality', type: 'varchar', length: 20, nullable: true })
+  @Column({
+    name: 'cat_personality',
+    type: 'varchar',
+    length: 20,
+    nullable: true,
+  })
   catPersonality: string | null;
 
-  @Column({ name: 'adopter_experience', type: 'varchar', length: 20, nullable: true })
+  @Column({
+    name: 'adopter_experience',
+    type: 'varchar',
+    length: 20,
+    nullable: true,
+  })
   adopterExperience: string | null;
 
   @Column({ name: 'home_type', type: 'varchar', length: 30, nullable: true })
   homeType: string | null;
 
-  @Column({ name: 'household_composition', type: 'varchar', length: 50, nullable: true })
+  @Column({
+    name: 'household_composition',
+    type: 'varchar',
+    length: 50,
+    nullable: true,
+  })
   householdComposition: string | null;
 
   @Column({ type: 'jsonb', nullable: true })

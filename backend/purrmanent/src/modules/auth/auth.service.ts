@@ -49,13 +49,16 @@ export class AuthService implements OnModuleInit {
       .map((o) => o.trim());
     const baseURL = this.config.get('BETTER_AUTH_URL', { infer: true });
     const cookieDomain = this.config.get('COOKIE_DOMAIN', { infer: true });
-    const isProd = this.config.get('NODE_ENV', { infer: true }) === 'production';
+    const isProd =
+      this.config.get('NODE_ENV', { infer: true }) === 'production';
 
     const resendKey = this.config.get('RESEND_API_KEY', { infer: true });
     const resend = resendKey ? new Resend(resendKey) : null;
     const sendEmail = async (to: string, subject: string, html: string) => {
       if (!resend) {
-        this.logger.warn(`RESEND_API_KEY unset — skipping email "${subject}" to ${to}`);
+        this.logger.warn(
+          `RESEND_API_KEY unset — skipping email "${subject}" to ${to}`,
+        );
         return;
       }
       await resend.emails.send({
@@ -67,7 +70,9 @@ export class AuthService implements OnModuleInit {
     };
 
     const googleId = this.config.get('GOOGLE_CLIENT_ID', { infer: true });
-    const googleSecret = this.config.get('GOOGLE_CLIENT_SECRET', { infer: true });
+    const googleSecret = this.config.get('GOOGLE_CLIENT_SECRET', {
+      infer: true,
+    });
 
     const options = {
       database: this.pool,
@@ -79,7 +84,13 @@ export class AuthService implements OnModuleInit {
         enabled: true,
         requireEmailVerification: true,
         minPasswordLength: 8,
-        sendResetPassword: async ({ user, url }: { user: { email: string }; url: string }) => {
+        sendResetPassword: async ({
+          user,
+          url,
+        }: {
+          user: { email: string };
+          url: string;
+        }) => {
           await sendEmail(
             user.email,
             'Reset your Purrmanent password',
@@ -90,7 +101,13 @@ export class AuthService implements OnModuleInit {
       emailVerification: {
         sendOnSignUp: true,
         autoSignInAfterVerification: true,
-        sendVerificationEmail: async ({ user, url }: { user: { email: string }; url: string }) => {
+        sendVerificationEmail: async ({
+          user,
+          url,
+        }: {
+          user: { email: string };
+          url: string;
+        }) => {
           await sendEmail(
             user.email,
             'Verify your Purrmanent email',
@@ -109,8 +126,16 @@ export class AuthService implements OnModuleInit {
         modelName: 'users',
         additionalFields: {
           points: { type: 'number', defaultValue: 0, input: false },
-          timezone: { type: 'string', defaultValue: 'Asia/Jakarta', input: false },
-          preferredLanguage: { type: 'string', defaultValue: 'en', input: false },
+          timezone: {
+            type: 'string',
+            defaultValue: 'Asia/Jakarta',
+            input: false,
+          },
+          preferredLanguage: {
+            type: 'string',
+            defaultValue: 'en',
+            input: false,
+          },
           lastLoginAt: { type: 'date', required: false, input: false },
         },
       },
@@ -145,7 +170,6 @@ export class AuthService implements OnModuleInit {
       },
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     this.auth = betterAuth(options as any);
     this.logger.log('better-auth initialized');
   }

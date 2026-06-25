@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthService } from './auth.service';
+import type { SessionUser } from './auth.service';
 import { IS_PUBLIC_KEY } from './auth.decorators';
 
 /**
@@ -27,7 +28,10 @@ export class AuthGuard implements CanActivate {
     ]);
     if (isPublic) return true;
 
-    const req = context.switchToHttp().getRequest();
+    const req = context.switchToHttp().getRequest<{
+      user?: SessionUser;
+      headers: Record<string, string | string[] | undefined>;
+    }>();
     const session = await this.auth.getSession(req.headers);
     if (!session?.user) {
       throw new UnauthorizedException('Authentication required');

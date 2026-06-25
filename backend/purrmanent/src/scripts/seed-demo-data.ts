@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { AppDataSource } from '../database/data-source';
 import {
   Cat,
@@ -84,7 +83,8 @@ const PHASE_TEMPLATES: TemplateSeed[] = [
     timeOfDay: 'day',
     category: 'interaction',
     board: 'phase',
-    itemText: 'Day 3: Cat is starting to settle — note first signs of curiosity',
+    itemText:
+      'Day 3: Cat is starting to settle — note first signs of curiosity',
     orderIndex: 0,
   },
   {
@@ -93,7 +93,8 @@ const PHASE_TEMPLATES: TemplateSeed[] = [
     timeOfDay: 'day',
     category: 'interaction',
     board: 'phase',
-    itemText: 'Day 21: Routine established — celebrate a calmer, more confident cat',
+    itemText:
+      'Day 21: Routine established — celebrate a calmer, more confident cat',
     orderIndex: 0,
   },
   {
@@ -160,9 +161,24 @@ async function seedDemoUserAndCats(): Promise<void> {
   }
 
   const demoCats = [
-    { name: 'Luna', personality: 'shy', daysAgo: 1, shelterCode: 'SHELTER-JKT-001' },
-    { name: 'Mochi', personality: 'balanced', daysAgo: 13, shelterCode: 'SHELTER-JKT-002' },
-    { name: 'Bella', personality: 'active', daysAgo: 44, shelterCode: 'SHELTER-JKT-003' },
+    {
+      name: 'Luna',
+      personality: 'shy',
+      daysAgo: 1,
+      shelterCode: 'SHELTER-JKT-001',
+    },
+    {
+      name: 'Mochi',
+      personality: 'balanced',
+      daysAgo: 13,
+      shelterCode: 'SHELTER-JKT-002',
+    },
+    {
+      name: 'Bella',
+      personality: 'active',
+      daysAgo: 44,
+      shelterCode: 'SHELTER-JKT-003',
+    },
   ];
 
   for (const dc of demoCats) {
@@ -192,23 +208,33 @@ async function seedDemoUserAndCats(): Promise<void> {
       where: { phase, dayInPhase: 1, board: 'daily' },
       order: { orderIndex: 'ASC' },
     });
-    const rows = phaseTemplates.map((t, i) => ({
-      catId: cat!.id,
-      dayNumber,
-      scheduledDate: today,
-      templateId: t.id,
-      isCustom: false,
-      board: 'daily' as const,
-      // mark the first item done for realism (+ completed_at)
-      kanbanStatus: (i === 0 ? 'done' : 'todo') as 'done' | 'todo',
-      itemText: t.itemText,
-      completedAt: i === 0 ? new Date() : null,
-    }));
+    const rows = phaseTemplates.map((t, i) => {
+      const kanbanStatus: 'done' | 'todo' = i === 0 ? 'done' : 'todo';
+      return {
+        catId: cat.id,
+        dayNumber,
+        scheduledDate: today,
+        templateId: t.id,
+        isCustom: false,
+        board: 'daily' as const,
+        // mark the first item done for realism (+ completed_at)
+        kanbanStatus,
+        itemText: t.itemText,
+        completedAt: i === 0 ? new Date() : null,
+      };
+    });
     if (rows.length > 0) {
-      await items.createQueryBuilder().insert().values(rows).orIgnore().execute();
+      await items
+        .createQueryBuilder()
+        .insert()
+        .values(rows)
+        .orIgnore()
+        .execute();
     }
   }
-  console.log(`Demo user + ${demoCats.length} cats ensured (user id ${user.id})`);
+  console.log(
+    `Demo user + ${demoCats.length} cats ensured (user id ${user.id})`,
+  );
 }
 
 async function main() {

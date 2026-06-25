@@ -38,7 +38,7 @@ export class CrisisAiService {
       : '';
 
     const system =
-      'You are Purrmanent\'s feline first-aid assistant. Produce a short, calm, ' +
+      "You are Purrmanent's feline first-aid assistant. Produce a short, calm, " +
       'step-by-step crisis protocol for a cat owner. You are NOT a vet; always ' +
       'advise contacting a vet for serious or worsening symptoms. Respond ONLY ' +
       'with JSON: an array of slides, each { "title": string, "markdown": ' +
@@ -60,7 +60,9 @@ export class CrisisAiService {
         .trim();
       const parsed = slidesSchema.safeParse(JSON.parse(json));
       if (parsed.success && parsed.data.length > 0) return parsed.data;
-      this.logger.warn('AI fallback returned invalid slide JSON; using safe fallback');
+      this.logger.warn(
+        'AI fallback returned invalid slide JSON; using safe fallback',
+      );
       return this.SAFE_FALLBACK;
     } catch (err) {
       this.logger.error(`AI fallback failed: ${String(err)}`);

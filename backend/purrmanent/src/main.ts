@@ -28,9 +28,14 @@ async function bootstrap() {
 
   // Mount better-auth catch-all (Express 5 named wildcard) ahead of the JSON
   // parser. better-auth/node is ESM -> dynamic import.
+  // Mount better-auth catch-all (Express 5 named wildcard) ahead of the JSON
+  // parser. better-auth/node is ESM -> dynamic import. Its handler is typed
+  // `any` across the dynamic ESM boundary, so the unsafe-* rules are disabled
+  // for just these glue lines.
+
   const auth = app.get(AuthService).instance;
   const { toNodeHandler } = await import('better-auth/node');
-  const httpAdapter = app.getHttpAdapter().getInstance();
+  const httpAdapter = app.getHttpAdapter().getInstance() as express.Application;
   httpAdapter.all('/api/auth/*splat', toNodeHandler(auth));
 
   // JSON / urlencoded body parsing for every *other* route.

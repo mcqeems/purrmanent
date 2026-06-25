@@ -10,10 +10,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { HealthService } from './health.service';
-import {
-  CreateHealthRecordDto,
-  UpdateHealthRecordDto,
-} from './health.schema';
+import { CreateHealthRecordDto, UpdateHealthRecordDto } from './health.schema';
 import { CurrentUser } from '../auth/auth.decorators';
 
 @Controller('health')
@@ -29,7 +26,10 @@ export class HealthLogController {
   }
 
   @Post('record')
-  create(@CurrentUser('id') userId: number, @Body() dto: CreateHealthRecordDto) {
+  create(
+    @CurrentUser('id') userId: number,
+    @Body() dto: CreateHealthRecordDto,
+  ) {
     return this.health.create(userId, dto);
   }
 

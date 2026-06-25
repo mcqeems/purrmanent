@@ -1,7 +1,12 @@
 import { createZodDto } from 'nestjs-zod';
 import { z } from 'zod';
 
-export const PERSONALITIES = ['shy', 'balanced', 'active', 'aggressive'] as const;
+export const PERSONALITIES = [
+  'shy',
+  'balanced',
+  'active',
+  'aggressive',
+] as const;
 export const GENDERS = ['male', 'female', 'unknown'] as const;
 export const ADOPTION_SOURCES = ['shelter', 'self', 'rescue'] as const;
 

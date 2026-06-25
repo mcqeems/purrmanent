@@ -42,7 +42,12 @@ export class NotificationLog {
   @Column({ name: 'user_id', type: 'int' })
   userId: number;
 
-  @Column({ name: 'notification_type', type: 'varchar', length: 50, nullable: true })
+  @Column({
+    name: 'notification_type',
+    type: 'varchar',
+    length: 50,
+    nullable: true,
+  })
   notificationType: string | null;
 
   @CreateDateColumn({ name: 'sent_at', type: 'timestamptz' })

@@ -72,7 +72,7 @@ export class CorpusRepository {
   }
 
   async count(): Promise<number> {
-    const rows = await this.dataSource.query(
+    const rows = await this.dataSource.query<Array<{ n: number }>>(
       'SELECT COUNT(*)::int AS n FROM ai_coach_corpus',
     );
     return rows[0]?.n ?? 0;

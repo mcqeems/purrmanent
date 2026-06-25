@@ -41,7 +41,10 @@ export class NotificationService implements OnModuleInit {
     }
   }
 
-  async subscribe(userId: number, dto: PushSubscribeDto): Promise<{ success: true }> {
+  async subscribe(
+    userId: number,
+    dto: PushSubscribeDto,
+  ): Promise<{ success: true }> {
     await this.subs
       .createQueryBuilder()
       .insert()
@@ -52,18 +55,28 @@ export class NotificationService implements OnModuleInit {
         authKey: dto.keys.auth,
         userAgent: dto.userAgent ?? null,
       })
-      .orUpdate(['p256dh_key', 'auth_key', 'user_agent'], ['user_id', 'endpoint'])
+      .orUpdate(
+        ['p256dh_key', 'auth_key', 'user_agent'],
+        ['user_id', 'endpoint'],
+      )
       .execute();
     return { success: true };
   }
 
-  async unsubscribe(userId: number, endpoint: string): Promise<{ success: true }> {
+  async unsubscribe(
+    userId: number,
+    endpoint: string,
+  ): Promise<{ success: true }> {
     await this.subs.delete({ userId, endpoint });
     return { success: true };
   }
 
   /** Deliver a push to every subscription of a user; prune dead endpoints. */
-  async send(userId: number, payload: PushPayload, type = 'reminder'): Promise<number> {
+  async send(
+    userId: number,
+    payload: PushPayload,
+    type = 'reminder',
+  ): Promise<number> {
     if (!this.enabled) return 0;
     const subscriptions = await this.subs.find({ where: { userId } });
     let delivered = 0;
@@ -88,7 +101,11 @@ export class NotificationService implements OnModuleInit {
       }
     }
     await this.logs.save(
-      this.logs.create({ userId, notificationType: type, delivered: delivered > 0 }),
+      this.logs.create({
+        userId,
+        notificationType: type,
+        delivered: delivered > 0,
+      }),
     );
     return delivered;
   }

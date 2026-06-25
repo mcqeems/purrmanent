@@ -17,7 +17,8 @@ describe('ChecklistService.move (points idempotency)', () => {
       execute: () => Promise.resolve({ affected: affectedSequence[call++] }),
     };
     const items = {
-      findOne: () => Promise.resolve({ id: 1, catId: 7, kanbanStatus: 'progress' }),
+      findOne: () =>
+        Promise.resolve({ id: 1, catId: 7, kanbanStatus: 'progress' }),
       createQueryBuilder: () => qb,
       update: jest.fn(() => Promise.resolve({ affected: 1 })),
     };

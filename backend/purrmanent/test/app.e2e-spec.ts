@@ -10,13 +10,18 @@ import { AuthService } from './../src/modules/auth/auth.service';
  * execute that (it works at runtime under Node). Stub it for the smoke test.
  */
 class AuthServiceStub {
-  onModuleInit() {}
+  onModuleInit(): void {}
   get instance() {
     return {} as unknown;
   }
-  async getSession() {
-    return null;
+  getSession(): Promise<null> {
+    return Promise.resolve(null);
   }
+}
+
+interface HealthResponse {
+  status: string;
+  ts: string;
 }
 
 describe('Health (e2e)', () => {
@@ -39,8 +44,9 @@ describe('Health (e2e)', () => {
     const res = await request(app.getHttpServer())
       .get('/api/health')
       .expect(200);
-    expect(res.body.status).toBe('ok');
-    expect(typeof res.body.ts).toBe('string');
+    const body = res.body as HealthResponse;
+    expect(body.status).toBe('ok');
+    expect(typeof body.ts).toBe('string');
   });
 
   afterEach(async () => {

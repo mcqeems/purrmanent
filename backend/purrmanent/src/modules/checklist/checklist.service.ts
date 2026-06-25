@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { Cat, ChecklistItem } from '../../entities';
+import { ChecklistItem } from '../../entities';
 import { CatsService } from '../cats/cats.service';
 import { ChecklistGenerationService } from './checklist-generation.service';
 import { CustomTodoDto, MoveItemDto } from './checklist.schema';
@@ -59,7 +59,10 @@ export class ChecklistService {
     );
     for (const r of rows) {
       const s = summary.get(Number(r.catId));
-      if (s && (r.status === 'todo' || r.status === 'progress' || r.status === 'done')) {
+      if (
+        s &&
+        (r.status === 'todo' || r.status === 'progress' || r.status === 'done')
+      ) {
         s[r.status] = Number(r.count);
       }
     }

@@ -35,7 +35,9 @@ describe('parseMarkdownSlides', () => {
   });
 
   it('ignores preamble before the first heading', () => {
-    const slides = parseMarkdownSlides('intro text\n\n## Only Step\nbody\n- [ ] do it');
+    const slides = parseMarkdownSlides(
+      'intro text\n\n## Only Step\nbody\n- [ ] do it',
+    );
     expect(slides).toHaveLength(1);
     expect(slides[0].todos).toEqual(['do it']);
   });

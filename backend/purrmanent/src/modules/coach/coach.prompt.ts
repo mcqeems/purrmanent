@@ -13,7 +13,8 @@ export function buildCoachPrompt(params: {
   retrieved: RetrievedChunk[];
   language: string;
 }): ChatMessage[] {
-  const { message, contextMention, mentionedTasks, retrieved, language } = params;
+  const { message, contextMention, mentionedTasks, retrieved, language } =
+    params;
   const context = retrieved.map((c, i) => `[${i + 1}] ${c.text}`).join('\n\n');
   const tasks = mentionedTasks.length
     ? `\nThe user's "${contextMention}" tasks right now:\n- ${mentionedTasks.join('\n- ')}`

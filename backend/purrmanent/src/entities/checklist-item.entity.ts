@@ -38,7 +38,12 @@ export class ChecklistItem {
   @Column({ type: 'varchar', length: 10, default: 'daily' })
   board: Board;
 
-  @Column({ name: 'kanban_status', type: 'varchar', length: 10, default: 'todo' })
+  @Column({
+    name: 'kanban_status',
+    type: 'varchar',
+    length: 10,
+    default: 'todo',
+  })
   kanbanStatus: KanbanStatus;
 
   @Column({ name: 'item_text', type: 'text' })

@@ -10,9 +10,7 @@ import { CreateCatDto, UpdateCatDto } from './cat.schema';
  */
 @Injectable()
 export class CatsService {
-  constructor(
-    @InjectRepository(Cat) private readonly cats: Repository<Cat>,
-  ) {}
+  constructor(@InjectRepository(Cat) private readonly cats: Repository<Cat>) {}
 
   findAllForUser(userId: number): Promise<Cat[]> {
     return this.cats.find({

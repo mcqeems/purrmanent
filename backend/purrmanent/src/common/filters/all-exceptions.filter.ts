@@ -46,14 +46,13 @@ export class AllExceptionsFilter implements ExceptionFilter {
       const message =
         typeof payload === 'string'
           ? payload
-          : ((payload as Record<string, unknown>).message as string) ??
-            exception.message;
+          : (((payload as Record<string, unknown>).message as string) ??
+            exception.message);
       return res.status(status).json({
         error: {
           code: codeForStatus(status),
           message: Array.isArray(message) ? message.join(', ') : message,
-          details:
-            typeof payload === 'object' ? (payload as object) : undefined,
+          details: typeof payload === 'object' ? payload : undefined,
         },
       });
     }
@@ -67,18 +66,12 @@ export class AllExceptionsFilter implements ExceptionFilter {
 }
 
 function codeForStatus(status: number): string {
-  switch (status) {
-    case HttpStatus.BAD_REQUEST:
-      return 'VALIDATION_ERROR';
-    case HttpStatus.UNAUTHORIZED:
-      return 'UNAUTHORIZED';
-    case HttpStatus.FORBIDDEN:
-      return 'FORBIDDEN';
-    case HttpStatus.NOT_FOUND:
-      return 'NOT_FOUND';
-    case HttpStatus.TOO_MANY_REQUESTS:
-      return 'RATE_LIMITED';
-    default:
-      return 'ERROR';
-  }
+  const map: Record<number, string> = {
+    [HttpStatus.BAD_REQUEST]: 'VALIDATION_ERROR',
+    [HttpStatus.UNAUTHORIZED]: 'UNAUTHORIZED',
+    [HttpStatus.FORBIDDEN]: 'FORBIDDEN',
+    [HttpStatus.NOT_FOUND]: 'NOT_FOUND',
+    [HttpStatus.TOO_MANY_REQUESTS]: 'RATE_LIMITED',
+  };
+  return map[status] ?? 'ERROR';
 }

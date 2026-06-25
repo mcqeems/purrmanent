@@ -11,13 +11,17 @@ export const EMBEDDING_DIM = 384;
 const MODEL = 'Xenova/all-MiniLM-L6-v2';
 
 // module-level singleton so the model loads once per process
-let extractorPromise: Promise<(text: string, opts: object) => Promise<{ data: Float32Array }>> | null = null;
+let extractorPromise: Promise<
+  (text: string, opts: object) => Promise<{ data: Float32Array }>
+> | null = null;
 
 async function getExtractor() {
   if (!extractorPromise) {
     extractorPromise = import('@xenova/transformers').then(({ pipeline }) =>
       pipeline('feature-extraction', MODEL),
-    ) as Promise<(text: string, opts: object) => Promise<{ data: Float32Array }>>;
+    ) as Promise<
+      (text: string, opts: object) => Promise<{ data: Float32Array }>
+    >;
   }
   return extractorPromise;
 }

@@ -51,7 +51,11 @@ export function generatePlan(input: QuestionnaireInput): PersonalizedPlan {
     decompressionDays,
     phases: [
       { phase: 'decompression', startDay: 1, endDay: decompressionDays },
-      { phase: 'routine', startDay: decompressionDays + 1, endDay: ROUTINE_END_DAY },
+      {
+        phase: 'routine',
+        startDay: decompressionDays + 1,
+        endDay: ROUTINE_END_DAY,
+      },
       { phase: 'home', startDay: ROUTINE_END_DAY + 1, endDay: HOME_END_DAY },
     ],
     showEducationalTooltips: input.adopterExperience === 'first-time',
@@ -60,10 +64,21 @@ export function generatePlan(input: QuestionnaireInput): PersonalizedPlan {
 }
 
 /** Day number (1-based) for a cat given its adoption date and "today". */
-export function dayNumberFor(adoptionDate: string | Date, today = new Date()): number {
+export function dayNumberFor(
+  adoptionDate: string | Date,
+  today = new Date(),
+): number {
   const start = new Date(adoptionDate);
-  const startUtc = Date.UTC(start.getFullYear(), start.getMonth(), start.getDate());
-  const todayUtc = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate());
+  const startUtc = Date.UTC(
+    start.getFullYear(),
+    start.getMonth(),
+    start.getDate(),
+  );
+  const todayUtc = Date.UTC(
+    today.getFullYear(),
+    today.getMonth(),
+    today.getDate(),
+  );
   const diffDays = Math.floor((todayUtc - startUtc) / 86_400_000);
   return diffDays + 1; // adoption day is Day 1
 }

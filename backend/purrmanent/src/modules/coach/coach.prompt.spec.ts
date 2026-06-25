@@ -26,7 +26,12 @@ describe('buildCoachPrompt (@mention context, spec §8.5)', () => {
       contextMention: null,
       mentionedTasks: [],
       retrieved: [
-        { text: 'Cats need fresh water daily.', source: 'Nutrition', sourceUrl: null, distance: 0.1 },
+        {
+          text: 'Cats need fresh water daily.',
+          source: 'Nutrition',
+          sourceUrl: null,
+          distance: 0.1,
+        },
       ],
       language: 'id',
     });

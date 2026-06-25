@@ -59,8 +59,12 @@ export const updateHealthRecordSchema = z.object({
   nextDueDate: z.string().date().nullable().optional(),
 });
 
-export class CreateHealthRecordDto extends createZodDto(createHealthRecordSchema) {}
-export class UpdateHealthRecordDto extends createZodDto(updateHealthRecordSchema) {}
+export class CreateHealthRecordDto extends createZodDto(
+  createHealthRecordSchema,
+) {}
+export class UpdateHealthRecordDto extends createZodDto(
+  updateHealthRecordSchema,
+) {}
 
 export type CreateHealthRecordInput = z.infer<typeof createHealthRecordSchema>;
 export type UpdateHealthRecordInput = z.infer<typeof updateHealthRecordSchema>;

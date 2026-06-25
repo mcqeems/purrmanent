@@ -21,12 +21,16 @@ describe('generatePlan', () => {
 
   it('enables educational tooltips for first-time adopters', () => {
     expect(
-      generatePlan({ catPersonality: 'active', adopterExperience: 'first-time' })
-        .showEducationalTooltips,
+      generatePlan({
+        catPersonality: 'active',
+        adopterExperience: 'first-time',
+      }).showEducationalTooltips,
     ).toBe(true);
     expect(
-      generatePlan({ catPersonality: 'active', adopterExperience: 'experienced' })
-        .showEducationalTooltips,
+      generatePlan({
+        catPersonality: 'active',
+        adopterExperience: 'experienced',
+      }).showEducationalTooltips,
     ).toBe(false);
   });
 });
@@ -50,7 +54,11 @@ describe('phaseForDay', () => {
 
 describe('dayNumberFor', () => {
   it('treats the adoption date as Day 1', () => {
-    expect(dayNumberFor('2026-06-01', new Date('2026-06-01T10:00:00Z'))).toBe(1);
-    expect(dayNumberFor('2026-06-01', new Date('2026-06-03T10:00:00Z'))).toBe(3);
+    expect(dayNumberFor('2026-06-01', new Date('2026-06-01T10:00:00Z'))).toBe(
+      1,
+    );
+    expect(dayNumberFor('2026-06-01', new Date('2026-06-03T10:00:00Z'))).toBe(
+      3,
+    );
   });
 });

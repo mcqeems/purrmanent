@@ -36,7 +36,10 @@ export class LlmService {
   }
 
   /** Non-streaming completion. Returns the assistant text. */
-  async chat(messages: ChatMessage[], opts?: { pro?: boolean }): Promise<string> {
+  async chat(
+    messages: ChatMessage[],
+    opts?: { pro?: boolean },
+  ): Promise<string> {
     const res = await this.client.chat.completions.create({
       model: opts?.pro ? this.modelPro : this.model,
       messages,

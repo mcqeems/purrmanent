@@ -15,7 +15,11 @@ import {
   CRISIS_STEP_COMPLETED,
   CrisisStepCompletedEvent,
 } from '../../common/events/events';
-import { IdentifyCrisisDto, CrisisStepDto, ResolveCrisisDto } from './crisis.schema';
+import {
+  IdentifyCrisisDto,
+  CrisisStepDto,
+  ResolveCrisisDto,
+} from './crisis.schema';
 
 const POINTS_PER_STEP = 5;
 
@@ -39,7 +43,10 @@ export class CrisisService {
   ) {}
 
   /** Rule match first; AI fallback only on no match (spec §2.3). */
-  async identify(userId: number, dto: IdentifyCrisisDto): Promise<IdentifyResult> {
+  async identify(
+    userId: number,
+    dto: IdentifyCrisisDto,
+  ): Promise<IdentifyResult> {
     await this.cats.findOneForUser(userId, dto.catId); // ownership
 
     const match = matchProtocol(dto.prompt);
@@ -78,15 +85,23 @@ export class CrisisService {
   }
 
   /** Fetch a specific scenario's slide dataset (GET /crisis/protocol/:id). */
-  async getProtocol(id: number): Promise<{ scenarioKey: string; slides: Slide[] }> {
+  async getProtocol(
+    id: number,
+  ): Promise<{ scenarioKey: string; slides: Slide[] }> {
     const scenario = await this.scenarios.findOne({ where: { id } });
     if (!scenario) throw new NotFoundException('Scenario not found');
     const data = scenario.protocolData as { slides?: Slide[] } | undefined;
     const slides = data?.slides ?? [];
-    return { scenarioKey: scenario.scenarioKey, slides: slidesSchema.parse(slides) };
+    return {
+      scenarioKey: scenario.scenarioKey,
+      slides: slidesSchema.parse(slides),
+    };
   }
 
-  private async ownedEvent(userId: number, eventId: number): Promise<CrisisEvent> {
+  private async ownedEvent(
+    userId: number,
+    eventId: number,
+  ): Promise<CrisisEvent> {
     const event = await this.events.findOne({ where: { id: eventId } });
     if (!event) throw new NotFoundException('Crisis event not found');
     if (event.userId !== userId) throw new ForbiddenException();
@@ -97,10 +112,15 @@ export class CrisisService {
    * Record a completed step. Idempotent per step index (plan §3.7-style guard):
    * emits the points event only when the index is newly added.
    */
-  async step(userId: number, dto: CrisisStepDto): Promise<{ stepsCompleted: number[] }> {
+  async step(
+    userId: number,
+    dto: CrisisStepDto,
+  ): Promise<{ stepsCompleted: number[] }> {
     const event = await this.ownedEvent(userId, dto.eventId);
     const completed = new Set<number>(
-      Array.isArray(event.stepsCompleted) ? (event.stepsCompleted as number[]) : [],
+      Array.isArray(event.stepsCompleted)
+        ? (event.stepsCompleted as number[])
+        : [],
     );
     const isNew = !completed.has(dto.stepIndex);
     completed.add(dto.stepIndex);
@@ -130,7 +150,10 @@ export class CrisisService {
     event.resolvedAt = new Date();
     event.durationSeconds = Math.max(
       0,
-      Math.round((event.resolvedAt.getTime() - new Date(event.startedAt).getTime()) / 1000),
+      Math.round(
+        (event.resolvedAt.getTime() - new Date(event.startedAt).getTime()) /
+          1000,
+      ),
     );
     return this.events.save(event);
   }

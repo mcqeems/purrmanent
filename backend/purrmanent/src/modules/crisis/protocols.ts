@@ -19,7 +19,17 @@ export const PROTOCOLS: ProtocolMeta[] = [
     name: 'Not Eating / Fasting',
     icon: '🍽️',
     severity: 'high',
-    keywords: ['not eating', 'won\'t eat', 'wont eat', 'refusing food', 'fasting', 'no appetite', 'hasn\'t eaten', 'hasnt eaten', 'starving'],
+    keywords: [
+      'not eating',
+      "won't eat",
+      'wont eat',
+      'refusing food',
+      'fasting',
+      'no appetite',
+      "hasn't eaten",
+      'hasnt eaten',
+      'starving',
+    ],
     file: 'fasting_24h.md',
   },
   {
@@ -27,7 +37,15 @@ export const PROTOCOLS: ProtocolMeta[] = [
     name: 'Hiding for Days',
     icon: '🙈',
     severity: 'medium',
-    keywords: ['hiding', 'hides', 'won\'t come out', 'wont come out', 'scared', 'under the bed', 'not coming out'],
+    keywords: [
+      'hiding',
+      'hides',
+      "won't come out",
+      'wont come out',
+      'scared',
+      'under the bed',
+      'not coming out',
+    ],
     file: 'hiding_3d.md',
   },
   {
@@ -35,7 +53,17 @@ export const PROTOCOLS: ProtocolMeta[] = [
     name: 'Aggressive Behaviour',
     icon: '😾',
     severity: 'medium',
-    keywords: ['aggressive', 'aggression', 'biting', 'bites', 'scratching', 'hissing', 'attacking', 'attacks', 'growling'],
+    keywords: [
+      'aggressive',
+      'aggression',
+      'biting',
+      'bites',
+      'scratching',
+      'hissing',
+      'attacking',
+      'attacks',
+      'growling',
+    ],
     file: 'aggressive.md',
   },
   {
@@ -43,7 +71,18 @@ export const PROTOCOLS: ProtocolMeta[] = [
     name: 'Litter Box / Urination',
     icon: '🚽',
     severity: 'high',
-    keywords: ['litter box', 'litterbox', 'urinating', 'peeing', 'not using litter', 'straining', 'blood in urine', 'accidents', 'won\'t pee', 'cant pee'],
+    keywords: [
+      'litter box',
+      'litterbox',
+      'urinating',
+      'peeing',
+      'not using litter',
+      'straining',
+      'blood in urine',
+      'accidents',
+      "won't pee",
+      'cant pee',
+    ],
     file: 'urination.md',
   },
   {
@@ -51,7 +90,17 @@ export const PROTOCOLS: ProtocolMeta[] = [
     name: 'Lethargy / Low Energy',
     icon: '😴',
     severity: 'high',
-    keywords: ['lethargic', 'lethargy', 'no energy', 'not moving', 'weak', 'sleeping all day', 'unresponsive', 'sluggish', 'limp'],
+    keywords: [
+      'lethargic',
+      'lethargy',
+      'no energy',
+      'not moving',
+      'weak',
+      'sleeping all day',
+      'unresponsive',
+      'sluggish',
+      'limp',
+    ],
     file: 'lethargy.md',
   },
 ];
@@ -67,5 +116,7 @@ export function loadProtocolSlides(file: string): Slide[] {
 /** Rule match: first protocol whose keyword appears in the prompt. */
 export function matchProtocol(prompt: string): ProtocolMeta | null {
   const p = prompt.toLowerCase();
-  return PROTOCOLS.find((proto) => proto.keywords.some((k) => p.includes(k))) ?? null;
+  return (
+    PROTOCOLS.find((proto) => proto.keywords.some((k) => p.includes(k))) ?? null
+  );
 }
