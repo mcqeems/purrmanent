@@ -6,6 +6,8 @@ import { validateEnv } from './config/env';
 import { HealthController } from './common/health/health.controller';
 import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { CatsModule } from './modules/cats/cats.module';
+import { OnboardingModule } from './modules/onboarding/onboarding.module';
 
 @Module({
   imports: [
@@ -17,6 +19,8 @@ import { AuthModule } from './modules/auth/auth.module';
     EventEmitterModule.forRoot(),
     DatabaseModule,
     AuthModule,
+    CatsModule,
+    OnboardingModule,
   ],
   controllers: [HealthController],
 })
