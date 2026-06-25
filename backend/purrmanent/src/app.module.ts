@@ -12,6 +12,8 @@ import { ChecklistModule } from './modules/checklist/checklist.module';
 import { GamificationModule } from './modules/gamification/gamification.module';
 import { CrisisModule } from './modules/crisis/crisis.module';
 import { CoachModule } from './modules/coach/coach.module';
+import { HealthModule } from './modules/health/health.module';
+import { NotificationModule } from './modules/notification/notification.module';
 import { LlmModule } from './common/llm/llm.module';
 
 @Module({
@@ -31,6 +33,8 @@ import { LlmModule } from './common/llm/llm.module';
     GamificationModule,
     CrisisModule,
     CoachModule,
+    NotificationModule,
+    HealthModule,
   ],
   controllers: [HealthController],
 })
