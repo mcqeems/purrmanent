@@ -10,6 +10,8 @@ import { CatsModule } from './modules/cats/cats.module';
 import { OnboardingModule } from './modules/onboarding/onboarding.module';
 import { ChecklistModule } from './modules/checklist/checklist.module';
 import { GamificationModule } from './modules/gamification/gamification.module';
+import { CrisisModule } from './modules/crisis/crisis.module';
+import { LlmModule } from './common/llm/llm.module';
 
 @Module({
   imports: [
@@ -20,11 +22,13 @@ import { GamificationModule } from './modules/gamification/gamification.module';
     ScheduleModule.forRoot(),
     EventEmitterModule.forRoot(),
     DatabaseModule,
+    LlmModule,
     AuthModule,
     CatsModule,
     OnboardingModule,
     ChecklistModule,
     GamificationModule,
+    CrisisModule,
   ],
   controllers: [HealthController],
 })
