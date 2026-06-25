@@ -8,6 +8,7 @@ import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { CatsModule } from './modules/cats/cats.module';
 import { OnboardingModule } from './modules/onboarding/onboarding.module';
+import { ChecklistModule } from './modules/checklist/checklist.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { OnboardingModule } from './modules/onboarding/onboarding.module';
     AuthModule,
     CatsModule,
     OnboardingModule,
+    ChecklistModule,
   ],
   controllers: [HealthController],
 })
