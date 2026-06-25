@@ -14,6 +14,7 @@ import { CrisisModule } from './modules/crisis/crisis.module';
 import { CoachModule } from './modules/coach/coach.module';
 import { HealthModule } from './modules/health/health.module';
 import { NotificationModule } from './modules/notification/notification.module';
+import { DemoModule } from './modules/demo/demo.module';
 import { LlmModule } from './common/llm/llm.module';
 
 @Module({
@@ -35,6 +36,7 @@ import { LlmModule } from './common/llm/llm.module';
     CoachModule,
     NotificationModule,
     HealthModule,
+    DemoModule,
   ],
   controllers: [HealthController],
 })
