@@ -9,6 +9,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { CatsModule } from './modules/cats/cats.module';
 import { OnboardingModule } from './modules/onboarding/onboarding.module';
 import { ChecklistModule } from './modules/checklist/checklist.module';
+import { GamificationModule } from './modules/gamification/gamification.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { ChecklistModule } from './modules/checklist/checklist.module';
     CatsModule,
     OnboardingModule,
     ChecklistModule,
+    GamificationModule,
   ],
   controllers: [HealthController],
 })
