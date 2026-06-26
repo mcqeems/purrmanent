@@ -45,7 +45,11 @@ export class AuthService {
       headers: fromNodeHeaders(headers),
     });
     if (!result?.user) return null;
-    return result as unknown as { user: SessionUser };
+    const u = result.user as unknown as SessionUser;
+    // better-auth returns the id as a string; the DB uses integer ids, so
+    // normalize here. Otherwise strict comparisons (e.g. event.userId !==
+    // userId) fail with 5 !== "5".
+    return { user: { ...u, id: Number(u.id) } };
   }
 
   /**
