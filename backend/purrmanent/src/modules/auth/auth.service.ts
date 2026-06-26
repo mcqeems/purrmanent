@@ -34,4 +34,37 @@ export class AuthService {
     if (!result?.user) return null;
     return result as unknown as { user: SessionUser };
   }
+
+  /**
+   * Manual email/password endpoints proxy to better-auth's server API with
+   * `asResponse: true`, returning a web Response (status + Set-Cookie + body)
+   * that the controller forwards to the Express response. This keeps a single
+   * source of truth (better-auth) while exposing clean, documented routes
+   * alongside Google OAuth.
+   */
+  signUpEmail(body: {
+    email: string;
+    password: string;
+    name: string;
+  }): Promise<Response> {
+    return this.auth.api.signUpEmail({ body, asResponse: true });
+  }
+
+  signInEmail(body: {
+    email: string;
+    password: string;
+    rememberMe?: boolean;
+  }): Promise<Response> {
+    return this.auth.api.signInEmail({ body, asResponse: true });
+  }
+
+  async signOut(
+    headers: Record<string, string | string[] | undefined>,
+  ): Promise<Response> {
+    const { fromNodeHeaders } = await import('better-auth/node');
+    return this.auth.api.signOut({
+      headers: fromNodeHeaders(headers),
+      asResponse: true,
+    });
+  }
 }

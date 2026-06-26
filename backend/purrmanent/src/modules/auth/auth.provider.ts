@@ -145,7 +145,11 @@ export const authInstanceProvider: Provider = {
         },
       },
       advanced: {
-        database: { useNumberId: true },
+        // 'serial' => integer auto-increment ids; better-auth omits the id on
+        // insert and the Postgres SERIAL column fills it (matches our schema).
+        // (useNumberId only affects better-auth's own migration generator,
+        // which we don't use — we ship a hand-written migration.)
+        database: { generateId: 'serial' },
         ...(cookieDomain
           ? { crossSubDomainCookies: { enabled: true, domain: cookieDomain } }
           : {}),

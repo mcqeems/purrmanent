@@ -4,6 +4,7 @@ import { AuthService } from './auth.service';
 import { AuthGuard } from './auth.guard';
 import { RolesGuard } from './roles.guard';
 import { authInstanceProvider, AUTH_INSTANCE } from './auth.provider';
+import { AuthController } from './auth.controller';
 
 /**
  * Global so AuthService (and the guards) are available app-wide. The better-auth
@@ -17,6 +18,7 @@ import { authInstanceProvider, AUTH_INSTANCE } from './auth.provider';
  */
 @Global()
 @Module({
+  controllers: [AuthController],
   providers: [
     authInstanceProvider,
     AuthService,

@@ -36,8 +36,28 @@ async function bootstrap() {
 
   const auth = app.get<Auth>(AUTH_INSTANCE);
   const { toNodeHandler } = await import('better-auth/node');
+  const authHandler = toNodeHandler(auth);
   const httpAdapter = app.getHttpAdapter().getInstance() as express.Application;
-  httpAdapter.all('/api/auth/*splat', toNodeHandler(auth));
+  // Convenience endpoints (register/login/logout/session) are handled by
+  // AuthController (Nest); everything else under /api/auth is better-auth's
+  // native handler (incl. Google OAuth at /api/auth/sign-in/social).
+  const nestAuthRoutes = new Set([
+    `/${prefix}/auth/register`,
+    `/${prefix}/auth/login`,
+    `/${prefix}/auth/logout`,
+    `/${prefix}/auth/session`,
+  ]);
+  httpAdapter.all(
+    '/api/auth/*splat',
+    (
+      req: express.Request,
+      res: express.Response,
+      next: express.NextFunction,
+    ) => {
+      if (nestAuthRoutes.has(req.path)) return next();
+      return authHandler(req, res);
+    },
+  );
 
   // JSON / urlencoded body parsing for every *other* route.
   app.use(express.json());
