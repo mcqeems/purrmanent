@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 /** Manual email/password registration (spec §2.7: min 8 chars, letter+number). */
 export const registerSchema = z.object({
-  email: z.string().email(),
+  email: z.email(),
   password: z
     .string()
     .min(8)
@@ -13,14 +13,14 @@ export const registerSchema = z.object({
 });
 
 export const loginSchema = z.object({
-  email: z.string().email(),
+  email: z.email(),
   password: z.string().min(1),
   rememberMe: z.boolean().optional(),
 });
 
 /** (Re)send a verification email; callbackURL is where to land after verifying. */
 export const sendVerificationSchema = z.object({
-  email: z.string().email(),
+  email: z.email(),
   callbackURL: z.string().optional(),
 });
 

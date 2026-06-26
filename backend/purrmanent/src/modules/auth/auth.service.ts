@@ -1,6 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { AUTH_INSTANCE } from './auth.provider';
 import type { Auth } from './auth.provider';
+import type { Env } from '../../config/env';
 
 export interface SessionUser {
   id: number;
@@ -17,7 +19,18 @@ export interface SessionUser {
  */
 @Injectable()
 export class AuthService {
-  constructor(@Inject(AUTH_INSTANCE) private readonly auth: Auth) {}
+  constructor(
+    @Inject(AUTH_INSTANCE) private readonly auth: Auth,
+    private readonly config: ConfigService<Env, true>,
+  ) {}
+
+  /** First configured frontend origin — sensible default for redirect targets. */
+  private get frontendOrigin(): string {
+    return this.config
+      .get('FRONTEND_ORIGINS', { infer: true })
+      .split(',')[0]
+      .trim();
+  }
 
   get instance(): Auth {
     return this.auth;
@@ -47,7 +60,12 @@ export class AuthService {
     password: string;
     name: string;
   }): Promise<Response> {
-    return this.auth.api.signUpEmail({ body, asResponse: true });
+    return this.auth.api.signUpEmail({
+      // callbackURL drives where the on-signup verification email link redirects
+      // after verifying — send it to the app, not the API.
+      body: { ...body, callbackURL: this.frontendOrigin },
+      asResponse: true,
+    });
   }
 
   signInEmail(body: {
@@ -78,7 +96,12 @@ export class AuthService {
     callbackURL?: string;
   }): Promise<Response> {
     return this.auth.api.sendVerificationEmail({
-      body: { email: body.email, callbackURL: body.callbackURL ?? '/' },
+      // default to the frontend origin (not the API root) so the post-verify
+      // redirect lands on the app, not on this backend.
+      body: {
+        email: body.email,
+        callbackURL: body.callbackURL ?? this.frontendOrigin,
+      },
       asResponse: true,
     });
   }
