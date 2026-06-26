@@ -41,6 +41,7 @@ export const authInstanceProvider: Provider = {
     const isProd = config.get('NODE_ENV', { infer: true }) === 'production';
 
     const resendKey = config.get('RESEND_API_KEY', { infer: true });
+    const mailFrom = config.get('MAIL_FROM', { infer: true });
     const resend = resendKey ? new Resend(resendKey) : null;
     const sendEmail = async (to: string, subject: string, html: string) => {
       if (!resend) {
@@ -49,12 +50,22 @@ export const authInstanceProvider: Provider = {
         );
         return;
       }
-      await resend.emails.send({
-        from: 'Purrmanent <onboarding@resend.dev>',
+      // Resend does NOT throw on API errors — it returns { data, error }.
+      // Surface the error so delivery failures (e.g. test-mode recipient
+      // restriction, unverified domain) are visible instead of silent.
+      const { data, error } = await resend.emails.send({
+        from: mailFrom,
         to,
         subject,
         html,
       });
+      if (error) {
+        logger.error(
+          `Email "${subject}" to ${to} failed: ${error.name} — ${error.message}`,
+        );
+      } else {
+        logger.log(`Email "${subject}" sent to ${to} (id ${data?.id})`);
+      }
     };
 
     const googleId = config.get('GOOGLE_CLIENT_ID', { infer: true });
@@ -68,7 +79,7 @@ export const authInstanceProvider: Provider = {
       trustedOrigins: [...origins, baseURL],
       emailAndPassword: {
         enabled: true,
-        requireEmailVerification: true,
+        requireEmailVerification: false,
         minPasswordLength: 8,
         sendResetPassword: async ({
           user,
@@ -87,6 +98,9 @@ export const authInstanceProvider: Provider = {
       emailVerification: {
         sendOnSignUp: true,
         autoSignInAfterVerification: true,
+        // verification links expire (not forever); a fresh one can be requested
+        // via POST /api/auth/send-verification (spec §2.7).
+        expiresIn: 60 * 60 * 24, // 24 hours
         sendVerificationEmail: async ({
           user,
           url,

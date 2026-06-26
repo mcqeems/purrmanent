@@ -30,6 +30,9 @@ export const envSchema = z.object({
 
   // Email
   RESEND_API_KEY: z.string().optional(),
+  // Sender address. Resend's test sender (onboarding@resend.dev) only delivers
+  // to the account owner's email — verify a domain and set this to use it.
+  MAIL_FROM: z.string().default('Purrmanent <onboarding@resend.dev>'),
 
   // AI / RAG (Bynara router, OpenAI-compatible)
   LLM_API_KEY: z.string().optional(),

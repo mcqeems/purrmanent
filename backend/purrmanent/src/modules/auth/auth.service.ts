@@ -67,4 +67,19 @@ export class AuthService {
       asResponse: true,
     });
   }
+
+  /**
+   * (Re)send a verification email. better-auth issues a fresh, time-limited
+   * token (emailVerification.expiresIn = 24h) each call, so a user whose first
+   * link expired can request a new one (spec §2.7).
+   */
+  sendVerificationEmail(body: {
+    email: string;
+    callbackURL?: string;
+  }): Promise<Response> {
+    return this.auth.api.sendVerificationEmail({
+      body: { email: body.email, callbackURL: body.callbackURL ?? '/' },
+      asResponse: true,
+    });
+  }
 }

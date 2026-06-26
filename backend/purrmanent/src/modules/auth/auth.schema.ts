@@ -18,5 +18,12 @@ export const loginSchema = z.object({
   rememberMe: z.boolean().optional(),
 });
 
+/** (Re)send a verification email; callbackURL is where to land after verifying. */
+export const sendVerificationSchema = z.object({
+  email: z.string().email(),
+  callbackURL: z.string().optional(),
+});
+
 export class RegisterDto extends createZodDto(registerSchema) {}
 export class LoginDto extends createZodDto(loginSchema) {}
+export class SendVerificationDto extends createZodDto(sendVerificationSchema) {}

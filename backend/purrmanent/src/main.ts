@@ -46,6 +46,7 @@ async function bootstrap() {
     `/${prefix}/auth/login`,
     `/${prefix}/auth/logout`,
     `/${prefix}/auth/session`,
+    `/${prefix}/auth/send-verification`,
   ]);
   httpAdapter.all(
     '/api/auth/*splat',
@@ -75,7 +76,9 @@ async function bootstrap() {
   if (config.get('NODE_ENV', { infer: true }) !== 'production') {
     const swaggerConfig = new DocumentBuilder()
       .setTitle('Purrmanent API')
-      .setDescription('Backend API for Purrmanent — the 90-day cat-parent guide.')
+      .setDescription(
+        'Backend API for Purrmanent — the 90-day cat-parent guide.',
+      )
       .setVersion('1.0')
       .addCookieAuth('better-auth.session_token')
       .addBearerAuth()

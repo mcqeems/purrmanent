@@ -2,7 +2,7 @@ import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import type { Request, Response } from 'express';
 import { AuthService } from './auth.service';
-import { RegisterDto, LoginDto } from './auth.schema';
+import { RegisterDto, LoginDto, SendVerificationDto } from './auth.schema';
 import { Public, CurrentUser } from './auth.decorators';
 import type { SessionUser } from './auth.service';
 
@@ -68,5 +68,21 @@ export class AuthController {
   @ApiOperation({ summary: 'Get the current authenticated user' })
   session(@CurrentUser() user: SessionUser): SessionUser {
     return user;
+  }
+
+  @Public()
+  @Post('send-verification')
+  @ApiOperation({
+    summary: 'Send (or resend) a verification email with a 24h link',
+  })
+  async sendVerification(
+    @Body() dto: SendVerificationDto,
+    @Res() res: Response,
+  ): Promise<void> {
+    const result = await this.auth.sendVerificationEmail({
+      email: dto.email,
+      callbackURL: dto.callbackURL,
+    });
+    await this.forward(result as unknown as Response, res);
   }
 }
