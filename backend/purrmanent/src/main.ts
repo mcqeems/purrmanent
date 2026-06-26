@@ -69,16 +69,21 @@ async function bootstrap() {
   // OpenAPI docs at /docs (kept off the /api prefix and /api/auth handler).
   // Built after setGlobalPrefix so operation paths include the prefix;
   // cleanupOpenApiDoc renders the nestjs-zod DTO schemas correctly.
-  const swaggerConfig = new DocumentBuilder()
-    .setTitle('Purrmanent API')
-    .setDescription('Backend API for Purrmanent — the 90-day cat-parent guide.')
-    .setVersion('1.0')
-    .addCookieAuth('better-auth.session_token')
-    .addBearerAuth()
-    .build();
-  SwaggerModule.setup('docs', app, () =>
-    cleanupOpenApiDoc(SwaggerModule.createDocument(app, swaggerConfig)),
-  );
+  // OpenAPI docs at /docs — DISABLED in production (NODE_ENV=production).
+  // Built after setGlobalPrefix so operation paths include the prefix;
+  // cleanupOpenApiDoc renders the nestjs-zod DTO schemas correctly.
+  if (config.get('NODE_ENV', { infer: true }) !== 'production') {
+    const swaggerConfig = new DocumentBuilder()
+      .setTitle('Purrmanent API')
+      .setDescription('Backend API for Purrmanent — the 90-day cat-parent guide.')
+      .setVersion('1.0')
+      .addCookieAuth('better-auth.session_token')
+      .addBearerAuth()
+      .build();
+    SwaggerModule.setup('docs', app, () =>
+      cleanupOpenApiDoc(SwaggerModule.createDocument(app, swaggerConfig)),
+    );
+  }
 
   const port = config.get('PORT', { infer: true });
   await app.listen(port);
