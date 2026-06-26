@@ -83,8 +83,11 @@ async function bootstrap() {
       .addCookieAuth('better-auth.session_token')
       .addBearerAuth()
       .build();
-    SwaggerModule.setup('docs', app, () =>
-      cleanupOpenApiDoc(SwaggerModule.createDocument(app, swaggerConfig)),
+    SwaggerModule.setup(
+      'docs',
+      app,
+      () => cleanupOpenApiDoc(SwaggerModule.createDocument(app, swaggerConfig)),
+      { jsonDocumentUrl: 'docs/json' },
     );
   }
 
