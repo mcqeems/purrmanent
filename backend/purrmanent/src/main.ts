@@ -1,12 +1,13 @@
 import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
-import { ZodValidationPipe } from 'nestjs-zod';
+import { ZodValidationPipe, cleanupOpenApiDoc } from 'nestjs-zod';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import helmet from 'helmet';
 import express from 'express';
 import { AppModule } from './app.module';
 import type { Env } from './config/env';
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
-import { AuthService } from './modules/auth/auth.service';
+import { AUTH_INSTANCE, type Auth } from './modules/auth/auth.provider';
 
 async function bootstrap() {
   // bodyParser disabled: the better-auth handler must read the raw request
@@ -14,7 +15,8 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bodyParser: false });
   const config = app.get(ConfigService<Env, true>);
 
-  app.setGlobalPrefix(config.get('API_GLOBAL_PREFIX', { infer: true }));
+  const prefix = config.get('API_GLOBAL_PREFIX', { infer: true });
+  app.setGlobalPrefix(prefix);
 
   app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
 
@@ -27,13 +29,12 @@ async function bootstrap() {
   });
 
   // Mount better-auth catch-all (Express 5 named wildcard) ahead of the JSON
-  // parser. better-auth/node is ESM -> dynamic import.
-  // Mount better-auth catch-all (Express 5 named wildcard) ahead of the JSON
-  // parser. better-auth/node is ESM -> dynamic import. Its handler is typed
-  // `any` across the dynamic ESM boundary, so the unsafe-* rules are disabled
-  // for just these glue lines.
+  // parser. The auth instance is an async factory provider (AUTH_INSTANCE),
+  // resolved during NestFactory.create(), so it's ready here. better-auth/node
+  // is ESM -> dynamic import; its handler is `any` across the ESM boundary, so
+  // the unsafe-* rules are disabled for just these glue lines.
 
-  const auth = app.get(AuthService).instance;
+  const auth = app.get<Auth>(AUTH_INSTANCE);
   const { toNodeHandler } = await import('better-auth/node');
   const httpAdapter = app.getHttpAdapter().getInstance() as express.Application;
   httpAdapter.all('/api/auth/*splat', toNodeHandler(auth));
@@ -44,6 +45,20 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ZodValidationPipe());
   app.useGlobalFilters(new AllExceptionsFilter());
+
+  // OpenAPI docs at /docs (kept off the /api prefix and /api/auth handler).
+  // Built after setGlobalPrefix so operation paths include the prefix;
+  // cleanupOpenApiDoc renders the nestjs-zod DTO schemas correctly.
+  const swaggerConfig = new DocumentBuilder()
+    .setTitle('Purrmanent API')
+    .setDescription('Backend API for Purrmanent — the 90-day cat-parent guide.')
+    .setVersion('1.0')
+    .addCookieAuth('better-auth.session_token')
+    .addBearerAuth()
+    .build();
+  SwaggerModule.setup('docs', app, () =>
+    cleanupOpenApiDoc(SwaggerModule.createDocument(app, swaggerConfig)),
+  );
 
   const port = config.get('PORT', { infer: true });
   await app.listen(port);
