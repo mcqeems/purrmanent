@@ -43,7 +43,12 @@ export const authInstanceProvider: Provider = {
     const resendKey = config.get('RESEND_API_KEY', { infer: true });
     const mailFrom = config.get('MAIL_FROM', { infer: true });
     const resend = resendKey ? new Resend(resendKey) : null;
-    const sendEmail = async (to: string, subject: string, html: string) => {
+    const sendEmail = async (
+      to: string,
+      subject: string,
+      html: string,
+      text: string,
+    ) => {
       if (!resend) {
         logger.warn(
           `RESEND_API_KEY unset — skipping email "${subject}" to ${to}`,
@@ -58,6 +63,9 @@ export const authInstanceProvider: Provider = {
         to,
         subject,
         html,
+        // a plain-text alternative materially improves inbox placement
+        text,
+        headers: { 'List-Unsubscribe': `<${baseURL}>` },
       });
       if (error) {
         logger.error(
@@ -66,6 +74,51 @@ export const authInstanceProvider: Provider = {
       } else {
         logger.log(`Email "${subject}" sent to ${to} (id ${data?.id})`);
       }
+    };
+
+    /**
+     * Build a branded HTML + matching plain-text body. Showing the real URL as
+     * text (not just a "click here" link) and shipping a text/plain part are
+     * both strong anti-spam signals.
+     */
+    const buildEmail = (opts: {
+      heading: string;
+      intro: string;
+      buttonLabel: string;
+      url: string;
+      note: string;
+    }): { html: string; text: string } => {
+      const html = `<!doctype html>
+<html><body style="margin:0;background:#faf7f2;font-family:Nunito,Arial,sans-serif;color:#3a3a3a">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="padding:24px">
+    <tr><td align="center">
+      <table role="presentation" width="480" cellpadding="0" cellspacing="0" style="background:#fff;border-radius:12px;padding:32px">
+        <tr><td style="font-size:20px;font-weight:700;color:#e07a5f">🐾 Purrmanent</td></tr>
+        <tr><td style="padding-top:16px;font-size:18px;font-weight:700">${opts.heading}</td></tr>
+        <tr><td style="padding-top:8px;font-size:15px;line-height:1.5">${opts.intro}</td></tr>
+        <tr><td style="padding:24px 0">
+          <a href="${opts.url}" style="background:#e07a5f;color:#fff;text-decoration:none;padding:12px 24px;border-radius:8px;font-weight:700;display:inline-block">${opts.buttonLabel}</a>
+        </td></tr>
+        <tr><td style="font-size:13px;color:#777;line-height:1.5">If the button doesn't work, copy and paste this link into your browser:<br><span style="color:#555;word-break:break-all">${opts.url}</span></td></tr>
+        <tr><td style="padding-top:16px;font-size:13px;color:#999">${opts.note}</td></tr>
+        <tr><td style="padding-top:24px;font-size:12px;color:#bbb;border-top:1px solid #eee">Purrmanent — your 90-day cat-parent guide. You received this because someone used this email to sign up.</td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body></html>`;
+      const text = `Purrmanent 🐾
+
+${opts.heading}
+
+${opts.intro}
+
+${opts.buttonLabel}:
+${opts.url}
+
+${opts.note}
+
+— Purrmanent. You received this because someone used this email to sign up.`;
+      return { html, text };
     };
 
     const googleId = config.get('GOOGLE_CLIENT_ID', { infer: true });
@@ -88,10 +141,19 @@ export const authInstanceProvider: Provider = {
           user: { email: string };
           url: string;
         }) => {
+          const { html, text } = buildEmail({
+            heading: 'Reset your password',
+            intro:
+              'We received a request to reset the password for your Purrmanent account. If this was you, use the button below.',
+            buttonLabel: 'Reset password',
+            url,
+            note: "If you didn't request this, you can safely ignore this email — your password won't change.",
+          });
           await sendEmail(
             user.email,
             'Reset your Purrmanent password',
-            `<p>Click <a href="${url}">here</a> to reset your password.</p>`,
+            html,
+            text,
           );
         },
       },
@@ -108,10 +170,19 @@ export const authInstanceProvider: Provider = {
           user: { email: string };
           url: string;
         }) => {
+          const { html, text } = buildEmail({
+            heading: 'Confirm your email',
+            intro:
+              "Welcome to Purrmanent! Please confirm this email address to activate your account and start your cat's 90-day journey.",
+            buttonLabel: 'Verify email',
+            url,
+            note: 'This link expires in 24 hours. If it expires, you can request a new one from the app.',
+          });
           await sendEmail(
             user.email,
             'Verify your Purrmanent email',
-            `<p>Welcome to Purrmanent! Verify your email <a href="${url}">here</a>.</p>`,
+            html,
+            text,
           );
         },
       },
