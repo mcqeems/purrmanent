@@ -8,6 +8,7 @@ import {
   Card,
   Field,
   Textarea,
+  SelectField,
   Spinner,
   useToast,
 } from "@/components/ui";
@@ -19,16 +20,20 @@ import { useIdentifyCrisis, useResolveCrisis } from "./api";
 export function CrisisFlow() {
   const router = useRouter();
   const { toast } = useToast();
-  const { activeCat } = useActiveCat();
+  const { cats } = useActiveCat();
   const identify = useIdentifyCrisis();
   const resolve = useResolveCrisis();
 
+  const [pickedCatId, setPickedCatId] = useState<number | null>(null);
   const [prompt, setPrompt] = useState("");
   const [result, setResult] = useState<CrisisIdentifyResult | null>(null);
   const [reason, setReason] = useState("");
   const [showResolve, setShowResolve] = useState(false);
 
-  if (!activeCat) {
+  const catId = pickedCatId ?? cats[0]?.id ?? null;
+  const activeCat = cats.find((c) => c.id === catId) ?? null;
+
+  if (cats.length === 0 || !activeCat) {
     return (
       <Card>
         <p className="text-sm text-muted">
@@ -70,6 +75,16 @@ export function CrisisFlow() {
             What&apos;s happening with {activeCat.name}?
           </h2>
         </div>
+        {cats.length > 1 && (
+          <Field label="Which cat?" htmlFor="crisis-cat">
+            <SelectField
+              id="crisis-cat"
+              value={String(catId)}
+              onValueChange={(v) => setPickedCatId(Number(v))}
+              options={cats.map((c) => ({ value: String(c.id), label: c.name }))}
+            />
+          </Field>
+        )}
         <Field label="Describe the situation" htmlFor="crisis-prompt">
           <Textarea
             id="crisis-prompt"
