@@ -69,6 +69,7 @@ export interface MoveResult {
 
 export interface GamificationStatus {
   points: number;
+  streak: number;
 }
 
 export interface HealthRecord {

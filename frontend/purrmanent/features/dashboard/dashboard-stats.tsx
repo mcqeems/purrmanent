@@ -10,7 +10,7 @@ import {
   Tooltip,
   XAxis,
 } from "recharts";
-import { Cat, ListTodo, Trophy } from "lucide-react";
+import { Cat, ListTodo, Trophy, Flame } from "lucide-react";
 import { Card } from "@/components/ui";
 import { useGlobalBoard } from "@/features/checklist/hooks";
 import { useGamificationStatus } from "@/features/gamification/hooks";
@@ -73,8 +73,9 @@ export function DashboardStats() {
 
   return (
     <div className="mb-8 space-y-4">
-      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-5">
         <StatCard icon={Trophy} label="Points" value={status?.points ?? 0} />
+        <StatCard icon={Flame} label="Day streak" value={status?.streak ?? 0} />
         <StatCard icon={Cat} label="Cats" value={boards.length} />
         <StatCard icon={ListTodo} label="Completion" value={`${completion}%`} />
         <StatCard icon={ListTodo} label="Tasks done" value={totals.done} />

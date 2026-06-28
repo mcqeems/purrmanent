@@ -53,6 +53,12 @@ export class User {
   @Column({ name: 'lastLoginAt', type: 'timestamptz', nullable: true })
   lastLoginAt: Date | null;
 
+  @Column({ name: 'login_streak', type: 'int', default: 0 })
+  loginStreak: number;
+
+  @Column({ name: 'last_active_date', type: 'date', nullable: true })
+  lastActiveDate: string | null;
+
   @OneToMany(() => Cat, (cat) => cat.user)
   cats: Cat[];
 }
