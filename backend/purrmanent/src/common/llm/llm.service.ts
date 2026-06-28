@@ -8,6 +8,16 @@ export interface ChatMessage {
   content: string;
 }
 
+export type LlmMessage = OpenAI.Chat.Completions.ChatCompletionMessageParam;
+export type LlmTool = OpenAI.Chat.Completions.ChatCompletionTool;
+
+/** A tool call the model decided to make, with its raw JSON-string arguments. */
+export interface ParsedToolCall {
+  id: string;
+  name: string;
+  arguments: string;
+}
+
 /**
  * Thin wrapper around the OpenAI SDK pointed at the Bynara router
  * (OpenAI-compatible). Shared by Crisis AI-fallback and the Copilot.
@@ -61,5 +71,44 @@ export class LlmService {
       const delta = chunk.choices[0]?.delta?.content;
       if (delta) yield delta;
     }
+  }
+
+  /**
+   * Streaming completion WITH tool-calling. Yields natural-language content
+   * deltas as they arrive, and RETURNS the accumulated tool calls (if the model
+   * chose to call tools instead of / before answering). The agent loop in
+   * CoachService drives this; `reasoning_content` chunks are intentionally not
+   * yielded (they are the model's private scratchpad, not user-facing text).
+   */
+  async *chatStreamTools(
+    messages: LlmMessage[],
+    tools: LlmTool[],
+    opts?: { pro?: boolean },
+  ): AsyncGenerator<string, ParsedToolCall[]> {
+    const stream = await this.client.chat.completions.create({
+      model: opts?.pro ? this.modelPro : this.model,
+      messages,
+      tools,
+      tool_choice: 'auto',
+      stream: true,
+    });
+
+    // Tool-call fragments arrive split across chunks, keyed by index.
+    const acc = new Map<number, { id: string; name: string; args: string }>();
+    for await (const chunk of stream) {
+      const delta = chunk.choices[0]?.delta;
+      if (delta?.content) yield delta.content;
+      for (const tc of delta?.tool_calls ?? []) {
+        const slot = acc.get(tc.index) ?? { id: '', name: '', args: '' };
+        if (tc.id) slot.id = tc.id;
+        if (tc.function?.name) slot.name = tc.function.name;
+        if (tc.function?.arguments) slot.args += tc.function.arguments;
+        acc.set(tc.index, slot);
+      }
+    }
+
+    return [...acc.values()]
+      .filter((c) => c.name)
+      .map((c) => ({ id: c.id, name: c.name, arguments: c.args }));
   }
 }

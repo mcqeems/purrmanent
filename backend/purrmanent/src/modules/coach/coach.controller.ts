@@ -2,7 +2,7 @@ import { Body, Controller, Post, Res } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
 import type { Response } from 'express';
 import { CoachService } from './coach.service';
-import { ChatMessageDto } from './coach.schema';
+import { ChatMessageDto, ConfirmActionDto } from './coach.schema';
 import { CurrentUser } from '../auth/auth.decorators';
 
 @Controller('coach')
@@ -35,9 +35,24 @@ export class CoachController {
     for await (const ev of this.coach.run(userId, dto)) {
       if (ev.type === 'sources') send('sources', ev.data);
       else if (ev.type === 'delta') send('delta', ev.data);
+      else if (ev.type === 'confirm') send('confirm', ev.data);
       else if (ev.type === 'error') send('error', true);
     }
     res.write('data: [DONE]\n\n');
     res.end();
+  }
+
+  /**
+   * Execute a write action the agent proposed (via the `confirm` SSE event)
+   * after the user approves it. userId comes from the session; the action's
+   * Zod schema re-validates `args` server-side (anti-IDOR + untrusted input).
+   */
+  @Throttle({ default: { ttl: 60_000, limit: 60 } })
+  @Post('confirm-action')
+  confirmAction(
+    @CurrentUser('id') userId: number,
+    @Body() dto: ConfirmActionDto,
+  ) {
+    return this.coach.confirmAction(userId, dto);
   }
 }

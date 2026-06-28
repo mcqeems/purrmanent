@@ -8,19 +8,78 @@ import {
   User,
 } from '../../entities';
 import { CatsService } from '../cats/cats.service';
-import { LlmService } from '../../common/llm/llm.service';
+import {
+  LlmService,
+  LlmMessage,
+  LlmTool,
+  ParsedToolCall,
+} from '../../common/llm/llm.service';
 import { CoachToolsService, RetrievedChunk } from './coach-tools.service';
-import { ChatMessageDto } from './coach.schema';
+import { CoachActionsService, ActionResult } from './coach-actions.service';
+import { ChatMessageDto, ConfirmActionDto } from './coach.schema';
 import { buildCoachPrompt } from './coach.prompt';
 
 export interface CoachEvent {
-  type: 'sources' | 'delta' | 'done' | 'error';
+  type: 'sources' | 'delta' | 'confirm' | 'done' | 'error';
   data?: unknown;
+}
+
+/** A write action the agent proposed; the client confirms before it runs. */
+export interface PendingAction {
+  actionName: string;
+  args: unknown;
+  toolCallId: string;
 }
 
 const FALLBACK_MESSAGE =
   "I'm having trouble reaching my knowledge right now. For anything urgent or " +
   'health-related, please contact your veterinarian. Try asking me again in a moment.';
+
+/** Bounds the read-tool -> answer loop so a misbehaving model can't spin. */
+const MAX_AGENT_STEPS = 4;
+
+const TOOL_GUIDANCE =
+  'You can look things up and take actions using the provided tools. ' +
+  'For any question about cat care, health, behavior, nutrition, or adaptation, ' +
+  'FIRST call search_knowledge to fetch reference passages, then answer and ' +
+  'cite them like [1], [2]. Only call an action tool when the user clearly asks ' +
+  'for that action; before calling it, make sure you have every required ' +
+  'argument — if something is missing, ask the user for it instead of guessing. ' +
+  'Never fabricate values.';
+
+/**
+ * RAG is exposed as a tool (not pre-fetched every turn) so action-only prompts
+ * like "add a cat" don't pull unrelated passages. The model decides when it
+ * needs knowledge.
+ * ponytail ceiling: relies on the model choosing to call it for factual
+ * questions; the guidance above nudges it. If a weaker model under-calls it,
+ * the upgrade path is to force tool_choice on detected question turns.
+ */
+const SEARCH_KNOWLEDGE_TOOL = {
+  type: 'function',
+  function: {
+    name: 'search_knowledge',
+    description:
+      'Search the curated cat-care knowledge base and return reference ' +
+      'passages. Use this for any factual cat-care question before answering.',
+    parameters: {
+      type: 'object',
+      properties: {
+        query: { type: 'string', description: 'the search query' },
+      },
+      required: ['query'],
+    },
+  },
+} satisfies LlmTool;
+
+/** Tool `arguments` arrive as a JSON string; parse defensively. */
+function parseArgs(raw: string): unknown {
+  try {
+    return JSON.parse(raw || '{}');
+  } catch {
+    return {};
+  }
+}
 
 @Injectable()
 export class CoachService {
@@ -38,6 +97,7 @@ export class CoachService {
     private readonly cats: CatsService,
     private readonly llm: LlmService,
     private readonly tools: CoachToolsService,
+    private readonly actions: CoachActionsService,
   ) {}
 
   private async getOrCreateConversation(
@@ -77,33 +137,135 @@ export class CoachService {
         mentionedTasks = rows.map((r) => r.itemText);
       }
 
-      const retrieved = await this.tools.retrieveCorpus(dto.message);
-      const sources = retrieved
-        .filter((c) => c.source || c.sourceUrl)
-        .map((c) => ({ source: c.source, url: c.sourceUrl }));
-
-      yield { type: 'sources', data: sources };
+      // RAG is a tool now (search_knowledge): we retrieve only when the model
+      // asks, so action-only turns don't fetch unrelated passages. Track the
+      // last search result for persistence.
+      let lastSources: unknown[] = [];
+      let lastRetrieved: RetrievedChunk[] = [];
 
       if (!this.llm.enabled) {
         yield { type: 'delta', data: FALLBACK_MESSAGE };
-        await this.persist(userId, dto, FALLBACK_MESSAGE, sources, retrieved);
+        await this.persist(
+          userId,
+          dto,
+          FALLBACK_MESSAGE,
+          lastSources,
+          lastRetrieved,
+        );
         yield { type: 'done' };
         return;
       }
 
-      const messages = buildCoachPrompt({
+      const base = buildCoachPrompt({
         message: dto.message,
         contextMention: dto.contextMention,
         mentionedTasks,
-        retrieved,
+        retrieved: [],
         language,
       });
 
+      // Reuse the persona + @mention context from buildCoachPrompt (kept pure
+      // and unit-tested), then fold in tool guidance. Built as OpenAI message
+      // params so we can append assistant tool_calls / tool-result messages.
+      const messages: LlmMessage[] = [
+        { role: 'system', content: `${base[0].content}\n\n${TOOL_GUIDANCE}` },
+        { role: 'user', content: dto.message },
+      ];
+      const toolDefs: LlmTool[] = [
+        SEARCH_KNOWLEDGE_TOOL,
+        ...this.actions.tools(),
+      ];
+
       let full = '';
       try {
-        for await (const delta of this.llm.chatStream(messages)) {
-          full += delta;
-          yield { type: 'delta', data: delta };
+        for (let step = 0; step < MAX_AGENT_STEPS; step++) {
+          const gen = this.llm.chatStreamTools(messages, toolDefs);
+          let stepText = '';
+          let toolCalls: ParsedToolCall[] = [];
+          // Manual iteration: deltas are yielded, tool calls are the return value.
+          for (;;) {
+            const next = await gen.next();
+            if (next.done) {
+              toolCalls = next.value;
+              break;
+            }
+            stepText += next.value;
+            full += next.value;
+            yield { type: 'delta', data: next.value };
+          }
+
+          if (toolCalls.length === 0) break; // model produced a final answer
+
+          // Record the assistant's tool-call message before resolving them.
+          messages.push({
+            role: 'assistant',
+            content: stepText || null,
+            tool_calls: toolCalls.map((tc) => ({
+              id: tc.id,
+              type: 'function',
+              function: { name: tc.name, arguments: tc.arguments },
+            })),
+          });
+
+          for (const tc of toolCalls) {
+            // Knowledge retrieval (RAG) — only now do we hit the corpus, and
+            // only now emit a `sources` event (so action turns stay quiet).
+            if (tc.name === 'search_knowledge') {
+              const a = parseArgs(tc.arguments) as { query?: string };
+              const chunks = await this.tools.retrieveCorpus(
+                a.query || dto.message,
+              );
+              lastRetrieved = chunks;
+              lastSources = chunks
+                .filter((c) => c.source || c.sourceUrl)
+                .map((c) => ({ source: c.source, url: c.sourceUrl }));
+              yield { type: 'sources', data: lastSources };
+              messages.push({
+                role: 'tool',
+                tool_call_id: tc.id,
+                content: JSON.stringify(
+                  chunks.map((c, i) => ({
+                    ref: i + 1,
+                    text: c.text,
+                    source: c.source,
+                  })),
+                ),
+              });
+              continue;
+            }
+
+            if (this.actions.isMutating(tc.name)) {
+              // WRITE: never execute here. Propose it and let the user confirm.
+              const pending: PendingAction = {
+                actionName: tc.name,
+                args: parseArgs(tc.arguments),
+                toolCallId: tc.id,
+              };
+              yield { type: 'confirm', data: pending };
+              await this.persist(
+                userId,
+                dto,
+                `Proposed action "${tc.name}" — awaiting your confirmation.`,
+                lastSources,
+                lastRetrieved,
+              );
+              yield { type: 'done' };
+              return;
+            }
+
+            // Data READ action: safe to run inline; feed the result back.
+            const res = await this.actions.execute(
+              tc.name,
+              userId,
+              parseArgs(tc.arguments),
+            );
+            messages.push({
+              role: 'tool',
+              tool_call_id: tc.id,
+              content: JSON.stringify(res),
+            });
+          }
+          // loop again so the model can answer using the tool results
         }
       } catch (err) {
         this.logger.error(`LLM stream failed: ${String(err)}`);
@@ -113,13 +275,93 @@ export class CoachService {
         }
       }
 
-      await this.persist(userId, dto, full, sources, retrieved);
+      if (full.length === 0) {
+        full = FALLBACK_MESSAGE;
+        yield { type: 'delta', data: FALLBACK_MESSAGE };
+      }
+      await this.persist(userId, dto, full, lastSources, lastRetrieved);
       yield { type: 'done' };
     } catch (err) {
       this.logger.error(`coach.run failed: ${String(err)}`);
       yield { type: 'delta', data: FALLBACK_MESSAGE };
       yield { type: 'error' };
     }
+  }
+
+  /**
+   * Execute a write action the user confirmed (the `confirm` SSE event ->
+   * POST /coach/confirm-action). userId comes from the session; args are
+   * re-validated by the action schema in CoachActionsService (anti-IDOR +
+   * untrusted-input handling). Returns the structured result plus a friendly
+   * natural-language `message` the UI can show ("I've added Bobby…").
+   */
+  async confirmAction(
+    userId: number,
+    dto: ConfirmActionDto,
+  ): Promise<ActionResult & { message: string }> {
+    if (!dto.confirm) {
+      return {
+        ok: false,
+        action: dto.actionName,
+        error: 'cancelled',
+        message: "Okay, I won't make that change.",
+      };
+    }
+    const res = await this.actions.execute(dto.actionName, userId, dto.args);
+    const message = await this.summarizeAction(userId, res);
+    await this.appendAssistant(userId, dto.catId, message, res);
+    return { ...res, message };
+  }
+
+  /** One-sentence, localized confirmation of an executed action. */
+  private async summarizeAction(
+    userId: number,
+    res: ActionResult,
+  ): Promise<string> {
+    if (!res.ok) {
+      return `Sorry, I couldn't complete that: ${res.error ?? 'unknown error'}.`;
+    }
+    const done = `Done — I've completed "${res.action}".`;
+    if (!this.llm.enabled) return done;
+    const user = await this.users.findOne({ where: { id: userId } });
+    const language = user?.preferredLanguage ?? 'en';
+    try {
+      const msg = await this.llm.chat([
+        {
+          role: 'system',
+          content:
+            "You are Purrmanent's warm cat-care assistant. In ONE short " +
+            'sentence, confirm to the user that the action just succeeded. ' +
+            `Reply in language code "${language}".`,
+        },
+        {
+          role: 'user',
+          content: `The "${res.action}" action succeeded. Result: ${JSON.stringify(res.result)}`,
+        },
+      ]);
+      return msg || done;
+    } catch {
+      return done;
+    }
+  }
+
+  /** Persist a standalone assistant message (used for action follow-ups). */
+  private async appendAssistant(
+    userId: number,
+    catId: number | undefined,
+    content: string,
+    res: ActionResult,
+  ): Promise<void> {
+    const conv = await this.getOrCreateConversation(userId, catId);
+    await this.messages.save(
+      this.messages.create({
+        conversationId: conv.id,
+        role: 'assistant',
+        content,
+        sources: { action: res.action, ok: res.ok },
+      }),
+    );
+    await this.conversations.update(conv.id, { lastMessageAt: new Date() });
   }
 
   private async persist(

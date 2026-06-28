@@ -9,5 +9,6 @@ import { NotificationModule } from '../notification/notification.module';
   imports: [CatsModule, NotificationModule],
   controllers: [HealthLogController],
   providers: [HealthService, HealthCronService],
+  exports: [HealthService],
 })
 export class HealthModule {}

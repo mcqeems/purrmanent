@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Between, In, Repository } from 'typeorm';
 import { Cat, HealthRecord } from '../../entities';
 import { CatsService } from '../cats/cats.service';
 import {
@@ -75,6 +75,29 @@ export class HealthService {
     const record = await this.ownedRecord(userId, id);
     await this.records.delete(record.id);
     return { success: true };
+  }
+
+  /**
+   * Upcoming due records across the user's OWN cats only (anti-IDOR — unlike
+   * findDue, which is the cross-user cron query). Defaults to the next 30 days.
+   */
+  async upcomingForUser(
+    userId: number,
+    withinDays = 30,
+  ): Promise<HealthRecord[]> {
+    const cats = await this.catsService.findAllForUser(userId);
+    if (cats.length === 0) return [];
+    const today = new Date().toISOString().slice(0, 10);
+    const to = new Date(Date.now() + withinDays * 86_400_000)
+      .toISOString()
+      .slice(0, 10);
+    return this.records.find({
+      where: {
+        catId: In(cats.map((c) => c.id)),
+        nextDueDate: Between(today, to),
+      },
+      order: { nextDueDate: 'ASC' },
+    });
   }
 
   /**
