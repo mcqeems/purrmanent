@@ -8,6 +8,7 @@ import { CatsList } from "@/features/cats/cats-list";
 import { GlobalOverview } from "@/features/checklist/global-overview";
 import { PushPrompt } from "@/features/notifications/push-prompt";
 import { DashboardAsk } from "@/features/coach/dashboard-ask";
+import { DashboardStats } from "@/features/dashboard/dashboard-stats";
 
 export default function DashboardPage() {
   const { data: cats, isLoading } = useCats();
@@ -33,6 +34,7 @@ export default function DashboardPage() {
         </div>
       ) : (
         <div className="space-y-8">
+          <DashboardStats />
           <GlobalOverview />
           <CatsList />
         </div>
