@@ -49,7 +49,7 @@ export const sendVerificationSchema = z.object({
 // ── Cats ────────────────────────────────────────────────────────────────────
 export const createCatSchema = z.object({
   name: z.string().min(1, "Name is required").max(100),
-  ageMonths: z.coerce.number().int().min(0).max(360).optional(),
+  ageMonths: z.number().int().min(0).max(360).optional(),
   gender: z.enum(GENDERS).optional(),
   breed: z.string().max(100).optional(),
   personality: z.enum(PERSONALITIES),
@@ -64,7 +64,7 @@ export const updateCatSchema = createCatSchema.partial();
 // ── Onboarding ───────────────────────────────────────────────────────────────
 export const questionnaireSchema = z.object({
   catName: z.string().min(1, "Name is required").max(100),
-  catAgeMonths: z.coerce.number().int().min(0).max(360).optional(),
+  catAgeMonths: z.number().int().min(0).max(360).optional(),
   catGender: z.enum(GENDERS).optional(),
   catBreed: z.string().max(100).optional(),
   adoptionDate: isoDate,
