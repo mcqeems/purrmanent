@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import {
   AiCoachConversation,
   AiCoachMessage,
@@ -45,7 +45,7 @@ export class CoachService {
     catId?: number,
   ): Promise<AiCoachConversation> {
     const existing = await this.conversations.findOne({
-      where: { userId, catId: catId ?? undefined },
+      where: { userId, catId: catId ?? IsNull() },
       order: { startedAt: 'DESC' },
     });
     if (existing) return existing;
