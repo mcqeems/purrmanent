@@ -36,7 +36,7 @@ export function EditCat({ catId }: { catId: number }) {
   }
 
   return (
-    <div className="max-w-xl space-y-6">
+    <div className="space-y-6">
       <Card>
         <CatForm cat={cat} onDone={() => router.push(`/cats/${cat.id}`)} />
       </Card>

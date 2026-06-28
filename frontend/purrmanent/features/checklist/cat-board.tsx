@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Plus } from "lucide-react";
 import {
   Button,
+  Card,
   Dialog,
   DialogClose,
   DialogContent,
@@ -20,6 +21,7 @@ import {
 } from "@/components/ui";
 import type { ChecklistBoard, ChecklistItem, KanbanStatus } from "@/lib/types/api";
 import { KanbanBoard } from "./kanban-board";
+import { useCopilot } from "@/features/coach/copilot-provider";
 import {
   useAddCustomTodo,
   useMoveItem,
@@ -28,20 +30,57 @@ import {
 } from "./hooks";
 
 function BoardView({
+  catId,
+  board,
   items,
   isLoading,
   isError,
   onMove,
 }: {
+  catId: number;
+  board: ChecklistBoard;
   items: ChecklistItem[];
   isLoading: boolean;
   isError: boolean;
   onMove: (itemId: number, newStatus: KanbanStatus) => void;
 }) {
+  const { ask } = useCopilot();
   if (isLoading) return <Spinner className="size-6 text-accent-violet" />;
   if (isError)
     return <p className="text-sm text-accent-pink">Could not load the board.</p>;
-  return <KanbanBoard items={items} onMove={onMove} />;
+
+  const empty = items.length === 0;
+  const allDone = !empty && items.every((i) => i.kanbanStatus === "done");
+
+  return (
+    <div className="space-y-3">
+      {(empty || allDone) && (
+        <Card className="flex flex-col items-start gap-3 border-accent-lime/50 bg-accent-lime/10 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-sm">
+            {empty
+              ? "This board is empty."
+              : "🎉 Everything's done — nice work!"}{" "}
+            Want the AI Coach to add some tasks for you?
+          </p>
+          <Button
+            size="sm"
+            onClick={() =>
+              ask(
+                `My ${board} checklist for cat #${catId} is ${
+                  empty ? "empty" : "all complete"
+                } — please add a few helpful ${
+                  board === "daily" ? "daily care" : "milestone"
+                } tasks to that cat's ${board} board.`,
+              )
+            }
+          >
+            Ask AI Coach
+          </Button>
+        </Card>
+      )}
+      <KanbanBoard items={items} onMove={onMove} />
+    </div>
+  );
 }
 
 function useMoveHandler(catId: number, board: ChecklistBoard) {
@@ -66,6 +105,8 @@ function DailySection({ catId }: { catId: number }) {
   const onMove = useMoveHandler(catId, "daily");
   return (
     <BoardView
+      catId={catId}
+      board="daily"
       items={query.data ?? []}
       isLoading={query.isLoading}
       isError={query.isError}
@@ -79,6 +120,8 @@ function PhaseSection({ catId }: { catId: number }) {
   const onMove = useMoveHandler(catId, "phase");
   return (
     <BoardView
+      catId={catId}
+      board="phase"
       items={query.data ?? []}
       isLoading={query.isLoading}
       isError={query.isError}
