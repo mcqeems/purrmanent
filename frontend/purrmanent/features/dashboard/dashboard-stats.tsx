@@ -72,7 +72,7 @@ export function DashboardStats() {
   });
 
   return (
-    <div className="mb-8 space-y-4">
+    <div data-tour="stats" className="mb-8 space-y-4">
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-5">
         <StatCard icon={Trophy} label="Points" value={status?.points ?? 0} />
         <StatCard icon={Flame} label="Day streak" value={status?.streak ?? 0} />

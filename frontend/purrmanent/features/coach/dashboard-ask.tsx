@@ -22,7 +22,7 @@ export function DashboardAsk() {
   }
 
   return (
-    <div className="mb-8 rounded-xl bg-surface-night p-4 text-on-primary sm:p-6">
+    <div data-tour="ask" className="mb-8 rounded-xl bg-surface-night p-4 text-on-primary sm:p-6">
       <div className="mb-3 flex items-center gap-2">
         <Sparkles size={18} className="text-accent-lime" />
         <span className="font-semibold">Ask your AI coach</span>

@@ -33,7 +33,7 @@ export function Nav({ right }: { right?: ReactNode }) {
         <Link href="/progress" className="hidden text-ink-deep hover:underline sm:inline">
           Progress
         </Link>
-        <Link href="/crisis" className="hidden text-accent-pink hover:underline sm:inline">
+        <Link href="/crisis" data-tour="crisis" className="hidden text-accent-pink hover:underline sm:inline">
           Crisis
         </Link>
         {right}

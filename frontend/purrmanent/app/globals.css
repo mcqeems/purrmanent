@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "driver.js/dist/driver.css";
 
 /* Design tokens — sourced from DESIGN.md (Sentry-inspired, two-polarity).
    Tailwind v4 generates utilities from these (e.g. --color-accent-lime -> bg-accent-lime). */

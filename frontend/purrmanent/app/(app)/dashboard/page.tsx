@@ -9,6 +9,7 @@ import { GlobalOverview } from "@/features/checklist/global-overview";
 import { PushPrompt } from "@/features/notifications/push-prompt";
 import { DashboardAsk } from "@/features/coach/dashboard-ask";
 import { DashboardStats } from "@/features/dashboard/dashboard-stats";
+import { SiteTour } from "@/features/onboarding/site-tour";
 
 export default function DashboardPage() {
   const { data: cats, isLoading } = useCats();
@@ -33,12 +34,13 @@ export default function DashboardPage() {
           </Button>
         </div>
       ) : (
-        <div className="space-y-8">
+        <div data-tour="cats" className="space-y-8">
           <DashboardStats />
           <GlobalOverview />
           <CatsList />
         </div>
       )}
+      <SiteTour />
     </>
   );
 }
