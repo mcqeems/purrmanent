@@ -28,6 +28,9 @@ export function Nav({ right }: { right?: ReactNode }) {
         <Link href="/dashboard" className="hidden text-ink-deep hover:underline sm:inline">
           Dashboard
         </Link>
+        <Link href="/cats" className="hidden text-ink-deep hover:underline sm:inline">
+          Cats
+        </Link>
         <Link href="/coach" className="hidden text-ink-deep hover:underline sm:inline">
           Coach
         </Link>

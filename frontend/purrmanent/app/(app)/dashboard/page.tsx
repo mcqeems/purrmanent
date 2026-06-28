@@ -4,7 +4,6 @@ import Link from "next/link";
 import { PageHeader } from "@/components/layout/app-shell";
 import { Button, Spinner } from "@/components/ui";
 import { useCats } from "@/features/cats/hooks";
-import { CatsList } from "@/features/cats/cats-list";
 import { GlobalOverview } from "@/features/checklist/global-overview";
 import { PushPrompt } from "@/features/notifications/push-prompt";
 import { DashboardAsk } from "@/features/coach/dashboard-ask";
@@ -18,9 +17,19 @@ export default function DashboardPage() {
     <>
       <DashboardAsk />
       <PageHeader
-        title="Your cats"
-        subtitle="Pick a cat to open its 90-day board."
-        action={<PushPrompt />}
+        title="Overview"
+        subtitle="Your cats and today's progress at a glance."
+        action={
+          <div className="flex items-center gap-3">
+            <Link
+              href="/cats"
+              className="text-sm font-semibold text-accent-violet underline"
+            >
+              All cats
+            </Link>
+            <PushPrompt />
+          </div>
+        }
       />
       {isLoading ? (
         <Spinner className="size-6 text-accent-violet" />
@@ -37,7 +46,6 @@ export default function DashboardPage() {
         <div data-tour="cats" className="space-y-8">
           <DashboardStats />
           <GlobalOverview />
-          <CatsList />
         </div>
       )}
       <SiteTour />
