@@ -35,3 +35,14 @@ export function useUpdateCat(id: number) {
     },
   });
 }
+
+export function useDeleteCat() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: number) => catsApi.remove(id),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: queryKeys.cats });
+      qc.invalidateQueries({ queryKey: queryKeys.boardGlobal });
+    },
+  });
+}

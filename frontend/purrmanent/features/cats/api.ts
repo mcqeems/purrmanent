@@ -9,4 +9,6 @@ export const catsApi = {
     apiFetch<Cat>("/cats", { method: "POST", body }),
   update: (id: number, body: UpdateCatInput) =>
     apiFetch<Cat>(`/cats/${id}`, { method: "PUT", body }),
+  remove: (id: number) =>
+    apiFetch<{ success: true }>(`/cats/${id}`, { method: "DELETE" }),
 };

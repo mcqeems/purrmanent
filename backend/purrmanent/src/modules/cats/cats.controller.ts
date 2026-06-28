@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -40,5 +41,13 @@ export class CatsController {
     @Body() dto: UpdateCatDto,
   ) {
     return this.cats.update(userId, id, dto);
+  }
+
+  @Delete(':id')
+  remove(
+    @CurrentUser('id') userId: number,
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    return this.cats.remove(userId, id);
   }
 }

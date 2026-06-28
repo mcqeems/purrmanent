@@ -46,4 +46,15 @@ export class CatsService {
     Object.assign(cat, dto);
     return this.cats.save(cat);
   }
+
+  /**
+   * Soft-delete: ownership-checked, flips isActive=false so the cat (and its
+   * cascade of plan/health data) disappears from listings but is recoverable.
+   */
+  async remove(userId: number, id: number): Promise<{ success: true }> {
+    const cat = await this.findOneForUser(userId, id);
+    cat.isActive = false;
+    await this.cats.save(cat);
+    return { success: true };
+  }
 }
