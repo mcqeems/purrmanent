@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { Nav } from "./nav";
+import { BottomNav } from "./bottom-nav";
 
 export function AppShell({
   children,
@@ -11,9 +12,10 @@ export function AppShell({
   return (
     <div className="flex min-h-screen flex-col bg-surface-canvas-light">
       <Nav right={navRight} />
-      <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:px-6 sm:py-8">
+      <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 pb-24 sm:px-6 sm:py-8 sm:pb-8">
         {children}
       </main>
+      <BottomNav />
     </div>
   );
 }
