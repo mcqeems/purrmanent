@@ -29,7 +29,11 @@ const STEP_FIELDS: (keyof QuestionnaireInput)[][] = [
   ["adopterExperience", "homeType", "householdComposition", "concerns"],
 ];
 
-export function QuestionnaireWizard() {
+export function QuestionnaireWizard({
+  prefill,
+}: {
+  prefill?: Partial<QuestionnaireInput>;
+}) {
   const router = useRouter();
   const submit = useSubmitOnboarding();
   const [step, setStep] = useState(0);
@@ -37,7 +41,7 @@ export function QuestionnaireWizard() {
 
   const form = useForm<QuestionnaireInput>({
     resolver: zodResolver(questionnaireSchema),
-    defaultValues: { concerns: [] },
+    defaultValues: { concerns: [], ...prefill },
   });
   const {
     register,

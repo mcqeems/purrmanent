@@ -6,6 +6,7 @@ import { Button, Spinner } from "@/components/ui";
 import { useCats } from "@/features/cats/hooks";
 import { CatsList } from "@/features/cats/cats-list";
 import { GlobalOverview } from "@/features/checklist/global-overview";
+import { PushPrompt } from "@/features/notifications/push-prompt";
 
 export default function DashboardPage() {
   const { data: cats, isLoading } = useCats();
@@ -15,6 +16,7 @@ export default function DashboardPage() {
       <PageHeader
         title="Your cats"
         subtitle="Pick a cat to open its 90-day board."
+        action={<PushPrompt />}
       />
       {isLoading ? (
         <Spinner className="size-6 text-accent-violet" />
