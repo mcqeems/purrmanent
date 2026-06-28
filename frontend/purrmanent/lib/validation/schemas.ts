@@ -114,6 +114,7 @@ export const chatMessageSchema = z.object({
   message: z.string().min(1).max(2000),
   contextMention: z.enum(KANBAN_STATUSES).nullish(),
   catId: id.optional(),
+  conversationId: id.optional(),
 });
 
 export const confirmActionSchema = z.object({

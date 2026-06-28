@@ -21,6 +21,10 @@ export class AiCoachConversation {
 
   @Column({ name: 'last_message_at', type: 'timestamptz', nullable: true })
   lastMessageAt: Date | null;
+
+  /** Running LLM-generated summary of the conversation, for efficient context. */
+  @Column({ type: 'text', nullable: true })
+  summary: string | null;
 }
 
 @Entity('ai_coach_messages')

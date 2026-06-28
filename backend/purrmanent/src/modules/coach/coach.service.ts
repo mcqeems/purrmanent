@@ -81,6 +81,14 @@ function parseArgs(raw: string): unknown {
   }
 }
 
+const MARKDOWN_GUIDANCE =
+  'Format every reply in standard, well-structured Markdown (headings, bold, ' +
+  'bullet/numbered lists, tables, and fenced code where useful). Keep it clean ' +
+  'and readable.';
+
+/** How many recent stored messages to replay verbatim alongside the summary. */
+const RECENT_CONTEXT = 6;
+
 @Injectable()
 export class CoachService {
   private readonly logger = new Logger(CoachService.name);
@@ -140,6 +148,86 @@ export class CoachService {
   }
 
   /**
+   * Resolve the conversation for a turn: a specific one to continue (ownership-
+   * checked) or the latest/new one for the cat.
+   */
+  private async resolveConversation(
+    userId: number,
+    dto: ChatMessageDto,
+  ): Promise<AiCoachConversation> {
+    if (dto.conversationId) {
+      const conv = await this.conversations.findOne({
+        where: { id: dto.conversationId },
+      });
+      if (!conv || conv.userId !== userId) {
+        throw new NotFoundException('Conversation not found');
+      }
+      return conv;
+    }
+    return this.getOrCreateConversation(userId, dto.catId);
+  }
+
+  /**
+   * Prior-context messages for continuing a conversation: a stored summary
+   * (one system line) + the last few verbatim turns. This keeps the token
+   * footprint bounded instead of replaying the whole history every turn.
+   */
+  private async historyContext(
+    conv: AiCoachConversation,
+  ): Promise<LlmMessage[]> {
+    const out: LlmMessage[] = [];
+    if (conv.summary) {
+      out.push({
+        role: 'system',
+        content: `Summary of the conversation so far: ${conv.summary}`,
+      });
+    }
+    const recent = await this.messages.find({
+      where: { conversationId: conv.id },
+      order: { createdAt: 'DESC' },
+      take: RECENT_CONTEXT,
+    });
+    for (const m of recent.reverse()) {
+      if (m.role === 'user') out.push({ role: 'user', content: m.content });
+      else if (m.role === 'assistant')
+        out.push({ role: 'assistant', content: m.content });
+    }
+    return out;
+  }
+
+  /**
+   * Refresh the conversation's running summary after a turn (bounded ~120 words)
+   * so future turns send the summary instead of the full transcript.
+   */
+  private async updateSummary(
+    conv: AiCoachConversation,
+    userMessage: string,
+    assistantReply: string,
+  ): Promise<void> {
+    if (!this.llm.enabled) return;
+    try {
+      const summary = await this.llm.chat([
+        {
+          role: 'system',
+          content:
+            'Maintain a concise running summary (<=120 words) of a cat-care ' +
+            "conversation: the user's cats, key facts, decisions made, and any " +
+            'open threads. Return ONLY the updated summary text.',
+        },
+        {
+          role: 'user',
+          content: `Previous summary: ${conv.summary ?? '(none)'}\n\nNew user message: ${userMessage}\n\nNew assistant reply: ${assistantReply}`,
+        },
+      ]);
+      if (summary.trim()) {
+        await this.conversations.update(conv.id, { summary: summary.trim() });
+      }
+    } catch (err) {
+      this.logger.warn(`summary update failed: ${String(err)}`);
+    }
+  }
+
+  /**
    * Orchestrates a single Copilot turn (spec §2.4/§8.5): inject @mention Kanban
    * context, retrieve corpus chunks, stream the answer, persist on completion.
    * Yields SSE-shaped events. Never throws to the client — failures yield a
@@ -162,6 +250,9 @@ export class CoachService {
         mentionedTasks = rows.map((r) => r.itemText);
       }
 
+      // Resolve which conversation this turn belongs to (continue or new).
+      const conv = await this.resolveConversation(userId, dto);
+
       // RAG is a tool now (search_knowledge): we retrieve only when the model
       // asks, so action-only turns don't fetch unrelated passages. Track the
       // last search result for persistence.
@@ -171,7 +262,7 @@ export class CoachService {
       if (!this.llm.enabled) {
         yield { type: 'delta', data: FALLBACK_MESSAGE };
         await this.persist(
-          userId,
+          conv,
           dto,
           FALLBACK_MESSAGE,
           lastSources,
@@ -189,11 +280,15 @@ export class CoachService {
         language,
       });
 
-      // Reuse the persona + @mention context from buildCoachPrompt (kept pure
-      // and unit-tested), then fold in tool guidance. Built as OpenAI message
-      // params so we can append assistant tool_calls / tool-result messages.
+      // System persona + tool + markdown guidance, then prior-conversation
+      // context (summary + recent turns), then the current user message.
+      const history = await this.historyContext(conv);
       const messages: LlmMessage[] = [
-        { role: 'system', content: `${base[0].content}\n\n${TOOL_GUIDANCE}` },
+        {
+          role: 'system',
+          content: `${base[0].content}\n\n${TOOL_GUIDANCE}\n\n${MARKDOWN_GUIDANCE}`,
+        },
+        ...history,
         { role: 'user', content: dto.message },
       ];
       const toolDefs: LlmTool[] = [
@@ -268,7 +363,7 @@ export class CoachService {
               };
               yield { type: 'confirm', data: pending };
               await this.persist(
-                userId,
+                conv,
                 dto,
                 `Proposed action "${tc.name}" — awaiting your confirmation.`,
                 lastSources,
@@ -304,7 +399,8 @@ export class CoachService {
         full = FALLBACK_MESSAGE;
         yield { type: 'delta', data: FALLBACK_MESSAGE };
       }
-      await this.persist(userId, dto, full, lastSources, lastRetrieved);
+      await this.persist(conv, dto, full, lastSources, lastRetrieved);
+      await this.updateSummary(conv, dto.message, full);
       yield { type: 'done' };
     } catch (err) {
       this.logger.error(`coach.run failed: ${String(err)}`);
@@ -390,13 +486,12 @@ export class CoachService {
   }
 
   private async persist(
-    userId: number,
+    conv: AiCoachConversation,
     dto: ChatMessageDto,
     assistantText: string,
     sources: unknown,
     retrieved: RetrievedChunk[],
   ): Promise<void> {
-    const conv = await this.getOrCreateConversation(userId, dto.catId);
     await this.messages.save([
       this.messages.create({
         conversationId: conv.id,

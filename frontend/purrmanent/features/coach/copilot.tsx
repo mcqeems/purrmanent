@@ -1,9 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import ReactMarkdown from "react-markdown";
 import { MessageCircle, Send, X } from "lucide-react";
-import { Button, Pill } from "@/components/ui";
+import { Button, Pill, Markdown } from "@/components/ui";
 import { cn } from "@/lib/utils/cn";
 import { useCopilot } from "./copilot-provider";
 
@@ -60,8 +59,8 @@ export function Copilot() {
                 : "bg-ink-deep",
             )}
           >
-            <div className="prose-sm break-words [&_a]:text-accent-lime [&_a]:underline [&_code]:text-accent-lime">
-              <ReactMarkdown>{m.content || "…"}</ReactMarkdown>
+            <div className="break-words">
+              <Markdown content={m.content || "…"} dark />
             </div>
 
             {m.sources && m.sources.length > 0 && (

@@ -1,13 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import ReactMarkdown from "react-markdown";
 import { format, parseISO, isValid } from "date-fns";
 import { Plus, Sparkles, MessageSquare } from "lucide-react";
-import { Button, Card, Pill, Spinner } from "@/components/ui";
+import { Button, Card, Pill, Markdown } from "@/components/ui";
 import { cn } from "@/lib/utils/cn";
 import { useCopilot } from "./copilot-provider";
-import { useConversations, useConversationMessages } from "./history-hooks";
+import { useConversations } from "./history-hooks";
 import { MentionInput } from "./mention-input";
 
 const ACTIONS = [
@@ -23,7 +22,7 @@ function ts(d: string) {
   return isValid(date) ? format(date, "MMM d, HH:mm") : "";
 }
 
-function LiveChat() {
+function ChatPane() {
   const { messages, streaming, send, confirm } = useCopilot();
   const [input, setInput] = useState("");
 
@@ -62,9 +61,11 @@ function LiveChat() {
                 : "bg-surface-press-light text-ink-deep",
             )}
           >
-            <div className="prose-sm break-words [&_a]:text-accent-violet [&_a]:underline">
-              <ReactMarkdown>{m.content || "…"}</ReactMarkdown>
-            </div>
+            {m.role === "assistant" ? (
+              <Markdown content={m.content || "…"} />
+            ) : (
+              <span className="whitespace-pre-wrap break-words">{m.content}</span>
+            )}
             {m.sources && m.sources.length > 0 && (
               <div className="mt-2 flex flex-wrap gap-1">
                 {m.sources.map((s, i) => (
@@ -108,48 +109,24 @@ function LiveChat() {
   );
 }
 
-function HistoryView({ id }: { id: number }) {
-  const { data: messages, isLoading } = useConversationMessages(id);
-  if (isLoading) return <Spinner className="m-4 size-5 text-accent-violet" />;
-  return (
-    <div className="flex-1 space-y-3 overflow-y-auto p-4">
-      {messages?.map((m) => (
-        <div
-          key={m.id}
-          className={cn(
-            "max-w-[85%] rounded-md px-3 py-2 text-sm",
-            m.role === "user"
-              ? "ml-auto bg-accent-violet-deep text-on-primary"
-              : "bg-surface-press-light text-ink-deep",
-          )}
-        >
-          <div className="prose-sm break-words">
-            <ReactMarkdown>{m.content}</ReactMarkdown>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
 export function CoachPage() {
   const { data: conversations } = useConversations();
-  const [selected, setSelected] = useState<number | null>(null);
+  const { conversationId, loadConversation, newChat } = useCopilot();
 
   return (
     <div className="grid h-[calc(100vh-12rem)] grid-cols-1 gap-4 md:grid-cols-[16rem_1fr]">
       <aside className="hidden flex-col gap-2 md:flex">
-        <Button size="sm" onClick={() => setSelected(null)} className="w-full">
+        <Button size="sm" onClick={newChat} className="w-full">
           <Plus size={16} /> New chat
         </Button>
         <div className="flex-1 space-y-1 overflow-y-auto">
           {conversations?.map((c) => (
             <button
               key={c.id}
-              onClick={() => setSelected(c.id)}
+              onClick={() => void loadConversation(c.id)}
               className={cn(
                 "flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm",
-                selected === c.id
+                conversationId === c.id
                   ? "bg-surface-press-light text-ink-deep"
                   : "text-muted hover:bg-surface-press-light",
               )}
@@ -166,16 +143,17 @@ export function CoachPage() {
             <Sparkles size={12} className="text-accent-violet" /> What I can do
           </p>
           <ul className="mt-2 space-y-1 text-xs text-muted">
-            <li>Manage cats, checklists & health records</li>
+            <li>Manage cats, checklists &amp; health records</li>
             <li>Answer cat-care questions with sources</li>
             <li>@mention a column or cat for context</li>
             <li>Writes ask for your confirmation</li>
+            <li>Resume past conversations from the list</li>
           </ul>
         </Card>
       </aside>
 
       <Card className="flex flex-col overflow-hidden p-0">
-        {selected == null ? <LiveChat /> : <HistoryView id={selected} />}
+        <ChatPane />
       </Card>
     </div>
   );

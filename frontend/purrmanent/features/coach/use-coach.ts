@@ -5,7 +5,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useActiveCat } from "@/features/cats/active-cat-provider";
 import type { CoachSource, PendingAction } from "@/lib/types/api";
 import { streamCoachChat } from "./stream";
-import { confirmAction, parseMention } from "./api";
+import { confirmAction, parseMention, coachHistoryApi } from "./api";
 
 export interface CoachMessage {
   id: string;
@@ -20,6 +20,7 @@ export function useCoach() {
   const qc = useQueryClient();
   const [messages, setMessages] = useState<CoachMessage[]>([]);
   const [streaming, setStreaming] = useState(false);
+  const [conversationId, setConversationId] = useState<number | null>(null);
   const idRef = useRef(0);
   const newId = () => String((idRef.current += 1));
 
@@ -29,6 +30,27 @@ export function useCoach() {
     setMessages((prev) =>
       prev.map((m) => (m.id === id ? { ...m, content: m.content + text } : m)),
     );
+
+  /** Start a fresh chat thread. */
+  const newChat = useCallback(() => {
+    setConversationId(null);
+    setMessages([]);
+  }, []);
+
+  /** Load a past conversation's messages and continue it. */
+  const loadConversation = useCallback(async (id: number) => {
+    setConversationId(id);
+    const stored = await coachHistoryApi.messages(id);
+    setMessages(
+      stored
+        .filter((m) => m.role !== "system")
+        .map((m) => ({
+          id: `h${m.id}`,
+          role: m.role === "assistant" ? "assistant" : "user",
+          content: m.content,
+        })),
+    );
+  }, []);
 
   const send = useCallback(
     async (text: string) => {
@@ -46,6 +68,7 @@ export function useCoach() {
           message: trimmed,
           contextMention: parseMention(trimmed) ?? null,
           catId: activeCatId ?? undefined,
+          conversationId: conversationId ?? undefined,
         },
         {
           onDelta: (t) => appendDelta(aId, t),
@@ -56,8 +79,9 @@ export function useCoach() {
         },
       );
       setStreaming(false);
+      void qc.invalidateQueries({ queryKey: ["coach", "conversations"] });
     },
-    [activeCatId, streaming],
+    [activeCatId, conversationId, streaming, qc],
   );
 
   const confirm = useCallback(
@@ -78,5 +102,13 @@ export function useCoach() {
     [activeCatId, qc],
   );
 
-  return { messages, streaming, send, confirm };
+  return {
+    messages,
+    streaming,
+    conversationId,
+    send,
+    confirm,
+    loadConversation,
+    newChat,
+  };
 }

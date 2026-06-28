@@ -7,6 +7,8 @@ export const chatMessageSchema = z.object({
   // already-resolved @mention enum from the browser (spec §8.5)
   contextMention: z.enum(MENTION_COLUMNS).nullish(),
   catId: z.number().int().positive().optional(),
+  // continue a specific past conversation (else the latest for the cat is used)
+  conversationId: z.number().int().positive().optional(),
 });
 
 export class ChatMessageDto extends createZodDto(chatMessageSchema) {}
