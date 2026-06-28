@@ -38,4 +38,18 @@ describe('buildCoachPrompt (@mention context, spec §8.5)', () => {
     expect(msgs[0].content).toContain('[1] Cats need fresh water daily.');
     expect(msgs[0].content).toContain('language code "id"');
   });
+
+  it('restricts scope to cat/animal topics and declines unrelated questions politely', () => {
+    const system = buildCoachPrompt({
+      message: 'what is the color of the sky?',
+      contextMention: null,
+      mentionedTasks: [],
+      retrieved: [],
+      language: 'en',
+    })[0].content.toLowerCase();
+    expect(system).toContain('stay strictly on topic');
+    expect(system).toContain('do not answer');
+    // must not punt the user to another AI tool
+    expect(system).toContain('chatgpt');
+  });
 });
