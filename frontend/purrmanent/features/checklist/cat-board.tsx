@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Plus } from "lucide-react";
 import {
   Button,
@@ -45,12 +46,18 @@ function BoardView({
   onMove: (itemId: number, newStatus: KanbanStatus) => void;
 }) {
   const { ask } = useCopilot();
+  const router = useRouter();
   if (isLoading) return <Spinner className="size-6 text-accent-violet" />;
   if (isError)
     return <p className="text-sm text-accent-pink">Could not load the board.</p>;
 
   const empty = items.length === 0;
   const allDone = !empty && items.every((i) => i.kanbanStatus === "done");
+
+  function askCoach(prompt: string) {
+    ask(prompt);
+    router.push("/coach");
+  }
 
   return (
     <div className="space-y-3">
@@ -65,7 +72,7 @@ function BoardView({
           <Button
             size="sm"
             onClick={() =>
-              ask(
+              askCoach(
                 `My ${board} checklist for cat #${catId} is ${
                   empty ? "empty" : "all complete"
                 } — please add a few helpful ${

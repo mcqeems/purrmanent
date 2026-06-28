@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Sparkles, ArrowUp } from "lucide-react";
 import { useCopilot } from "./copilot-provider";
 
@@ -12,6 +13,7 @@ const SUGGESTIONS = [
 
 export function DashboardAsk() {
   const { ask } = useCopilot();
+  const router = useRouter();
   const [value, setValue] = useState("");
 
   function submit(text: string) {
@@ -19,6 +21,7 @@ export function DashboardAsk() {
     if (!t) return;
     ask(t);
     setValue("");
+    router.push("/coach");
   }
 
   return (
