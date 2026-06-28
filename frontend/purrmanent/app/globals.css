@@ -1,1 +1,57 @@
 @import "tailwindcss";
+
+/* Design tokens — sourced from DESIGN.md (Sentry-inspired, two-polarity).
+   Tailwind v4 generates utilities from these (e.g. --color-accent-lime -> bg-accent-lime). */
+@theme {
+  /* Colors */
+  --color-primary: #150f23;
+  --color-ink-deep: #1f1633;
+  --color-on-primary: #ffffff;
+  --color-accent-lime: #c2ef4e;
+  --color-accent-pink: #fa7faa;
+  --color-accent-violet: #6a5fc1;
+  --color-accent-violet-deep: #422082;
+  --color-accent-violet-mid: #79628c;
+  --color-surface-canvas-dark: #1f1633;
+  --color-surface-canvas-light: #ffffff;
+  --color-surface-night: #150f23;
+  --color-surface-press-light: #f0f0f0;
+  --color-surface-press-stronger: #efefef;
+  --color-hairline-violet: #362d59;
+  --color-hairline-cool: #cfcfdb;
+  --color-hairline-cloud: #e5e7eb;
+  --color-ink: #1f1633;
+  --color-ink-press: #1a1a1a;
+  --color-on-dark-muted: rgba(255, 255, 255, 0.72);
+  --color-on-dark-faint: rgba(255, 255, 255, 0.18);
+  --color-ring-focus: rgba(59, 130, 246, 0.5);
+
+  /* Border radius (DESIGN.md rounded) */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-xl: 12px;
+  --radius-xxl: 18px;
+
+  /* Spacing addition (8px base kept from Tailwind) */
+  --spacing-section: 96px;
+
+  /* Fonts — bound to the next/font CSS variables set in layout.tsx */
+  --font-display: var(--font-display-face), "Rubik", system-ui, sans-serif;
+  --font-sans: var(--font-rubik), -apple-system, system-ui, "Segoe UI", Helvetica,
+    Arial, sans-serif;
+  --font-mono: "Monaco", "Menlo", "Ubuntu Mono", monospace;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-surface-canvas-light);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+  }
+  *:focus-visible {
+    outline: 2px solid var(--color-ring-focus);
+    outline-offset: 2px;
+  }
+}

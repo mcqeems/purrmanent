@@ -1,0 +1,18 @@
+{
+  "app": {
+    "name": "Purrmanent",
+    "tagline": "90 days to a happy, settled cat."
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "progress": "Progress",
+    "crisis": "Crisis",
+    "logout": "Log out"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "loading": "Loading…",
+    "retry": "Retry"
+  }
+}
