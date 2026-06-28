@@ -13,6 +13,7 @@ import {
 import type { Cat } from "@/lib/types/api";
 import { Button, Field, Input, SelectField } from "@/components/ui";
 import { useCreateCat, useUpdateCat } from "./hooks";
+import { PhotoUpload } from "./photo-upload";
 
 export function CatForm({ cat, onDone }: { cat?: Cat; onDone?: () => void }) {
   const create = useCreateCat();
@@ -59,6 +60,15 @@ export function CatForm({ cat, onDone }: { cat?: Cat; onDone?: () => void }) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <Field label="Photo" htmlFor="cf-photo">
+        <Controller
+          control={control}
+          name="photoUrl"
+          render={({ field }) => (
+            <PhotoUpload value={field.value} onChange={field.onChange} />
+          )}
+        />
+      </Field>
       <Field label="Name" htmlFor="cf-name" error={errors.name?.message}>
         <Input id="cf-name" {...register("name")} />
       </Field>
