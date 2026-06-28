@@ -15,3 +15,4 @@ export {
 export { Checkbox } from "./checkbox";
 export { ToastProvider, useToast } from "./toast";
 export { Spinner } from "./spinner";
+export { PageTransition, Stagger, FadeInItem } from "./motion";

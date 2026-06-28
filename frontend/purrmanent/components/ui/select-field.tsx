@@ -47,7 +47,7 @@ export function SelectField({
         <SelectPrimitive.Content
           position="popper"
           sideOffset={4}
-          className="z-50 max-h-60 min-w-[var(--radix-select-trigger-width)] overflow-hidden rounded-md border border-hairline-cloud bg-surface-canvas-light shadow-[rgba(0,0,0,0.1)_0_10px_15px_-3px]"
+          className="z-50 max-h-60 min-w-[var(--radix-select-trigger-width)] overflow-hidden rounded-md border border-hairline-cloud bg-surface-canvas-light shadow-[rgba(0,0,0,0.1)_0_10px_15px_-3px] data-[state=open]:animate-[pm-fade-in_120ms_ease-out]"
         >
           <SelectPrimitive.Viewport className="p-1">
             {options.map((opt) => (
