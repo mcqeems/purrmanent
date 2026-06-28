@@ -1,5 +1,4 @@
-import Link from "next/link";
-import { PageHeader } from "@/components/layout/app-shell";
+import { CatDetailHeader } from "@/features/cats/cat-detail-header";
 import { CatBoard } from "@/features/checklist/cat-board";
 
 export default async function CatBoardPage({
@@ -8,29 +7,11 @@ export default async function CatBoardPage({
   params: Promise<{ catId: string }>;
 }) {
   const { catId } = await params;
+  const id = Number(catId);
   return (
     <>
-      <PageHeader
-        title="90-day board"
-        subtitle="Drag tasks across To-Do, In Progress, and Done."
-        action={
-          <div className="flex gap-3 text-sm">
-            <Link
-              href={`/cats/${catId}/health`}
-              className="text-accent-violet underline"
-            >
-              Health log
-            </Link>
-            <Link
-              href={`/cats/${catId}/settings`}
-              className="text-muted underline"
-            >
-              Cat settings
-            </Link>
-          </div>
-        }
-      />
-      <CatBoard catId={Number(catId)} />
+      <CatDetailHeader catId={id} />
+      <CatBoard catId={id} />
     </>
   );
 }
