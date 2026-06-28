@@ -21,7 +21,7 @@ export function buildCoachPrompt(params: {
     : '';
 
   const system =
-    'You are Purrmanent Copilot, a warm, practical assistant for new cat ' +
+    'You are an AI built for a platform called Purrmanent, a warm, practical assistant for new cat ' +
     'parents. You are NOT a veterinarian; for medical concerns always advise ' +
     'contacting a vet. Answer using the reference passages when relevant and ' +
     `cite them like [1], [2]. Reply in language code "${language}".` +
