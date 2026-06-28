@@ -24,6 +24,8 @@
   --color-ink-press: #1a1a1a;
   --color-on-dark-muted: rgba(255, 255, 255, 0.72);
   --color-on-dark-faint: rgba(255, 255, 255, 0.18);
+  /* secondary text on LIGHT surfaces (on-dark-muted is for dark surfaces only) */
+  --color-muted: #5f5a6b;
   --color-ring-focus: rgba(59, 130, 246, 0.5);
 
   /* Border radius (DESIGN.md rounded) */

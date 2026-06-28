@@ -64,14 +64,14 @@ export function HealthView({ catId }: { catId: number }) {
                 <div className="flex flex-col gap-1">
                   <div className="flex items-center gap-2">
                     <Pill tone="neutral">{r.recordType.replace("_", " ")}</Pill>
-                    <span className="text-xs text-on-dark-muted">{fmt(r.recordedAt)}</span>
+                    <span className="text-xs text-muted">{fmt(r.recordedAt)}</span>
                   </div>
                   {detailOf(r) && <span className="text-sm">{detailOf(r)}</span>}
                 </div>
                 <button
                   aria-label="Delete record"
                   onClick={() => del.mutate(r.id)}
-                  className="text-on-dark-muted hover:text-accent-pink"
+                  className="text-muted hover:text-accent-pink"
                 >
                   <Trash2 size={16} />
                 </button>
@@ -79,7 +79,7 @@ export function HealthView({ catId }: { catId: number }) {
             ))}
           </ul>
         ) : (
-          <p className="text-sm text-on-dark-muted">
+          <p className="text-sm text-muted">
             No health records yet. Add the first vaccination or vet visit.
           </p>
         )}

@@ -22,7 +22,7 @@ export default function DashboardPage() {
         <Spinner className="size-6 text-accent-violet" />
       ) : cats && cats.length === 0 ? (
         <div className="rounded-xl border border-hairline-cloud p-8 text-center">
-          <p className="mb-4 text-on-dark-muted">
+          <p className="mb-4 text-muted">
             Let&apos;s set up your first cat&apos;s plan.
           </p>
           <Button asChild>

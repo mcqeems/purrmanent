@@ -33,7 +33,7 @@ export function DialogContent({
           </DialogPrimitive.Title>
           <DialogPrimitive.Close
             aria-label="Close"
-            className="rounded-sm p-1 text-on-dark-muted hover:text-ink-deep"
+            className="rounded-sm p-1 text-muted hover:text-ink-deep"
           >
             <X size={18} />
           </DialogPrimitive.Close>

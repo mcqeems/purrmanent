@@ -31,7 +31,7 @@ export default function StyleguidePage() {
       </h1>
 
       <section className="space-y-3">
-        <h2 className="text-sm font-semibold uppercase tracking-[0.2px] text-on-dark-muted">
+        <h2 className="text-sm font-semibold uppercase tracking-[0.2px] text-muted">
           Buttons
         </h2>
         <div className="flex flex-wrap items-center gap-3">
@@ -48,7 +48,7 @@ export default function StyleguidePage() {
       </section>
 
       <section className="space-y-3">
-        <h2 className="text-sm font-semibold uppercase tracking-[0.2px] text-on-dark-muted">
+        <h2 className="text-sm font-semibold uppercase tracking-[0.2px] text-muted">
           Cards (both polarities)
         </h2>
         <div className="grid gap-4 sm:grid-cols-3">

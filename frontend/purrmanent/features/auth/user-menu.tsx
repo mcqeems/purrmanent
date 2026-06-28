@@ -16,7 +16,7 @@ export function UserMenu() {
   return (
     <div className="flex items-center gap-3">
       {data?.user?.name && (
-        <span className="hidden text-sm text-on-dark-muted sm:inline">
+        <span className="hidden text-sm text-muted sm:inline">
           {data.user.name}
         </span>
       )}

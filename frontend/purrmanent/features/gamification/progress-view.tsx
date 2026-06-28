@@ -1,20 +1,22 @@
 "use client";
 
-import { differenceInCalendarDays } from "date-fns";
 import { Card, Pill, Spinner } from "@/components/ui";
 import { cn } from "@/lib/utils/cn";
-import { useCats } from "@/features/cats/hooks";
+import { useGlobalBoard } from "@/features/checklist/hooks";
 import { BADGES, useGamificationStatus } from "./hooks";
 
-function dayNumber(adoptionDate: string): number {
-  return differenceInCalendarDays(new Date(), new Date(adoptionDate)) + 1;
-}
+const GRADUATION_THRESHOLD = 0.75;
 
 export function ProgressView() {
   const { data: status, isLoading } = useGamificationStatus();
-  const { data: cats = [] } = useCats();
+  const { data: boards = [] } = useGlobalBoard();
   const points = status?.points ?? 0;
-  const graduated = cats.filter((c) => dayNumber(c.adoptionDate) >= 90);
+
+  // Graduated = >=75% of a cat's checklist items are Done (not days-since-adoption).
+  const graduated = boards.filter((b) => {
+    const total = b.todo + b.progress + b.done;
+    return total > 0 && b.done / total >= GRADUATION_THRESHOLD;
+  });
 
   if (isLoading) return <Spinner className="size-6 text-accent-violet" />;
 
@@ -61,19 +63,20 @@ export function ProgressView() {
       <section className="space-y-3">
         <h2 className="text-lg font-semibold">Graduation certificates</h2>
         {graduated.length === 0 ? (
-          <p className="text-sm text-on-dark-muted">
-            Reach day 90 with a cat to earn a graduation certificate.
+          <p className="text-sm text-muted">
+            Complete 75% of a cat&apos;s checklist to earn a graduation
+            certificate.
           </p>
         ) : (
           <div className="grid gap-3 sm:grid-cols-2">
-            {graduated.map((c) => (
-              <Card key={c.id} variant="featured" className="text-center">
+            {graduated.map((b) => (
+              <Card key={b.catId} variant="featured" className="text-center">
                 <p className="text-sm uppercase tracking-[0.2px] text-accent-lime">
                   Graduated 🎓
                 </p>
-                <p className="mt-2 font-display text-2xl font-bold">{c.name}</p>
+                <p className="mt-2 font-display text-2xl font-bold">{b.name}</p>
                 <p className="mt-1 text-sm text-on-dark-muted">
-                  Completed the 90-day journey. You did it!
+                  Completed the journey. You did it!
                 </p>
               </Card>
             ))}

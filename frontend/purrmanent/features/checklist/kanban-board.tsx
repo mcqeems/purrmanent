@@ -62,7 +62,7 @@ function Column({
     >
       <div className="flex items-center justify-between px-1">
         <h3 className="text-sm font-semibold text-ink-deep">{label}</h3>
-        <span className="text-xs text-on-dark-muted">{items.length}</span>
+        <span className="text-xs text-muted">{items.length}</span>
       </div>
       {items.map((item) => (
         <Card key={item.id} item={item} />

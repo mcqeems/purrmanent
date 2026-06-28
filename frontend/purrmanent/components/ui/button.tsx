@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils/cn";
 
 // DESIGN.md single-primary CTA hierarchy + polarity-flipped variants.
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 font-sans font-bold uppercase tracking-[0.2px] transition-colors disabled:cursor-not-allowed disabled:bg-hairline-cloud disabled:text-on-dark-muted",
+  "inline-flex items-center justify-center gap-2 font-sans font-bold uppercase tracking-[0.2px] transition-colors disabled:cursor-not-allowed disabled:bg-hairline-cloud disabled:text-muted",
   {
     variants: {
       variant: {

@@ -5,7 +5,7 @@ import * as LabelPrimitive from "@radix-ui/react-label";
 import { cn } from "@/lib/utils/cn";
 
 const fieldBase =
-  "w-full rounded-sm border border-hairline-cool bg-surface-canvas-light px-3 py-2 text-ink-deep placeholder:text-on-dark-muted/60 focus:border-accent-violet focus:shadow-[rgba(0,0,0,0.15)_0_2px_10px_inset] disabled:opacity-60";
+  "w-full rounded-sm border border-hairline-cool bg-surface-canvas-light px-3 py-2 text-ink-deep placeholder:text-muted/60 focus:border-accent-violet focus:shadow-[rgba(0,0,0,0.15)_0_2px_10px_inset] disabled:opacity-60";
 
 export const Input = React.forwardRef<
   HTMLInputElement,
@@ -39,7 +39,7 @@ export const Label = React.forwardRef<
   return (
     <LabelPrimitive.Root
       ref={ref}
-      className={cn("text-sm font-medium text-ink-deep", className)}
+      className={cn("text-sm font-medium", className)}
       {...props}
     />
   );
@@ -63,9 +63,7 @@ export function Field({
     <div className="flex flex-col gap-1.5">
       <Label htmlFor={htmlFor}>{label}</Label>
       {children}
-      {hint && !error && (
-        <p className="text-xs text-on-dark-muted">{hint}</p>
-      )}
+      {hint && !error && <p className="text-xs opacity-70">{hint}</p>}
       {error && <p className="text-xs text-accent-pink">{error}</p>}
     </div>
   );

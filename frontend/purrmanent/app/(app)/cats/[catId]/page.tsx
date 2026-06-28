@@ -23,7 +23,7 @@ export default async function CatBoardPage({
             </Link>
             <Link
               href={`/cats/${catId}/settings`}
-              className="text-on-dark-muted underline"
+              className="text-muted underline"
             >
               Cat settings
             </Link>

@@ -31,7 +31,7 @@ export function CrisisFlow() {
   if (!activeCat) {
     return (
       <Card>
-        <p className="text-sm text-on-dark-muted">
+        <p className="text-sm text-muted">
           Add a cat first to use Crisis Mode.
         </p>
       </Card>
@@ -92,7 +92,7 @@ export function CrisisFlow() {
 
   return (
     <div className="space-y-4">
-      <p className="text-sm text-on-dark-muted">
+      <p className="text-sm text-muted">
         {result.source === "rule"
           ? "Here's a step-by-step protocol."
           : "Here's guidance compiled for your situation."}
