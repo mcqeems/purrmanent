@@ -5,6 +5,7 @@ import { PageHeader } from "@/components/layout/app-shell";
 import { Button, Spinner } from "@/components/ui";
 import { useCats } from "@/features/cats/hooks";
 import { CatsList } from "@/features/cats/cats-list";
+import { GlobalOverview } from "@/features/checklist/global-overview";
 
 export default function DashboardPage() {
   const { data: cats, isLoading } = useCats();
@@ -27,7 +28,10 @@ export default function DashboardPage() {
           </Button>
         </div>
       ) : (
-        <CatsList />
+        <div className="space-y-8">
+          <GlobalOverview />
+          <CatsList />
+        </div>
       )}
     </>
   );
