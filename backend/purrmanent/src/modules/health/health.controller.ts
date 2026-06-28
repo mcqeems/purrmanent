@@ -12,10 +12,17 @@ import {
 import { HealthService } from './health.service';
 import { CreateHealthRecordDto, UpdateHealthRecordDto } from './health.schema';
 import { CurrentUser } from '../auth/auth.decorators';
+import { Public } from '../../modules/auth/auth.decorators';
 
 @Controller('health')
 export class HealthLogController {
   constructor(private readonly health: HealthService) {}
+
+  @Public()
+  @Get()
+  check() {
+    return { status: 'ok', ts: new Date().toISOString() };
+  }
 
   @Get('timeline')
   timeline(
