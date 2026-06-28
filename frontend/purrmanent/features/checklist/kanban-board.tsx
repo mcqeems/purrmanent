@@ -13,8 +13,8 @@ import {
   type DragEndEvent,
   type DragStartEvent,
 } from "@dnd-kit/core";
-import { GripVertical } from "lucide-react";
-import { SelectField } from "@/components/ui";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import { GripVertical, MoreVertical, Check } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
 import type { ChecklistItem, KanbanStatus } from "@/lib/types/api";
 
@@ -25,6 +25,47 @@ const COLUMNS: { id: KanbanStatus; label: string }[] = [
 ];
 
 const STATUS_OPTIONS = COLUMNS.map((c) => ({ value: c.id, label: c.label }));
+
+function MoveMenu({
+  value,
+  onMove,
+}: {
+  value: KanbanStatus;
+  onMove: (newStatus: KanbanStatus) => void;
+}) {
+  return (
+    <DropdownMenu.Root>
+      <DropdownMenu.Trigger asChild>
+        <button
+          aria-label="Change status"
+          className="-mr-1 rounded p-1 text-muted hover:bg-surface-press-light hover:text-ink-deep"
+        >
+          <MoreVertical size={16} />
+        </button>
+      </DropdownMenu.Trigger>
+      <DropdownMenu.Portal>
+        <DropdownMenu.Content
+          align="end"
+          sideOffset={4}
+          className="z-50 min-w-40 rounded-md border border-hairline-cloud bg-surface-canvas-light p-1 shadow-[rgba(0,0,0,0.1)_0_10px_15px_-3px] data-[state=open]:animate-[pm-fade-in_120ms_ease-out]"
+        >
+          {STATUS_OPTIONS.map((o) => (
+            <DropdownMenu.Item
+              key={o.value}
+              onSelect={() => onMove(o.value)}
+              className="flex cursor-pointer items-center justify-between rounded-sm px-3 py-2 text-sm text-ink-deep outline-none data-[highlighted]:bg-surface-press-light"
+            >
+              {o.label}
+              {value === o.value && (
+                <Check size={14} className="text-accent-violet" />
+              )}
+            </DropdownMenu.Item>
+          ))}
+        </DropdownMenu.Content>
+      </DropdownMenu.Portal>
+    </DropdownMenu.Root>
+  );
+}
 
 function Card({
   item,
@@ -54,17 +95,14 @@ function Card({
         >
           <GripVertical size={16} />
         </button>
-        <span className={cn("flex-1", item.kanbanStatus === "done" && "line-through")}>
+        <span
+          className={cn("flex-1", item.kanbanStatus === "done" && "line-through")}
+        >
           {item.itemText}
         </span>
-      </div>
-      {/* Mobile-friendly alternative to drag-and-drop: pick a status. */}
-      <div className="mt-2 sm:pl-6">
-        <SelectField
+        <MoveMenu
           value={item.kanbanStatus}
-          onValueChange={(v) => onMove(item.id, v as KanbanStatus)}
-          options={STATUS_OPTIONS}
-          className="py-1 text-xs"
+          onMove={(s) => onMove(item.id, s)}
         />
       </div>
     </div>
