@@ -1,8 +1,9 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import {
   DndContext,
+  DragOverlay,
   PointerSensor,
   KeyboardSensor,
   useSensor,
@@ -10,6 +11,7 @@ import {
   useDraggable,
   useDroppable,
   type DragEndEvent,
+  type DragStartEvent,
 } from "@dnd-kit/core";
 import { cn } from "@/lib/utils/cn";
 import type { ChecklistItem, KanbanStatus } from "@/lib/types/api";
@@ -30,7 +32,7 @@ function Card({ item }: { item: ChecklistItem }) {
       {...listeners}
       {...attributes}
       className={cn(
-        "cursor-grab rounded-md border border-hairline-cloud bg-surface-canvas-light p-3 text-sm text-ink-deep shadow-sm",
+        "cursor-grab rounded-md border border-hairline-cloud bg-surface-canvas-light p-3 text-sm text-ink-deep shadow-sm transition-shadow hover:shadow-md",
         item.kanbanStatus === "done" && "opacity-70",
         isDragging && "opacity-40",
       )}
@@ -83,6 +85,8 @@ export function KanbanBoard({
     useSensor(KeyboardSensor),
   );
 
+  const [activeId, setActiveId] = useState<number | null>(null);
+
   const byStatus = useMemo(() => {
     const map: Record<KanbanStatus, ChecklistItem[]> = {
       todo: [],
@@ -93,7 +97,14 @@ export function KanbanBoard({
     return map;
   }, [items]);
 
+  const activeItem = items.find((i) => i.id === activeId) ?? null;
+
+  function handleDragStart(e: DragStartEvent) {
+    setActiveId(Number(e.active.id));
+  }
+
   function handleDragEnd(e: DragEndEvent) {
+    setActiveId(null);
     const itemId = Number(e.active.id);
     const target = e.over?.id as KanbanStatus | undefined;
     if (!target) return;
@@ -102,12 +113,24 @@ export function KanbanBoard({
   }
 
   return (
-    <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
+    <DndContext
+      sensors={sensors}
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+      onDragCancel={() => setActiveId(null)}
+    >
       <div className="flex flex-col gap-3 sm:flex-row">
         {COLUMNS.map((col) => (
           <Column key={col.id} id={col.id} label={col.label} items={byStatus[col.id]} />
         ))}
       </div>
+      <DragOverlay dropAnimation={{ duration: 200, easing: "ease" }}>
+        {activeItem ? (
+          <div className="rotate-3 scale-105 cursor-grabbing rounded-md border border-accent-violet bg-surface-canvas-light p-3 text-sm text-ink-deep shadow-[rgba(0,0,0,0.18)_0_8px_24px]">
+            {activeItem.itemText}
+          </div>
+        ) : null}
+      </DragOverlay>
     </DndContext>
   );
 }

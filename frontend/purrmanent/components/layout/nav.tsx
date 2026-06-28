@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { AlertTriangle } from "lucide-react";
 import type { ReactNode } from "react";
 import logo from "@/app/assets/logo/logo-1000x1000.png";
 
@@ -33,8 +34,12 @@ export function Nav({ right }: { right?: ReactNode }) {
         <Link href="/progress" className="hidden text-ink-deep hover:underline sm:inline">
           Progress
         </Link>
-        <Link href="/crisis" data-tour="crisis" className="hidden text-accent-pink hover:underline sm:inline">
-          Crisis
+        <Link
+          href="/crisis"
+          data-tour="crisis"
+          className="hidden items-center gap-1 rounded-full bg-danger px-3 py-1.5 text-xs font-bold uppercase tracking-[0.2px] text-on-primary hover:opacity-90 sm:inline-flex"
+        >
+          <AlertTriangle size={14} /> Crisis
         </Link>
         {right}
       </div>

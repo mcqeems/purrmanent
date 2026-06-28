@@ -91,9 +91,24 @@ export function DashboardStats() {
                   <Cell key={d.key} fill={COLORS[d.key]} />
                 ))}
               </Pie>
-              <Tooltip />
+              <Tooltip
+                contentStyle={{ borderRadius: 8, border: "1px solid #e5e7eb" }}
+                itemStyle={{ color: "#150f23" }}
+                labelStyle={{ color: "#150f23" }}
+              />
             </PieChart>
           </ResponsiveContainer>
+          <div className="mt-3 flex flex-wrap justify-center gap-4 text-xs text-ink-deep">
+            {donut.map((d) => (
+              <span key={d.key} className="flex items-center gap-1.5">
+                <span
+                  className="size-3 rounded-full"
+                  style={{ backgroundColor: COLORS[d.key] }}
+                />
+                {d.name} ({d.value})
+              </span>
+            ))}
+          </div>
         </Card>
 
         <Card>
@@ -101,7 +116,13 @@ export function DashboardStats() {
           <ResponsiveContainer width="100%" height={200}>
             <BarChart data={perCat}>
               <XAxis dataKey="name" tick={{ fontSize: 12 }} />
-              <Tooltip formatter={(value) => `${String(value)}%`} />
+              <Tooltip
+                formatter={(value) => `${String(value)}%`}
+                contentStyle={{ borderRadius: 8, border: "1px solid #e5e7eb" }}
+                itemStyle={{ color: "#150f23" }}
+                labelStyle={{ color: "#150f23" }}
+                cursor={{ fill: "rgba(106,95,193,0.08)" }}
+              />
               <Bar dataKey="pct" radius={[6, 6, 0, 0]} fill={COLORS.progress} />
             </BarChart>
           </ResponsiveContainer>

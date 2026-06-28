@@ -21,13 +21,18 @@ export function BottomNav() {
     >
       {ITEMS.map(({ href, label, icon: Icon }) => {
         const active = pathname === href || pathname.startsWith(`${href}/`);
+        const danger = href === "/crisis";
         return (
           <Link
             key={href}
             href={href}
             className={cn(
               "flex flex-1 flex-col items-center gap-0.5 py-2 text-xs",
-              active ? "text-accent-violet" : "text-muted",
+              danger
+                ? "text-danger"
+                : active
+                  ? "text-accent-violet"
+                  : "text-muted",
             )}
           >
             <Icon size={20} />
