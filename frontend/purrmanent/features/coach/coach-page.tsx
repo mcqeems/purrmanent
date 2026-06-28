@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { format, parseISO, isValid } from "date-fns";
 import { Plus, Sparkles, MessageSquare } from "lucide-react";
-import { Button, Card, Pill, Markdown } from "@/components/ui";
+import { Button, Card, Pill, Markdown, TypingDots } from "@/components/ui";
 import { cn } from "@/lib/utils/cn";
 import { useCopilot } from "./copilot-provider";
 import { useConversations } from "./history-hooks";
@@ -51,47 +51,61 @@ function ChatPane() {
             </div>
           </div>
         )}
-        {messages.map((m) => (
-          <div
-            key={m.id}
-            className={cn(
-              "max-w-[85%] rounded-md px-3 py-2 text-sm",
-              m.role === "user"
-                ? "ml-auto bg-accent-violet-deep text-on-primary"
-                : "bg-surface-press-light text-ink-deep",
-            )}
-          >
-            {m.role === "assistant" ? (
-              <Markdown content={m.content || "…"} />
-            ) : (
-              <span className="whitespace-pre-wrap break-words">{m.content}</span>
-            )}
-            {m.sources && m.sources.length > 0 && (
-              <div className="mt-2 flex flex-wrap gap-1">
-                {m.sources.map((s, i) => (
-                  <Pill key={i} tone="lime">
-                    {s.source ?? "source"}
-                  </Pill>
-                ))}
-              </div>
-            )}
-            {m.pending && (
-              <div className="mt-2 rounded-md border border-accent-violet/40 p-2">
-                <p className="mb-2 text-xs text-muted">
-                  Confirm action: <strong>{m.pending.actionName}</strong>
-                </p>
-                <div className="flex gap-2">
-                  <Button size="sm" onClick={() => confirm(m.id, m.pending!, true)}>
-                    Confirm
-                  </Button>
-                  <Button size="sm" variant="outline" onClick={() => confirm(m.id, m.pending!, false)}>
-                    Cancel
-                  </Button>
+        {messages.map((m, i) => {
+          const streamingMsg =
+            streaming && i === messages.length - 1 && m.role === "assistant";
+          return (
+            <div
+              key={m.id}
+              className={cn(
+                "max-w-[85%] rounded-md px-3 py-2 text-sm",
+                m.role === "user"
+                  ? "ml-auto bg-accent-violet-deep text-on-primary"
+                  : "bg-surface-press-light text-ink-deep",
+              )}
+            >
+              {m.role === "assistant" ? (
+                <>
+                  {m.content && <Markdown content={m.content} />}
+                  {streamingMsg && (
+                    <TypingDots className="mt-1 text-accent-violet" />
+                  )}
+                  {!m.content && !streamingMsg && (
+                    <span className="text-muted">…</span>
+                  )}
+                </>
+              ) : (
+                <span className="whitespace-pre-wrap break-words">
+                  {m.content}
+                </span>
+              )}
+              {m.sources && m.sources.length > 0 && (
+                <div className="mt-2 flex flex-wrap gap-1">
+                  {m.sources.map((s, idx) => (
+                    <Pill key={idx} tone="lime">
+                      {s.source ?? "source"}
+                    </Pill>
+                  ))}
                 </div>
-              </div>
-            )}
-          </div>
-        ))}
+              )}
+              {m.pending && (
+                <div className="mt-2 rounded-md border border-accent-violet/40 p-2">
+                  <p className="mb-2 text-xs text-muted">
+                    Confirm action: <strong>{m.pending.actionName}</strong>
+                  </p>
+                  <div className="flex gap-2">
+                    <Button size="sm" onClick={() => confirm(m.id, m.pending!, true)}>
+                      Confirm
+                    </Button>
+                    <Button size="sm" variant="outline" onClick={() => confirm(m.id, m.pending!, false)}>
+                      Cancel
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
       <div className="flex items-center gap-2 border-t border-hairline-cloud bg-surface-night p-3">
         <MentionInput

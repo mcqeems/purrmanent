@@ -16,4 +16,5 @@ export { Checkbox } from "./checkbox";
 export { ToastProvider, useToast } from "./toast";
 export { Spinner } from "./spinner";
 export { Markdown } from "./markdown";
+export { TypingDots } from "./typing-dots";
 export { PageTransition, Stagger, FadeInItem } from "./motion";
