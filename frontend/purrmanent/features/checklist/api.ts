@@ -1,9 +1,15 @@
 import { apiFetch } from "@/lib/api/client";
-import type { CatBoardSummary, ChecklistItem, MoveResult } from "@/lib/types/api";
+import type {
+  CatBoardSummary,
+  ChecklistItem,
+  GraduationStatus,
+  MoveResult,
+} from "@/lib/types/api";
 import type { CustomTodoInput, MoveItemInput } from "@/lib/validation/schemas";
 
 export const checklistApi = {
   global: () => apiFetch<CatBoardSummary[]>("/checklist/global"),
+  graduation: () => apiFetch<GraduationStatus[]>("/checklist/graduation"),
   today: (catId: number) =>
     apiFetch<ChecklistItem[]>("/checklist/today", { query: { cat_id: catId } }),
   phase: (catId: number) =>

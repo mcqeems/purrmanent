@@ -22,6 +22,16 @@ export interface CatBoardSummary {
   done: number;
 }
 
+export interface GraduationStatus {
+  catId: number;
+  name: string;
+  daysElapsed: number;
+  qualifyingDays: number;
+  missedDays: number;
+  requiredDays: number;
+  graduated: boolean;
+}
+
 @Injectable()
 export class ChecklistService {
   constructor(
@@ -67,6 +77,58 @@ export class ChecklistService {
       }
     }
     return [...summary.values()];
+  }
+
+  /**
+   * Graduation: a cat graduates after 90 QUALIFYING days (counted from the day
+   * it was added to the system, cat.createdAt) — a qualifying day is one whose
+   * daily todos were all completed. Missed days don't count, so each missed day
+   * effectively pushes the finish line out by one (the "+1/+2" rule).
+   */
+  async graduationStatus(userId: number): Promise<GraduationStatus[]> {
+    const cats = await this.cats.findAllForUser(userId);
+    if (cats.length === 0) return [];
+    const today = this.today();
+    const out: GraduationStatus[] = [];
+
+    for (const cat of cats) {
+      const rows = await this.items
+        .createQueryBuilder('ci')
+        .select('ci.scheduled_date', 'date')
+        .addSelect('COUNT(*)', 'total')
+        .addSelect(`COUNT(*) FILTER (WHERE ci.kanban_status = 'done')`, 'done')
+        .where('ci.cat_id = :catId', { catId: cat.id })
+        .andWhere(`ci.board = 'daily'`)
+        .andWhere('ci.scheduled_date IS NOT NULL')
+        .groupBy('ci.scheduled_date')
+        .getRawMany<{ date: string; total: string; done: string }>();
+
+      let qualifyingDays = 0;
+      let missedDays = 0;
+      for (const r of rows) {
+        const total = Number(r.total);
+        const done = Number(r.done);
+        if (total > 0 && done === total) qualifyingDays += 1;
+        else if (r.date < today) missedDays += 1; // a past day left incomplete
+      }
+
+      const created = new Date(cat.createdAt);
+      const daysElapsed = Math.max(
+        Math.floor((Date.now() - created.getTime()) / 86_400_000) + 1,
+        1,
+      );
+
+      out.push({
+        catId: cat.id,
+        name: cat.name,
+        daysElapsed,
+        qualifyingDays,
+        missedDays,
+        requiredDays: 90,
+        graduated: qualifyingDays >= 90,
+      });
+    }
+    return out;
   }
 
   /** Daily board for a cat; generates on-demand if today's set is missing. */

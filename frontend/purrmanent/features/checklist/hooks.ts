@@ -13,6 +13,13 @@ export function useGlobalBoard() {
   });
 }
 
+export function useGraduation() {
+  return useQuery({
+    queryKey: ["checklist", "graduation"],
+    queryFn: checklistApi.graduation,
+  });
+}
+
 export function useTodayBoard(catId: number) {
   return useQuery({
     queryKey: queryKeys.boardToday(catId),

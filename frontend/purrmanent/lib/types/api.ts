@@ -62,6 +62,16 @@ export interface CatBoardSummary {
   done: number;
 }
 
+export interface GraduationStatus {
+  catId: number;
+  name: string;
+  daysElapsed: number;
+  qualifyingDays: number;
+  missedDays: number;
+  requiredDays: number;
+  graduated: boolean;
+}
+
 export interface MoveResult {
   success: true;
   pointsAdded: number;

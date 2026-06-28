@@ -1,22 +1,58 @@
 "use client";
 
-import { Card, Pill, Spinner } from "@/components/ui";
+import { Info } from "lucide-react";
+import {
+  Card,
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+  Pill,
+  Spinner,
+} from "@/components/ui";
 import { cn } from "@/lib/utils/cn";
-import { useGlobalBoard } from "@/features/checklist/hooks";
+import { useGraduation } from "@/features/checklist/hooks";
 import { BADGES, useGamificationStatus } from "./hooks";
 
-const GRADUATION_THRESHOLD = 0.75;
+function GraduationHelp() {
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <button
+          aria-label="How graduation works"
+          className="inline-flex items-center gap-1 text-sm text-accent-violet hover:underline"
+        >
+          <Info size={16} /> How to earn it
+        </button>
+      </DialogTrigger>
+      <DialogContent title="How graduation works">
+        <ol className="list-decimal space-y-2 pl-5 text-sm">
+          <li>
+            Your 90-day journey starts the day you add the cat to Purrmanent.
+          </li>
+          <li>
+            Each day, complete <strong>all</strong> of that cat&apos;s daily
+            todos — that counts as one <em>qualifying day</em>.
+          </li>
+          <li>
+            Miss a day (todos left undone)? It simply doesn&apos;t count, so the
+            finish line moves out by that many days (+1, +2, …).
+          </li>
+          <li>
+            Reach <strong>90 qualifying days</strong> and the cat graduates 🎓.
+          </li>
+        </ol>
+      </DialogContent>
+    </Dialog>
+  );
+}
 
 export function ProgressView() {
   const { data: status, isLoading } = useGamificationStatus();
-  const { data: boards = [] } = useGlobalBoard();
+  const { data: grads = [] } = useGraduation();
   const points = status?.points ?? 0;
 
-  // Graduated = >=75% of a cat's checklist items are Done (not days-since-adoption).
-  const graduated = boards.filter((b) => {
-    const total = b.todo + b.progress + b.done;
-    return total > 0 && b.done / total >= GRADUATION_THRESHOLD;
-  });
+  const graduated = grads.filter((g) => g.graduated);
+  const inProgress = grads.filter((g) => !g.graduated);
 
   if (isLoading) return <Spinner className="size-6 text-accent-violet" />;
 
@@ -61,25 +97,61 @@ export function ProgressView() {
       </section>
 
       <section className="space-y-3">
-        <h2 className="text-lg font-semibold">Graduation certificates</h2>
-        {graduated.length === 0 ? (
-          <p className="text-sm text-muted">
-            Complete 75% of a cat&apos;s checklist to earn a graduation
-            certificate.
-          </p>
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold">Graduation certificates</h2>
+          <GraduationHelp />
+        </div>
+
+        {grads.length === 0 ? (
+          <p className="text-sm text-muted">Add a cat to start its 90-day journey.</p>
         ) : (
           <div className="grid gap-3 sm:grid-cols-2">
-            {graduated.map((b) => (
-              <Card key={b.catId} variant="featured" className="text-center">
+            {graduated.map((g) => (
+              <Card key={g.catId} variant="featured" className="text-center">
                 <p className="text-sm uppercase tracking-[0.2px] text-accent-lime">
                   Graduated 🎓
                 </p>
-                <p className="mt-2 font-display text-2xl font-bold">{b.name}</p>
+                <p className="mt-2 font-display text-2xl font-bold">{g.name}</p>
                 <p className="mt-1 text-sm text-on-dark-muted">
-                  Completed the journey. You did it!
+                  90 qualifying days complete. You did it!
                 </p>
               </Card>
             ))}
+
+            {inProgress.map((g) => {
+              const pct = Math.min(
+                Math.round((g.qualifyingDays / g.requiredDays) * 100),
+                100,
+              );
+              return (
+                <Card
+                  key={g.catId}
+                  className="opacity-70 grayscale"
+                  aria-label={`${g.name} not yet graduated`}
+                >
+                  <div className="flex items-center justify-between">
+                    <p className="font-semibold">{g.name}</p>
+                    <Pill tone="neutral">Not graduated</Pill>
+                  </div>
+                  <div className="mt-3 h-2 w-full rounded-full bg-surface-press-light">
+                    <div
+                      className="h-2 rounded-full bg-accent-violet"
+                      style={{ width: `${pct}%` }}
+                    />
+                  </div>
+                  <p className="mt-2 text-sm text-muted">
+                    {g.qualifyingDays} / {g.requiredDays} qualifying days ·{" "}
+                    {g.requiredDays - g.qualifyingDays} to go
+                  </p>
+                  {g.missedDays > 0 && (
+                    <p className="text-xs text-accent-pink">
+                      {g.missedDays} missed day{g.missedDays > 1 ? "s" : ""} —
+                      complete every daily todo to keep your streak going.
+                    </p>
+                  )}
+                </Card>
+              );
+            })}
           </div>
         )}
       </section>

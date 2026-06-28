@@ -21,6 +21,11 @@ export class ChecklistController {
     return this.checklist.getGlobal(userId);
   }
 
+  @Get('graduation')
+  graduation(@CurrentUser('id') userId: number) {
+    return this.checklist.graduationStatus(userId);
+  }
+
   @Get('today')
   today(
     @CurrentUser('id') userId: number,
