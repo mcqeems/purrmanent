@@ -123,3 +123,20 @@ export interface ConfirmActionResult {
   error?: string;
   message: string;
 }
+
+export interface CoachConversation {
+  id: number;
+  userId: number;
+  catId: number | null;
+  startedAt: string;
+  lastMessageAt: string | null;
+}
+
+export interface CoachStoredMessage {
+  id: number;
+  conversationId: number;
+  role: "user" | "assistant" | "system";
+  content: string;
+  sources?: unknown;
+  createdAt: string;
+}

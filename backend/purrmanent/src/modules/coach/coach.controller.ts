@@ -1,4 +1,12 @@
-import { Body, Controller, Post, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Res,
+} from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
 import type { Response } from 'express';
 import { CoachService } from './coach.service';
@@ -54,5 +62,18 @@ export class CoachController {
     @Body() dto: ConfirmActionDto,
   ) {
     return this.coach.confirmAction(userId, dto);
+  }
+
+  @Get('conversations')
+  listConversations(@CurrentUser('id') userId: number) {
+    return this.coach.listConversations(userId);
+  }
+
+  @Get('conversations/:id/messages')
+  conversationMessages(
+    @CurrentUser('id') userId: number,
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    return this.coach.getMessages(userId, id);
   }
 }

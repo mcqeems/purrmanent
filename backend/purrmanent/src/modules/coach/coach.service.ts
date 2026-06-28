@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IsNull, Repository } from 'typeorm';
 import {
@@ -99,6 +99,31 @@ export class CoachService {
     private readonly tools: CoachToolsService,
     private readonly actions: CoachActionsService,
   ) {}
+
+  /** List the user's coach conversations, most-recent first. */
+  async listConversations(userId: number): Promise<AiCoachConversation[]> {
+    return this.conversations.find({
+      where: { userId },
+      order: { lastMessageAt: 'DESC', startedAt: 'DESC' },
+    });
+  }
+
+  /** Messages for one conversation (ownership-checked), oldest first. */
+  async getMessages(
+    userId: number,
+    conversationId: number,
+  ): Promise<AiCoachMessage[]> {
+    const conv = await this.conversations.findOne({
+      where: { id: conversationId },
+    });
+    if (!conv || conv.userId !== userId) {
+      throw new NotFoundException('Conversation not found');
+    }
+    return this.messages.find({
+      where: { conversationId },
+      order: { createdAt: 'ASC' },
+    });
+  }
 
   private async getOrCreateConversation(
     userId: number,

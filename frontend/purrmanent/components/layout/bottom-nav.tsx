@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutGrid, Trophy, AlertTriangle } from "lucide-react";
+import { LayoutGrid, Trophy, AlertTriangle, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
 
 const ITEMS = [
   { href: "/dashboard", label: "Home", icon: LayoutGrid },
+  { href: "/coach", label: "Coach", icon: Sparkles },
   { href: "/crisis", label: "Crisis", icon: AlertTriangle },
   { href: "/progress", label: "Progress", icon: Trophy },
 ];
