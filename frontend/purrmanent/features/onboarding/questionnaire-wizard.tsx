@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import {
@@ -12,7 +12,7 @@ import {
   ADOPTION_SOURCES,
   ADOPTER_EXPERIENCE,
 } from "@/lib/validation/schemas";
-import { Button, Card, Field, Input, Select } from "@/components/ui";
+import { Button, Card, Field, Input, SelectField } from "@/components/ui";
 import { useSubmitOnboarding } from "./hooks";
 
 const CONCERNS = [
@@ -47,6 +47,7 @@ export function QuestionnaireWizard({
     register,
     handleSubmit,
     trigger,
+    control,
     formState: { errors },
   } = form;
 
@@ -91,23 +92,36 @@ export function QuestionnaireWizard({
               <Input id="catAgeMonths" type="number" min={0} {...register("catAgeMonths", optionalNumber)} />
             </Field>
             <Field label="Gender" htmlFor="catGender" error={errors.catGender?.message}>
-              <Select id="catGender" defaultValue="" {...register("catGender")}>
-                <option value="">Unknown</option>
-                {GENDERS.map((g) => (
-                  <option key={g} value={g}>{g}</option>
-                ))}
-              </Select>
+              <Controller
+                control={control}
+                name="catGender"
+                render={({ field }) => (
+                  <SelectField
+                    id="catGender"
+                    value={field.value ?? ""}
+                    onValueChange={field.onChange}
+                    placeholder="Unknown"
+                    options={GENDERS.map((g) => ({ value: g, label: g }))}
+                  />
+                )}
+              />
             </Field>
             <Field label="Breed" htmlFor="catBreed" error={errors.catBreed?.message}>
               <Input id="catBreed" placeholder="e.g. Domestic shorthair" {...register("catBreed")} />
             </Field>
             <Field label="Personality" htmlFor="catPersonality" error={errors.catPersonality?.message}>
-              <Select id="catPersonality" defaultValue="" {...register("catPersonality")}>
-                <option value="" disabled>Choose…</option>
-                {PERSONALITIES.map((p) => (
-                  <option key={p} value={p}>{p}</option>
-                ))}
-              </Select>
+              <Controller
+                control={control}
+                name="catPersonality"
+                render={({ field }) => (
+                  <SelectField
+                    id="catPersonality"
+                    value={field.value ?? ""}
+                    onValueChange={field.onChange}
+                    options={PERSONALITIES.map((p) => ({ value: p, label: p }))}
+                  />
+                )}
+              />
             </Field>
           </>
         )}
@@ -118,12 +132,18 @@ export function QuestionnaireWizard({
               <Input id="adoptionDate" type="date" {...register("adoptionDate")} />
             </Field>
             <Field label="Adoption source" htmlFor="adoptionSource" error={errors.adoptionSource?.message}>
-              <Select id="adoptionSource" defaultValue="" {...register("adoptionSource")}>
-                <option value="" disabled>Choose…</option>
-                {ADOPTION_SOURCES.map((s) => (
-                  <option key={s} value={s}>{s}</option>
-                ))}
-              </Select>
+              <Controller
+                control={control}
+                name="adoptionSource"
+                render={({ field }) => (
+                  <SelectField
+                    id="adoptionSource"
+                    value={field.value ?? ""}
+                    onValueChange={field.onChange}
+                    options={ADOPTION_SOURCES.map((s) => ({ value: s, label: s }))}
+                  />
+                )}
+              />
             </Field>
             <Field label="Shelter code (optional)" htmlFor="shelterCode" error={errors.shelterCode?.message}>
               <Input id="shelterCode" {...register("shelterCode")} />
@@ -134,12 +154,18 @@ export function QuestionnaireWizard({
         {step === 2 && (
           <>
             <Field label="Your experience" htmlFor="adopterExperience" error={errors.adopterExperience?.message}>
-              <Select id="adopterExperience" defaultValue="" {...register("adopterExperience")}>
-                <option value="" disabled>Choose…</option>
-                {ADOPTER_EXPERIENCE.map((e) => (
-                  <option key={e} value={e}>{e}</option>
-                ))}
-              </Select>
+              <Controller
+                control={control}
+                name="adopterExperience"
+                render={({ field }) => (
+                  <SelectField
+                    id="adopterExperience"
+                    value={field.value ?? ""}
+                    onValueChange={field.onChange}
+                    options={ADOPTER_EXPERIENCE.map((e) => ({ value: e, label: e }))}
+                  />
+                )}
+              />
             </Field>
             <Field label="Home type" htmlFor="homeType">
               <Input id="homeType" placeholder="apartment, house…" {...register("homeType")} />

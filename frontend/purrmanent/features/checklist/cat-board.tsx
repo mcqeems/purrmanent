@@ -10,7 +10,7 @@ import {
   DialogTrigger,
   Field,
   Input,
-  Select,
+  SelectField,
   Spinner,
   Tabs,
   TabsContent,
@@ -118,14 +118,15 @@ function AddTodo({ catId }: { catId: number }) {
             />
           </Field>
           <Field label="Board" htmlFor="todo-board">
-            <Select
+            <SelectField
               id="todo-board"
               value={board}
-              onChange={(e) => setBoard(e.target.value as ChecklistBoard)}
-            >
-              <option value="daily">Daily</option>
-              <option value="phase">Phase</option>
-            </Select>
+              onValueChange={(v) => setBoard(v as ChecklistBoard)}
+              options={[
+                { value: "daily", label: "Daily" },
+                { value: "phase", label: "Phase" },
+              ]}
+            />
           </Field>
           <div className="flex justify-end gap-2">
             <DialogClose asChild>

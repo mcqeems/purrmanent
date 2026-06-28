@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   createCatSchema,
@@ -11,7 +11,7 @@ import {
   ADOPTION_SOURCES,
 } from "@/lib/validation/schemas";
 import type { Cat } from "@/lib/types/api";
-import { Button, Field, Input, Select } from "@/components/ui";
+import { Button, Field, Input, SelectField } from "@/components/ui";
 import { useCreateCat, useUpdateCat } from "./hooks";
 
 export function CatForm({ cat, onDone }: { cat?: Cat; onDone?: () => void }) {
@@ -22,6 +22,7 @@ export function CatForm({ cat, onDone }: { cat?: Cat; onDone?: () => void }) {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm<CreateCatInput>({
     resolver: zodResolver(createCatSchema),
@@ -66,12 +67,19 @@ export function CatForm({ cat, onDone }: { cat?: Cat; onDone?: () => void }) {
           <Input id="cf-age" type="number" min={0} {...register("ageMonths", optionalNumber)} />
         </Field>
         <Field label="Gender" htmlFor="cf-gender">
-          <Select id="cf-gender" defaultValue={cat?.gender ?? ""} {...register("gender")}>
-            <option value="">Unknown</option>
-            {GENDERS.map((g) => (
-              <option key={g} value={g}>{g}</option>
-            ))}
-          </Select>
+          <Controller
+            control={control}
+            name="gender"
+            render={({ field }) => (
+              <SelectField
+                id="cf-gender"
+                value={field.value ?? ""}
+                onValueChange={field.onChange}
+                placeholder="Unknown"
+                options={GENDERS.map((g) => ({ value: g, label: g }))}
+              />
+            )}
+          />
         </Field>
       </div>
       <Field label="Breed" htmlFor="cf-breed">
@@ -79,20 +87,32 @@ export function CatForm({ cat, onDone }: { cat?: Cat; onDone?: () => void }) {
       </Field>
       <div className="grid grid-cols-2 gap-3">
         <Field label="Personality" htmlFor="cf-pers" error={errors.personality?.message}>
-          <Select id="cf-pers" defaultValue={cat?.personality ?? ""} {...register("personality")}>
-            <option value="" disabled>Choose…</option>
-            {PERSONALITIES.map((p) => (
-              <option key={p} value={p}>{p}</option>
-            ))}
-          </Select>
+          <Controller
+            control={control}
+            name="personality"
+            render={({ field }) => (
+              <SelectField
+                id="cf-pers"
+                value={field.value ?? ""}
+                onValueChange={field.onChange}
+                options={PERSONALITIES.map((p) => ({ value: p, label: p }))}
+              />
+            )}
+          />
         </Field>
         <Field label="Source" htmlFor="cf-src" error={errors.adoptionSource?.message}>
-          <Select id="cf-src" defaultValue={cat?.adoptionSource ?? ""} {...register("adoptionSource")}>
-            <option value="" disabled>Choose…</option>
-            {ADOPTION_SOURCES.map((s) => (
-              <option key={s} value={s}>{s}</option>
-            ))}
-          </Select>
+          <Controller
+            control={control}
+            name="adoptionSource"
+            render={({ field }) => (
+              <SelectField
+                id="cf-src"
+                value={field.value ?? ""}
+                onValueChange={field.onChange}
+                options={ADOPTION_SOURCES.map((s) => ({ value: s, label: s }))}
+              />
+            )}
+          />
         </Field>
       </div>
       <Field label="Adoption date" htmlFor="cf-date" error={errors.adoptionDate?.message}>

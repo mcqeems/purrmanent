@@ -3,6 +3,8 @@ export type { ButtonProps } from "./button";
 export { Card } from "./card";
 export { Pill, Chip } from "./pill";
 export { Input, Select, Textarea, Label, Field } from "./field";
+export { SelectField } from "./select-field";
+export type { SelectOption } from "./select-field";
 export { Tabs, TabsList, TabsTrigger, TabsContent } from "./tabs";
 export {
   Dialog,

@@ -10,7 +10,7 @@ import {
   DialogTrigger,
   Field,
   Input,
-  Select,
+  SelectField,
 } from "@/components/ui";
 import type { HealthRecordType } from "@/lib/types/api";
 import { HEALTH_RECORD_TYPES } from "@/lib/validation/schemas";
@@ -73,17 +73,15 @@ export function RecordForm({ catId }: { catId: number }) {
       <DialogContent title="Add health record">
         <div className="space-y-4">
           <Field label="Type" htmlFor="hr-type">
-            <Select
+            <SelectField
               id="hr-type"
               value={type}
-              onChange={(e) => setType(e.target.value as HealthRecordType)}
-            >
-              {HEALTH_RECORD_TYPES.map((t) => (
-                <option key={t} value={t}>
-                  {t.replace("_", " ")}
-                </option>
-              ))}
-            </Select>
+              onValueChange={(v) => setType(v as HealthRecordType)}
+              options={HEALTH_RECORD_TYPES.map((t) => ({
+                value: t,
+                label: t.replace("_", " "),
+              }))}
+            />
           </Field>
           <Field label={meta.label} htmlFor="hr-detail">
             <Input
