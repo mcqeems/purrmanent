@@ -197,7 +197,7 @@ export function KanbanBoard({
           />
         ))}
       </div>
-      <DragOverlay dropAnimation={{ duration: 200, easing: "ease" }}>
+      <DragOverlay dropAnimation={null}>
         {activeItem ? (
           <div className="rotate-3 scale-105 cursor-grabbing rounded-md border border-accent-violet bg-surface-canvas-light p-3 text-sm text-ink-deep shadow-[rgba(0,0,0,0.18)_0_8px_24px]">
             {activeItem.itemText}
