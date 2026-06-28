@@ -51,9 +51,17 @@ function ChatPane() {
             </div>
           </div>
         )}
-        {messages.map((m, i) => {
-          const streamingMsg =
-            streaming && i === messages.length - 1 && m.role === "assistant";
+        {messages.map((m) => {
+          // Don't render an empty assistant placeholder — the standalone
+          // loader below covers the "thinking" state outside the bubble.
+          if (
+            m.role === "assistant" &&
+            !m.content &&
+            !m.pending &&
+            !(m.sources && m.sources.length)
+          ) {
+            return null;
+          }
           return (
             <div
               key={m.id}
@@ -65,15 +73,7 @@ function ChatPane() {
               )}
             >
               {m.role === "assistant" ? (
-                <>
-                  {m.content && <Markdown content={m.content} />}
-                  {streamingMsg && (
-                    <TypingDots className="mt-1 text-accent-violet" />
-                  )}
-                  {!m.content && !streamingMsg && (
-                    <span className="text-muted">…</span>
-                  )}
-                </>
+                <Markdown content={m.content} />
               ) : (
                 <span className="whitespace-pre-wrap break-words">
                   {m.content}
@@ -106,6 +106,12 @@ function ChatPane() {
             </div>
           );
         })}
+        {streaming && (
+          <div className="flex items-center gap-2 px-1">
+            <TypingDots className="text-accent-violet" />
+            <span className="text-xs text-muted">Coach is thinking…</span>
+          </div>
+        )}
       </div>
       <div className="flex items-center gap-2 border-t border-hairline-cloud bg-surface-night p-3">
         <MentionInput
