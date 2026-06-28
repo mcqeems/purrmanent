@@ -6,25 +6,28 @@ import { ActiveCatProvider } from "@/features/cats/active-cat-provider";
 import { CatSwitcher } from "@/features/cats/cat-switcher";
 import { PointsPill } from "@/features/gamification/points-pill";
 import { Copilot } from "@/features/coach/copilot";
+import { CopilotProvider } from "@/features/coach/copilot-provider";
 import { AppShell } from "@/components/layout/app-shell";
 
 export default function AppLayout({ children }: { children: ReactNode }) {
   return (
     <AuthGuard>
       <ActiveCatProvider>
-        <AppShell
-          navRight={
-            <>
-              <PointsPill />
-              <CatSwitcher />
-              <UserMenu />
-            </>
-          }
-        >
-          <UnverifiedBanner />
-          {children}
-          <Copilot />
-        </AppShell>
+        <CopilotProvider>
+          <AppShell
+            navRight={
+              <>
+                <PointsPill />
+                <CatSwitcher />
+                <UserMenu />
+              </>
+            }
+          >
+            <UnverifiedBanner />
+            {children}
+            <Copilot />
+          </AppShell>
+        </CopilotProvider>
       </ActiveCatProvider>
     </AuthGuard>
   );

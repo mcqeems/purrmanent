@@ -7,12 +7,14 @@ import { useCats } from "@/features/cats/hooks";
 import { CatsList } from "@/features/cats/cats-list";
 import { GlobalOverview } from "@/features/checklist/global-overview";
 import { PushPrompt } from "@/features/notifications/push-prompt";
+import { DashboardAsk } from "@/features/coach/dashboard-ask";
 
 export default function DashboardPage() {
   const { data: cats, isLoading } = useCats();
 
   return (
     <>
+      <DashboardAsk />
       <PageHeader
         title="Your cats"
         subtitle="Pick a cat to open its 90-day board."

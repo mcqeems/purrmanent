@@ -5,12 +5,11 @@ import ReactMarkdown from "react-markdown";
 import { MessageCircle, Send, X } from "lucide-react";
 import { Button, Pill } from "@/components/ui";
 import { cn } from "@/lib/utils/cn";
-import { useCoach } from "./use-coach";
+import { useCopilot } from "./copilot-provider";
 
 export function Copilot() {
-  const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
-  const { messages, streaming, send, confirm } = useCoach();
+  const { messages, streaming, send, confirm, open, setOpen } = useCopilot();
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
