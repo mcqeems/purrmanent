@@ -4,6 +4,7 @@ import { UserMenu } from "@/features/auth/user-menu";
 import { UnverifiedBanner } from "@/features/auth/unverified-banner";
 import { ActiveCatProvider } from "@/features/cats/active-cat-provider";
 import { CatSwitcher } from "@/features/cats/cat-switcher";
+import { PointsPill } from "@/features/gamification/points-pill";
 import { AppShell } from "@/components/layout/app-shell";
 
 export default function AppLayout({ children }: { children: ReactNode }) {
@@ -13,6 +14,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
         <AppShell
           navRight={
             <>
+              <PointsPill />
               <CatSwitcher />
               <UserMenu />
             </>
