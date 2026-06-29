@@ -11,7 +11,7 @@ export function AppShell({
   navRight?: ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen flex-col bg-surface-canvas-light">
+    <div className="flex min-h-screen flex-col bg-surface-canvas-light text-ink">
       <Nav right={navRight} />
       <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 pb-24 sm:px-6 sm:py-8 sm:pb-8">
         <PageTransition>{children}</PageTransition>
