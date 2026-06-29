@@ -37,6 +37,7 @@ export function CatForm({ cat, onDone }: { cat?: Cat; onDone?: () => void }) {
           adoptionDate: cat.adoptionDate,
           adoptionSource: cat.adoptionSource,
           shelterCode: cat.shelterCode ?? undefined,
+          photoUrl: cat.photoUrl ?? undefined,
         }
       : undefined,
   });
