@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { Plus } from "lucide-react";
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Plus } from 'lucide-react';
 import {
   Button,
   Card,
@@ -19,16 +19,20 @@ import {
   TabsList,
   TabsTrigger,
   useToast,
-} from "@/components/ui";
-import type { ChecklistBoard, ChecklistItem, KanbanStatus } from "@/lib/types/api";
-import { KanbanBoard } from "./kanban-board";
-import { useCopilot } from "@/features/coach/copilot-provider";
+} from '@/components/ui';
+import type {
+  ChecklistBoard,
+  ChecklistItem,
+  KanbanStatus,
+} from '@/lib/types/api';
+import { KanbanBoard } from './kanban-board';
+import { useCopilot } from '@/features/coach/copilot-provider';
 import {
   useAddCustomTodo,
   useMoveItem,
   usePhaseBoard,
   useTodayBoard,
-} from "./hooks";
+} from './hooks';
 
 function BoardView({
   catId,
@@ -49,14 +53,16 @@ function BoardView({
   const router = useRouter();
   if (isLoading) return <Spinner className="size-6 text-accent-violet" />;
   if (isError)
-    return <p className="text-sm text-accent-pink">Could not load the board.</p>;
+    return (
+      <p className="text-sm text-accent-pink">Could not load the board.</p>
+    );
 
   const empty = items.length === 0;
-  const allDone = !empty && items.every((i) => i.kanbanStatus === "done");
+  const allDone = !empty && items.every((i) => i.kanbanStatus === 'done');
 
   function askCoach(prompt: string) {
     ask(prompt);
-    router.push("/coach");
+    router.push('/coach');
   }
 
   return (
@@ -65,8 +71,8 @@ function BoardView({
         <Card className="flex flex-col items-start gap-3 border-accent-lime/50 bg-accent-lime/10 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-sm">
             {empty
-              ? "This board is empty."
-              : "🎉 Everything's done — nice work!"}{" "}
+              ? 'This board is empty.'
+              : "🎉 Everything's done — nice work!"}{' '}
             Want the AI Coach to add some tasks for you?
           </p>
           <Button
@@ -74,9 +80,9 @@ function BoardView({
             onClick={() =>
               askCoach(
                 `My ${board} checklist for cat #${catId} is ${
-                  empty ? "empty" : "all complete"
+                  empty ? 'empty' : 'all complete'
                 } — please add a few helpful ${
-                  board === "daily" ? "daily care" : "milestone"
+                  board === 'daily' ? 'daily care' : 'milestone'
                 } tasks to that cat's ${board} board.`,
               )
             }
@@ -99,17 +105,20 @@ function useMoveHandler(catId: number, board: ChecklistBoard) {
       {
         onSuccess: (res) => {
           if (res.pointsAdded > 0)
-            toast({ tone: "success", description: `+${res.pointsAdded} points!` });
+            toast({
+              tone: 'success',
+              description: `+${res.pointsAdded} points!`,
+            });
         },
         onError: () =>
-          toast({ tone: "error", description: "Couldn't move that item." }),
+          toast({ tone: 'error', description: "Couldn't move that item." }),
       },
     );
 }
 
 function DailySection({ catId }: { catId: number }) {
   const query = useTodayBoard(catId);
-  const onMove = useMoveHandler(catId, "daily");
+  const onMove = useMoveHandler(catId, 'daily');
   return (
     <BoardView
       catId={catId}
@@ -124,7 +133,7 @@ function DailySection({ catId }: { catId: number }) {
 
 function PhaseSection({ catId }: { catId: number }) {
   const query = usePhaseBoard(catId);
-  const onMove = useMoveHandler(catId, "phase");
+  const onMove = useMoveHandler(catId, 'phase');
   return (
     <BoardView
       catId={catId}
@@ -140,13 +149,13 @@ function PhaseSection({ catId }: { catId: number }) {
 function AddTodo({ catId }: { catId: number }) {
   const add = useAddCustomTodo(catId);
   const [open, setOpen] = useState(false);
-  const [text, setText] = useState("");
-  const [board, setBoard] = useState<ChecklistBoard>("daily");
+  const [text, setText] = useState('');
+  const [board, setBoard] = useState<ChecklistBoard>('daily');
 
   async function submit() {
     if (!text.trim()) return;
     await add.mutateAsync({ catId, itemText: text.trim(), board });
-    setText("");
+    setText('');
     setOpen(false);
   }
 
@@ -173,8 +182,8 @@ function AddTodo({ catId }: { catId: number }) {
               value={board}
               onValueChange={(v) => setBoard(v as ChecklistBoard)}
               options={[
-                { value: "daily", label: "Daily" },
-                { value: "phase", label: "Phase" },
+                { value: 'daily', label: 'Daily' },
+                { value: 'phase', label: 'Phase' },
               ]}
             />
           </Field>
@@ -185,7 +194,7 @@ function AddTodo({ catId }: { catId: number }) {
               </Button>
             </DialogClose>
             <Button size="sm" onClick={submit} disabled={add.isPending}>
-              {add.isPending ? "Adding…" : "Add"}
+              {add.isPending ? 'Adding…' : 'Add'}
             </Button>
           </div>
         </div>

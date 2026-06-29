@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { apiFetch } from "@/lib/api/client";
-import { queryKeys } from "@/lib/query/client";
-import type { HealthRecord } from "@/lib/types/api";
-import type { CreateHealthRecordInput } from "@/lib/validation/schemas";
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { apiFetch } from '@/lib/api/client';
+import { queryKeys } from '@/lib/query/client';
+import type { HealthRecord } from '@/lib/types/api';
+import type { CreateHealthRecordInput } from '@/lib/validation/schemas';
 
 export const healthApi = {
   timeline: (catId: number) =>
-    apiFetch<HealthRecord[]>("/health/timeline", { query: { cat_id: catId } }),
+    apiFetch<HealthRecord[]>('/health/timeline', { query: { cat_id: catId } }),
   create: (body: CreateHealthRecordInput) =>
-    apiFetch<HealthRecord>("/health/record", { method: "POST", body }),
+    apiFetch<HealthRecord>('/health/record', { method: 'POST', body }),
   remove: (id: number) =>
-    apiFetch<{ success: true }>(`/health/record/${id}`, { method: "DELETE" }),
+    apiFetch<{ success: true }>(`/health/record/${id}`, { method: 'DELETE' }),
 };
 
 export function useHealthTimeline(catId: number) {

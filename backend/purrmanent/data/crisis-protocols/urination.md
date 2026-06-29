@@ -1,4 +1,5 @@
 ## Step 1: Rule Out a Medical Emergency
+
 Litter box avoidance can signal a urinary blockage, which is life-threatening in
 cats — especially males straining with little or no urine.
 
@@ -7,6 +8,7 @@ cats — especially males straining with little or no urine.
 - [ ] If you suspect a blockage, treat it as an emergency and call your vet now
 
 ## Step 2: Review the Litter Box Setup
+
 Cats are particular. Many "accidents" are litter box complaints.
 
 - [ ] Scoop the box and ensure it is clean
@@ -14,6 +16,7 @@ Cats are particular. Many "accidents" are litter box complaints.
 - [ ] Place boxes in quiet, accessible, low-traffic spots
 
 ## Step 3: Reduce Stress Triggers
+
 Stress and territorial insecurity commonly cause inappropriate urination.
 
 - [ ] Identify recent changes (new pet, move, furniture, schedule)
@@ -21,6 +24,7 @@ Stress and territorial insecurity commonly cause inappropriate urination.
 - [ ] Add vertical space and hiding spots to increase security
 
 ## Step 4: Track and Escalate
+
 Keep a record so your vet can help if the problem persists.
 
 - [ ] Note when and where accidents happen

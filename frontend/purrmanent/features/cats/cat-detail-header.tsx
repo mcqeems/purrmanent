@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { differenceInCalendarDays, format, parseISO, isValid } from "date-fns";
-import { HeartPulse, AlertTriangle, Settings } from "lucide-react";
-import { Pill, Spinner } from "@/components/ui";
-import { useCat } from "./hooks";
+import Link from 'next/link';
+import { differenceInCalendarDays, format, parseISO, isValid } from 'date-fns';
+import { HeartPulse, AlertTriangle, Settings } from 'lucide-react';
+import { Pill, Spinner } from '@/components/ui';
+import { useCat } from './hooks';
 
 function fmtDate(d: string) {
   const date = parseISO(d);
-  return isValid(date) ? format(date, "MMM d, yyyy") : d;
+  return isValid(date) ? format(date, 'MMM d, yyyy') : d;
 }
 
 export function CatDetailHeader({ catId }: { catId: number }) {
@@ -19,7 +19,10 @@ export function CatDetailHeader({ catId }: { catId: number }) {
     return <p className="text-sm text-accent-pink">Could not load this cat.</p>;
 
   const day = Math.min(
-    Math.max(differenceInCalendarDays(new Date(), parseISO(cat.adoptionDate)) + 1, 1),
+    Math.max(
+      differenceInCalendarDays(new Date(), parseISO(cat.adoptionDate)) + 1,
+      1,
+    ),
     90,
   );
   const initials = cat.name.slice(0, 2).toUpperCase();
@@ -45,9 +48,13 @@ export function CatDetailHeader({ catId }: { catId: number }) {
             <Pill tone="lime">{cat.personality}</Pill>
           </div>
           <p className="text-sm text-muted">
-            {[cat.breed ?? "Cat", cat.gender, cat.ageMonths != null ? `${cat.ageMonths} mo` : null]
+            {[
+              cat.breed ?? 'Cat',
+              cat.gender,
+              cat.ageMonths != null ? `${cat.ageMonths} mo` : null,
+            ]
               .filter(Boolean)
-              .join(" · ")}
+              .join(' · ')}
           </p>
           <p className="text-xs text-muted">
             Adopted {fmtDate(cat.adoptionDate)} · Day {day} of 90

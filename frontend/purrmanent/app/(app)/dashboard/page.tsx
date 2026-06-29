@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { PageHeader } from "@/components/layout/app-shell";
-import { Button, Spinner } from "@/components/ui";
-import { useCats } from "@/features/cats/hooks";
-import { GlobalOverview } from "@/features/checklist/global-overview";
-import { PushPrompt } from "@/features/notifications/push-prompt";
-import { DashboardAsk } from "@/features/coach/dashboard-ask";
-import { DashboardStats } from "@/features/dashboard/dashboard-stats";
-import { SiteTour } from "@/features/onboarding/site-tour";
+import Link from 'next/link';
+import { PageHeader } from '@/components/layout/app-shell';
+import { Button, Spinner } from '@/components/ui';
+import { useCats } from '@/features/cats/hooks';
+import { GlobalOverview } from '@/features/checklist/global-overview';
+import { PushPrompt } from '@/features/notifications/push-prompt';
+import { DashboardAsk } from '@/features/coach/dashboard-ask';
+import { DashboardStats } from '@/features/dashboard/dashboard-stats';
+import { SiteTour } from '@/features/onboarding/site-tour';
 
 export default function DashboardPage() {
   const { data: cats, isLoading } = useCats();

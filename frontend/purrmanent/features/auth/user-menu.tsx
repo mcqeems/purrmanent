@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useRouter } from "next/navigation";
-import { authClient, useSession } from "@/lib/auth/client";
-import { Button } from "@/components/ui";
+import { useRouter } from 'next/navigation';
+import { authClient, useSession } from '@/lib/auth/client';
+import { Button } from '@/components/ui';
 
 export function UserMenu() {
   const router = useRouter();
@@ -10,7 +10,7 @@ export function UserMenu() {
 
   async function logout() {
     await authClient.signOut();
-    router.replace("/login");
+    router.replace('/login');
   }
 
   return (

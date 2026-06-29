@@ -1,4 +1,5 @@
 ## Step 1: Stop and Stay Safe
+
 Aggression is communication, usually fear or overstimulation. React calmly to
 avoid escalation and injury.
 
@@ -7,6 +8,7 @@ avoid escalation and injury.
 - [ ] Give the cat space and a clear escape route
 
 ## Step 2: Defuse the Situation
+
 Lower the intensity so the cat can calm down on its own.
 
 - [ ] Avoid direct eye contact
@@ -14,6 +16,7 @@ Lower the intensity so the cat can calm down on its own.
 - [ ] Let the cat retreat to a quiet area undisturbed
 
 ## Step 3: Identify the Trigger
+
 Understanding the cause prevents repeat incidents.
 
 - [ ] Note what happened right before the aggression
@@ -21,6 +24,7 @@ Understanding the cause prevents repeat incidents.
 - [ ] Watch for petting-induced or play overstimulation patterns
 
 ## Step 4: Prevent and Seek Help
+
 Persistent or sudden aggression can have a medical cause.
 
 - [ ] Reintroduce handling gradually with positive rewards

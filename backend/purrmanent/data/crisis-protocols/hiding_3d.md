@@ -1,4 +1,5 @@
 ## Step 1: Respect the Safe Space
+
 Hiding is normal decompression behaviour for a newly adopted or frightened cat.
 Forcing interaction makes it worse. Let the cat feel in control.
 
@@ -7,6 +8,7 @@ Forcing interaction makes it worse. Let the cat feel in control.
 - [ ] Limit visitors and loud activity nearby
 
 ## Step 2: Bring Resources Close
+
 A hiding cat still needs food, water, and a litter box within easy reach so it
 does not have to cross open space.
 
@@ -15,6 +17,7 @@ does not have to cross open space.
 - [ ] Refresh food and water daily even if untouched
 
 ## Step 3: Build Trust Gently
+
 Let the cat associate you with safety on its own terms.
 
 - [ ] Sit nearby and speak softly without reaching for the cat
@@ -22,6 +25,7 @@ Let the cat associate you with safety on its own terms.
 - [ ] Try slow blinks to signal you are not a threat
 
 ## Step 4: Watch for Warning Signs
+
 Most cats emerge within a few days. Some signs mean you should get help.
 
 - [ ] If hiding continues past 3-5 days with no eating or drinking, call your vet

@@ -1,11 +1,7 @@
 import { mkdtempSync, writeFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import {
-  parseFrontmatter,
-  loadCorpusChunks,
-  CORPUS_DIR,
-} from './corpus-files';
+import { parseFrontmatter, loadCorpusChunks, CORPUS_DIR } from './corpus-files';
 
 describe('parseFrontmatter', () => {
   it('splits frontmatter on the first colon so values may contain colons', () => {
@@ -27,7 +23,10 @@ describe('parseFrontmatter', () => {
   });
 
   it('treats a file with no frontmatter as pure body', () => {
-    expect(parseFrontmatter('just text')).toEqual({ meta: {}, body: 'just text' });
+    expect(parseFrontmatter('just text')).toEqual({
+      meta: {},
+      body: 'just text',
+    });
   });
 });
 

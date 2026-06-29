@@ -1,11 +1,11 @@
-import { apiFetch } from "@/lib/api/client";
+import { apiFetch } from '@/lib/api/client';
 import type {
   CoachConversation,
   CoachStoredMessage,
   ConfirmActionResult,
   MentionColumn,
-} from "@/lib/types/api";
-import { KANBAN_STATUSES } from "@/lib/validation/schemas";
+} from '@/lib/types/api';
+import { KANBAN_STATUSES } from '@/lib/validation/schemas';
 
 export function confirmAction(body: {
   actionName: string;
@@ -13,14 +13,14 @@ export function confirmAction(body: {
   confirm: boolean;
   catId?: number;
 }) {
-  return apiFetch<ConfirmActionResult>("/coach/confirm-action", {
-    method: "POST",
+  return apiFetch<ConfirmActionResult>('/coach/confirm-action', {
+    method: 'POST',
     body,
   });
 }
 
 export const coachHistoryApi = {
-  list: () => apiFetch<CoachConversation[]>("/coach/conversations"),
+  list: () => apiFetch<CoachConversation[]>('/coach/conversations'),
   messages: (id: number) =>
     apiFetch<CoachStoredMessage[]>(`/coach/conversations/${id}/messages`),
 };

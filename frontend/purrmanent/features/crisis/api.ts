@@ -1,25 +1,28 @@
-"use client";
+'use client';
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { apiFetch } from "@/lib/api/client";
-import { queryKeys } from "@/lib/query/client";
-import type { CrisisIdentifyResult } from "@/lib/types/api";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { apiFetch } from '@/lib/api/client';
+import { queryKeys } from '@/lib/query/client';
+import type { CrisisIdentifyResult } from '@/lib/types/api';
 import type {
   IdentifyCrisisInput,
   CrisisStepInput,
   ResolveCrisisInput,
-} from "@/lib/validation/schemas";
+} from '@/lib/validation/schemas';
 
 export const crisisApi = {
   identify: (body: IdentifyCrisisInput) =>
-    apiFetch<CrisisIdentifyResult>("/crisis/identify", { method: "POST", body }),
+    apiFetch<CrisisIdentifyResult>('/crisis/identify', {
+      method: 'POST',
+      body,
+    }),
   step: (body: CrisisStepInput) =>
-    apiFetch<{ stepsCompleted: number[] }>("/crisis/step", {
-      method: "POST",
+    apiFetch<{ stepsCompleted: number[] }>('/crisis/step', {
+      method: 'POST',
       body,
     }),
   resolve: (body: ResolveCrisisInput) =>
-    apiFetch<unknown>("/crisis/resolve", { method: "POST", body }),
+    apiFetch<unknown>('/crisis/resolve', { method: 'POST', body }),
 };
 
 export function useIdentifyCrisis() {

@@ -1,8 +1,12 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Spinner, useToast } from "@/components/ui";
-import { supabase, SUPABASE_BUCKET, isUploadConfigured } from "@/lib/supabase/client";
+import { useState } from 'react';
+import { Spinner, useToast } from '@/components/ui';
+import {
+  supabase,
+  SUPABASE_BUCKET,
+  isUploadConfigured,
+} from '@/lib/supabase/client';
 
 export function PhotoUpload({
   value,
@@ -16,22 +20,24 @@ export function PhotoUpload({
 
   async function handleFile(file: File) {
     if (!supabase) {
-      toast({ tone: "error", description: "Image upload isn't configured." });
+      toast({ tone: 'error', description: "Image upload isn't configured." });
       return;
     }
     setBusy(true);
     try {
-      const ext = file.name.split(".").pop()?.toLowerCase() ?? "jpg";
+      const ext = file.name.split('.').pop()?.toLowerCase() ?? 'jpg';
       const path = `cats/${crypto.randomUUID()}.${ext}`;
       const { error } = await supabase.storage
         .from(SUPABASE_BUCKET)
         .upload(path, file, { upsert: false, contentType: file.type });
       if (error) throw error;
-      const { data } = supabase.storage.from(SUPABASE_BUCKET).getPublicUrl(path);
+      const { data } = supabase.storage
+        .from(SUPABASE_BUCKET)
+        .getPublicUrl(path);
       onChange(data.publicUrl);
-      toast({ tone: "success", description: "Photo uploaded." });
+      toast({ tone: 'success', description: 'Photo uploaded.' });
     } catch {
-      toast({ tone: "error", description: "Upload failed. Try again." });
+      toast({ tone: 'error', description: 'Upload failed. Try again.' });
     } finally {
       setBusy(false);
     }
@@ -41,7 +47,11 @@ export function PhotoUpload({
     <div className="flex items-center gap-3">
       {value ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={value} alt="Cat" className="size-14 rounded-md object-cover" />
+        <img
+          src={value}
+          alt="Cat"
+          className="size-14 rounded-md object-cover"
+        />
       ) : (
         <div className="flex size-14 items-center justify-center rounded-md bg-surface-press-light text-xs text-muted">
           No photo
@@ -49,10 +59,10 @@ export function PhotoUpload({
       )}
       <label
         className={`cursor-pointer rounded-md border border-hairline-cool px-3 py-2 text-sm ${
-          !isUploadConfigured || busy ? "opacity-60" : ""
+          !isUploadConfigured || busy ? 'opacity-60' : ''
         }`}
       >
-        {busy ? "Uploading…" : value ? "Change photo" : "Upload photo"}
+        {busy ? 'Uploading…' : value ? 'Change photo' : 'Upload photo'}
         <input
           type="file"
           accept="image/*"

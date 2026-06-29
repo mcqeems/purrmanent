@@ -1,6 +1,6 @@
-import { PageHeader } from "@/components/layout/app-shell";
-import { BackButton } from "@/components/layout/back-button";
-import { EditCat } from "@/features/cats/edit-cat";
+import { PageHeader } from '@/components/layout/app-shell';
+import { BackButton } from '@/components/layout/back-button';
+import { EditCat } from '@/features/cats/edit-cat';
 
 export default async function CatSettingsPage({
   params,

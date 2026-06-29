@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useEffect, type ReactNode } from "react";
-import { useRouter } from "next/navigation";
-import { useSession } from "@/lib/auth/client";
-import { Spinner } from "@/components/ui";
+import { useEffect, type ReactNode } from 'react';
+import { useRouter } from 'next/navigation';
+import { useSession } from '@/lib/auth/client';
+import { Spinner } from '@/components/ui';
 
 /** Redirects to /login when there is no session (FRONTEND_BUILD_PLAN.md §8). */
 export function AuthGuard({ children }: { children: ReactNode }) {
@@ -11,7 +11,7 @@ export function AuthGuard({ children }: { children: ReactNode }) {
   const router = useRouter();
 
   useEffect(() => {
-    if (!isPending && !data) router.replace("/login");
+    if (!isPending && !data) router.replace('/login');
   }, [isPending, data, router]);
 
   if (isPending) {

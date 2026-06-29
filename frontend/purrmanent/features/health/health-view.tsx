@@ -1,20 +1,20 @@
-"use client";
+'use client';
 
-import { format, parseISO, isValid } from "date-fns";
-import { Trash2 } from "lucide-react";
-import { Card, Pill, Spinner } from "@/components/ui";
-import type { HealthRecord } from "@/lib/types/api";
-import { useDeleteRecord, useHealthTimeline } from "./hooks";
-import { RecordForm } from "./record-form";
+import { format, parseISO, isValid } from 'date-fns';
+import { Trash2 } from 'lucide-react';
+import { Card, Pill, Spinner } from '@/components/ui';
+import type { HealthRecord } from '@/lib/types/api';
+import { useDeleteRecord, useHealthTimeline } from './hooks';
+import { RecordForm } from './record-form';
 
 function fmt(date: string) {
   const d = parseISO(date);
-  return isValid(d) ? format(d, "MMM d, yyyy") : date;
+  return isValid(d) ? format(d, 'MMM d, yyyy') : date;
 }
 
 function detailOf(r: HealthRecord): string {
   const v = Object.values(r.recordData ?? {})[0];
-  return v == null ? "" : String(v);
+  return v == null ? '' : String(v);
 }
 
 export function HealthView({ catId }: { catId: number }) {
@@ -40,8 +40,10 @@ export function HealthView({ catId }: { catId: number }) {
           <ul className="space-y-1 text-sm">
             {upcoming.map((r) => (
               <li key={r.id} className="flex justify-between">
-                <span>{r.recordType.replace("_", " ")}</span>
-                <span className="text-on-dark-muted">{fmt(r.nextDueDate!)}</span>
+                <span>{r.recordType.replace('_', ' ')}</span>
+                <span className="text-on-dark-muted">
+                  {fmt(r.nextDueDate!)}
+                </span>
               </li>
             ))}
           </ul>
@@ -63,10 +65,14 @@ export function HealthView({ catId }: { catId: number }) {
               >
                 <div className="flex flex-col gap-1">
                   <div className="flex items-center gap-2">
-                    <Pill tone="neutral">{r.recordType.replace("_", " ")}</Pill>
-                    <span className="text-xs text-muted">{fmt(r.recordedAt)}</span>
+                    <Pill tone="neutral">{r.recordType.replace('_', ' ')}</Pill>
+                    <span className="text-xs text-muted">
+                      {fmt(r.recordedAt)}
+                    </span>
                   </div>
-                  {detailOf(r) && <span className="text-sm">{detailOf(r)}</span>}
+                  {detailOf(r) && (
+                    <span className="text-sm">{detailOf(r)}</span>
+                  )}
                 </div>
                 <button
                   aria-label="Delete record"

@@ -1,4 +1,4 @@
-import { QueryClient } from "@tanstack/react-query";
+import { QueryClient } from '@tanstack/react-query';
 
 export function makeQueryClient(): QueryClient {
   return new QueryClient({
@@ -14,12 +14,12 @@ export function makeQueryClient(): QueryClient {
 
 /** Centralized query keys — one place to invalidate by entity. */
 export const queryKeys = {
-  session: ["session"] as const,
-  cats: ["cats"] as const,
-  cat: (catId: number) => ["cats", catId] as const,
-  boardGlobal: ["checklist", "global"] as const,
-  boardToday: (catId: number) => ["checklist", "today", catId] as const,
-  boardPhase: (catId: number) => ["checklist", "phase", catId] as const,
-  gamification: ["gamification"] as const,
-  healthTimeline: (catId: number) => ["health", "timeline", catId] as const,
+  session: ['session'] as const,
+  cats: ['cats'] as const,
+  cat: (catId: number) => ['cats', catId] as const,
+  boardGlobal: ['checklist', 'global'] as const,
+  boardToday: (catId: number) => ['checklist', 'today', catId] as const,
+  boardPhase: (catId: number) => ['checklist', 'phase', catId] as const,
+  gamification: ['gamification'] as const,
+  healthTimeline: (catId: number) => ['health', 'timeline', catId] as const,
 };

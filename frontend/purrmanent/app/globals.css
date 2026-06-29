@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "driver.js/dist/driver.css";
+@import 'tailwindcss';
+@import 'driver.js/dist/driver.css';
 @plugin "@tailwindcss/typography";
 
 /* Design tokens — sourced from DESIGN.md (Sentry-inspired, two-polarity).
@@ -44,10 +44,11 @@
   --spacing-section: 96px;
 
   /* Fonts — bound to the next/font CSS variables set in layout.tsx */
-  --font-display: var(--font-display-face), "Rubik", system-ui, sans-serif;
-  --font-sans: var(--font-rubik), -apple-system, system-ui, "Segoe UI", Helvetica,
-    Arial, sans-serif;
-  --font-mono: "Monaco", "Menlo", "Ubuntu Mono", monospace;
+  --font-display: var(--font-display-face), 'Rubik', system-ui, sans-serif;
+  --font-sans:
+    var(--font-rubik), -apple-system, system-ui, 'Segoe UI', Helvetica, Arial,
+    sans-serif;
+  --font-mono: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
 }
 
 @layer base {

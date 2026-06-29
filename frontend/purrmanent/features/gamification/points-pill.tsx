@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { useGamificationStatus } from "./hooks";
+import Link from 'next/link';
+import { useGamificationStatus } from './hooks';
 
 export function PointsPill() {
   const { data } = useGamificationStatus();

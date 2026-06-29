@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 import {
   Button,
   Card,
@@ -18,7 +18,7 @@ import {
   DialogContent,
   Checkbox,
   useToast,
-} from "@/components/ui";
+} from '@/components/ui';
 
 export default function StyleguidePage() {
   const { toast } = useToast();
@@ -82,7 +82,7 @@ export default function StyleguidePage() {
             checked={checked}
             onCheckedChange={(v) => setChecked(Boolean(v))}
           />
-          <span className={checked ? "line-through opacity-60" : ""}>
+          <span className={checked ? 'line-through opacity-60' : ''}>
             Crisis todo (strikethrough on check)
           </span>
         </label>
@@ -115,7 +115,11 @@ export default function StyleguidePage() {
         <Button
           variant="outline"
           onClick={() =>
-            toast({ tone: "success", title: "Nice", description: "Toast fired." })
+            toast({
+              tone: 'success',
+              title: 'Nice',
+              description: 'Toast fired.',
+            })
           }
         >
           Fire toast

@@ -13,7 +13,11 @@ export class AddLoginStreak1782700000000 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(`ALTER TABLE "users" DROP COLUMN IF EXISTS "last_active_date"`);
-    await queryRunner.query(`ALTER TABLE "users" DROP COLUMN IF EXISTS "login_streak"`);
+    await queryRunner.query(
+      `ALTER TABLE "users" DROP COLUMN IF EXISTS "last_active_date"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "users" DROP COLUMN IF EXISTS "login_streak"`,
+    );
   }
 }

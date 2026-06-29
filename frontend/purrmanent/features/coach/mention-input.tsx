@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useMemo, useRef, useState } from "react";
-import { useActiveCat } from "@/features/cats/active-cat-provider";
-import { cn } from "@/lib/utils/cn";
+import { useMemo, useRef, useState } from 'react';
+import { useActiveCat } from '@/features/cats/active-cat-provider';
+import { cn } from '@/lib/utils/cn';
 
 interface MentionOption {
   token: string;
@@ -33,13 +33,17 @@ export function MentionInput({
 
   const options = useMemo<MentionOption[]>(
     () => [
-      { token: "todo", label: "@todo", hint: "your To-Do column" },
-      { token: "progress", label: "@progress", hint: "your In-Progress column" },
-      { token: "done", label: "@done", hint: "your Done column" },
+      { token: 'todo', label: '@todo', hint: 'your To-Do column' },
+      {
+        token: 'progress',
+        label: '@progress',
+        hint: 'your In-Progress column',
+      },
+      { token: 'done', label: '@done', hint: 'your Done column' },
       ...cats.map((c) => ({
-        token: c.name.replace(/\s+/g, ""),
+        token: c.name.replace(/\s+/g, ''),
         label: `@${c.name}`,
-        hint: "cat",
+        hint: 'cat',
       })),
     ],
     [cats],
@@ -54,7 +58,9 @@ export function MentionInput({
 
   function handleChange(next: string) {
     onChange(next);
-    const m = /@(\w*)$/.exec(next.slice(0, inputRef.current?.selectionStart ?? next.length));
+    const m = /@(\w*)$/.exec(
+      next.slice(0, inputRef.current?.selectionStart ?? next.length),
+    );
     setActiveQuery(m ? m[1] : null);
   }
 
@@ -89,12 +95,12 @@ export function MentionInput({
         disabled={disabled}
         onChange={(e) => handleChange(e.target.value)}
         onKeyDown={(e) => {
-          if (e.key === "Enter" && !activeQuery) onSubmit();
-          if (e.key === "Escape") setActiveQuery(null);
+          if (e.key === 'Enter' && !activeQuery) onSubmit();
+          if (e.key === 'Escape') setActiveQuery(null);
         }}
         placeholder={placeholder}
         className={cn(
-          "w-full rounded-md bg-ink-deep px-3 py-2 text-sm text-on-primary placeholder:text-on-dark-muted/60 focus:outline-none",
+          'w-full rounded-md bg-ink-deep px-3 py-2 text-sm text-on-primary placeholder:text-on-dark-muted/60 focus:outline-none',
         )}
       />
     </div>

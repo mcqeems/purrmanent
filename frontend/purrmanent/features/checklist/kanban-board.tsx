@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useMemo, useState } from "react";
+import { useMemo, useState } from 'react';
 import {
   DndContext,
   DragOverlay,
@@ -12,16 +12,16 @@ import {
   useDroppable,
   type DragEndEvent,
   type DragStartEvent,
-} from "@dnd-kit/core";
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { GripVertical, MoreVertical, Check } from "lucide-react";
-import { cn } from "@/lib/utils/cn";
-import type { ChecklistItem, KanbanStatus } from "@/lib/types/api";
+} from '@dnd-kit/core';
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+import { GripVertical, MoreVertical, Check } from 'lucide-react';
+import { cn } from '@/lib/utils/cn';
+import type { ChecklistItem, KanbanStatus } from '@/lib/types/api';
 
 const COLUMNS: { id: KanbanStatus; label: string }[] = [
-  { id: "todo", label: "To-Do" },
-  { id: "progress", label: "In Progress" },
-  { id: "done", label: "Done" },
+  { id: 'todo', label: 'To-Do' },
+  { id: 'progress', label: 'In Progress' },
+  { id: 'done', label: 'Done' },
 ];
 
 const STATUS_OPTIONS = COLUMNS.map((c) => ({ value: c.id, label: c.label }));
@@ -81,9 +81,9 @@ function Card({
     <div
       ref={setNodeRef}
       className={cn(
-        "rounded-md border border-hairline-cloud bg-surface-canvas-light p-3 text-sm text-ink-deep shadow-sm transition-shadow hover:shadow-md",
-        item.kanbanStatus === "done" && "opacity-70",
-        isDragging && "opacity-40",
+        'rounded-md border border-hairline-cloud bg-surface-canvas-light p-3 text-sm text-ink-deep shadow-sm transition-shadow hover:shadow-md',
+        item.kanbanStatus === 'done' && 'opacity-70',
+        isDragging && 'opacity-40',
       )}
     >
       <div className="flex items-start gap-2">
@@ -96,7 +96,10 @@ function Card({
           <GripVertical size={16} />
         </button>
         <span
-          className={cn("flex-1", item.kanbanStatus === "done" && "line-through")}
+          className={cn(
+            'flex-1',
+            item.kanbanStatus === 'done' && 'line-through',
+          )}
         >
           {item.itemText}
         </span>
@@ -125,8 +128,8 @@ function Column({
     <div
       ref={setNodeRef}
       className={cn(
-        "flex min-h-40 flex-1 flex-col gap-2 rounded-xl bg-surface-press-light p-3",
-        isOver && "ring-2 ring-accent-violet",
+        'flex min-h-40 flex-1 flex-col gap-2 rounded-xl bg-surface-press-light p-3',
+        isOver && 'ring-2 ring-accent-violet',
       )}
     >
       <div className="flex items-center justify-between px-1">

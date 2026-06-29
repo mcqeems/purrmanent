@@ -1,8 +1,8 @@
-import Image from "next/image";
-import Link from "next/link";
-import { AlertTriangle } from "lucide-react";
-import type { ReactNode } from "react";
-import logo from "@/app/assets/logo/logo-1000x1000.png";
+import Image from 'next/image';
+import Link from 'next/link';
+import { AlertTriangle } from 'lucide-react';
+import type { ReactNode } from 'react';
+import logo from '@/app/assets/logo/logo-1000x1000.png';
 
 /**
  * Top navigation (light canvas, DESIGN.md nav-bar-light). The center links
@@ -25,16 +25,28 @@ export function Nav({ right }: { right?: ReactNode }) {
         </span>
       </Link>
       <div className="flex items-center gap-4 text-sm">
-        <Link href="/dashboard" className="hidden text-ink-deep hover:underline sm:inline">
+        <Link
+          href="/dashboard"
+          className="hidden text-ink-deep hover:underline sm:inline"
+        >
           Dashboard
         </Link>
-        <Link href="/cats" className="hidden text-ink-deep hover:underline sm:inline">
+        <Link
+          href="/cats"
+          className="hidden text-ink-deep hover:underline sm:inline"
+        >
           Cats
         </Link>
-        <Link href="/coach" className="hidden text-ink-deep hover:underline sm:inline">
+        <Link
+          href="/coach"
+          className="hidden text-ink-deep hover:underline sm:inline"
+        >
           Coach
         </Link>
-        <Link href="/progress" className="hidden text-ink-deep hover:underline sm:inline">
+        <Link
+          href="/progress"
+          className="hidden text-ink-deep hover:underline sm:inline"
+        >
           Progress
         </Link>
         <Link

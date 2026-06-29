@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { useCallback, useRef, useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
-import { useActiveCat } from "@/features/cats/active-cat-provider";
-import type { CoachSource, PendingAction } from "@/lib/types/api";
-import { streamCoachChat } from "./stream";
-import { confirmAction, parseMention, coachHistoryApi } from "./api";
+import { useCallback, useRef, useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
+import { useActiveCat } from '@/features/cats/active-cat-provider';
+import type { CoachSource, PendingAction } from '@/lib/types/api';
+import { streamCoachChat } from './stream';
+import { confirmAction, parseMention, coachHistoryApi } from './api';
 
 export interface CoachMessage {
   id: string;
-  role: "user" | "assistant";
+  role: 'user' | 'assistant';
   content: string;
   sources?: CoachSource[];
   pending?: PendingAction | null;
@@ -43,10 +43,10 @@ export function useCoach() {
     const stored = await coachHistoryApi.messages(id);
     setMessages(
       stored
-        .filter((m) => m.role !== "system")
+        .filter((m) => m.role !== 'system')
         .map((m) => ({
           id: `h${m.id}`,
-          role: m.role === "assistant" ? "assistant" : "user",
+          role: m.role === 'assistant' ? 'assistant' : 'user',
           content: m.content,
         })),
     );
@@ -59,8 +59,8 @@ export function useCoach() {
       const aId = newId();
       setMessages((prev) => [
         ...prev,
-        { id: newId(), role: "user", content: trimmed },
-        { id: aId, role: "assistant", content: "" },
+        { id: newId(), role: 'user', content: trimmed },
+        { id: aId, role: 'assistant', content: '' },
       ]);
       setStreaming(true);
       await streamCoachChat(
@@ -75,11 +75,11 @@ export function useCoach() {
           onSources: (s) => patch(aId, { sources: s }),
           onConfirm: (p) => patch(aId, { pending: p }),
           onError: () =>
-            appendDelta(aId, "Sorry, I had trouble reaching my knowledge."),
+            appendDelta(aId, 'Sorry, I had trouble reaching my knowledge.'),
         },
       );
       setStreaming(false);
-      void qc.invalidateQueries({ queryKey: ["coach", "conversations"] });
+      void qc.invalidateQueries({ queryKey: ['coach', 'conversations'] });
     },
     [activeCatId, conversationId, streaming, qc],
   );
@@ -95,7 +95,7 @@ export function useCoach() {
       });
       setMessages((prev) => [
         ...prev,
-        { id: newId(), role: "assistant", content: res.message },
+        { id: newId(), role: 'assistant', content: res.message },
       ]);
       if (ok && res.ok) void qc.invalidateQueries();
     },

@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { Card, Pill } from "@/components/ui";
-import { useGlobalBoard } from "./hooks";
+import Link from 'next/link';
+import { Card, Pill } from '@/components/ui';
+import { useGlobalBoard } from './hooks';
 
 export function GlobalOverview() {
   const { data } = useGlobalBoard();

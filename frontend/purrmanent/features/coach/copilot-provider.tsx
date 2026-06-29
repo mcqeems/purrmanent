@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   createContext,
@@ -6,8 +6,8 @@ import {
   useMemo,
   useState,
   type ReactNode,
-} from "react";
-import { useCoach } from "./use-coach";
+} from 'react';
+import { useCoach } from './use-coach';
 
 type CopilotValue = ReturnType<typeof useCoach> & {
   open: boolean;
@@ -19,7 +19,7 @@ const CopilotContext = createContext<CopilotValue | null>(null);
 
 export function useCopilot() {
   const ctx = useContext(CopilotContext);
-  if (!ctx) throw new Error("useCopilot must be used within <CopilotProvider>");
+  if (!ctx) throw new Error('useCopilot must be used within <CopilotProvider>');
   return ctx;
 }
 

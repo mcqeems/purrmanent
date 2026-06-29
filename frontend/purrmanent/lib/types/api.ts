@@ -1,18 +1,14 @@
 // API entity types — mirror the backend entities / OpenAPI DTOs
 // (backend-api-docs.json + BACKEND_IMPLEMENTATION.md). Source of truth = backend.
 
-export type Gender = "male" | "female" | "unknown";
-export type Personality = "shy" | "balanced" | "active" | "aggressive";
-export type AdoptionSource = "shelter" | "self" | "rescue";
-export type KanbanStatus = "todo" | "progress" | "done";
-export type ChecklistBoard = "daily" | "phase";
+export type Gender = 'male' | 'female' | 'unknown';
+export type Personality = 'shy' | 'balanced' | 'active' | 'aggressive';
+export type AdoptionSource = 'shelter' | 'self' | 'rescue';
+export type KanbanStatus = 'todo' | 'progress' | 'done';
+export type ChecklistBoard = 'daily' | 'phase';
 export type HealthRecordType =
-  | "vaccination"
-  | "deworming"
-  | "vet_visit"
-  | "weight"
-  | "note";
-export type AdopterExperience = "first-time" | "some" | "experienced";
+  'vaccination' | 'deworming' | 'vet_visit' | 'weight' | 'note';
+export type AdopterExperience = 'first-time' | 'some' | 'experienced';
 export type MentionColumn = KanbanStatus;
 
 export interface SessionUser {
@@ -100,7 +96,7 @@ export interface CrisisSlide {
 
 export interface CrisisIdentifyResult {
   eventId: number;
-  source: "rule" | "ai";
+  source: 'rule' | 'ai';
   scenarioKey: string | null;
   slides: CrisisSlide[];
 }
@@ -145,7 +141,7 @@ export interface CoachConversation {
 export interface CoachStoredMessage {
   id: number;
   conversationId: number;
-  role: "user" | "assistant" | "system";
+  role: 'user' | 'assistant' | 'system';
   content: string;
   sources?: unknown;
   createdAt: string;

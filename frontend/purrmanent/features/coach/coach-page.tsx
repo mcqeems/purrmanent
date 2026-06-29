@@ -1,35 +1,35 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { format, parseISO, isValid } from "date-fns";
-import { Plus, Sparkles, MessageSquare } from "lucide-react";
-import { Button, Card, Pill, Markdown, TypingDots } from "@/components/ui";
-import { cn } from "@/lib/utils/cn";
-import { useCopilot } from "./copilot-provider";
-import { useConversations } from "./history-hooks";
-import { MentionInput } from "./mention-input";
+import { useState } from 'react';
+import { format, parseISO, isValid } from 'date-fns';
+import { Plus, Sparkles, MessageSquare } from 'lucide-react';
+import { Button, Card, Pill, Markdown, TypingDots } from '@/components/ui';
+import { cn } from '@/lib/utils/cn';
+import { useCopilot } from './copilot-provider';
+import { useConversations } from './history-hooks';
+import { MentionInput } from './mention-input';
 
 const ACTIONS = [
-  "Add a cat named Mochi",
-  "What should I do today?",
-  "Show my @todo tasks",
-  "Log a vaccination for my cat",
-  "How often should I feed an adult cat?",
+  'Add a cat named Mochi',
+  'What should I do today?',
+  'Show my @todo tasks',
+  'Log a vaccination for my cat',
+  'How often should I feed an adult cat?',
 ];
 
 function ts(d: string) {
   const date = parseISO(d);
-  return isValid(date) ? format(date, "MMM d, HH:mm") : "";
+  return isValid(date) ? format(date, 'MMM d, HH:mm') : '';
 }
 
 function ChatPane() {
   const { messages, streaming, send, confirm } = useCopilot();
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState('');
 
   function submit() {
     if (!input.trim()) return;
     void send(input);
-    setInput("");
+    setInput('');
   }
 
   return (
@@ -55,7 +55,7 @@ function ChatPane() {
           // Don't render an empty assistant placeholder — the standalone
           // loader below covers the "thinking" state outside the bubble.
           if (
-            m.role === "assistant" &&
+            m.role === 'assistant' &&
             !m.content &&
             !m.pending &&
             !(m.sources && m.sources.length)
@@ -66,13 +66,13 @@ function ChatPane() {
             <div
               key={m.id}
               className={cn(
-                "max-w-[85%] rounded-md px-3 py-2 text-sm",
-                m.role === "user"
-                  ? "ml-auto bg-accent-violet-deep text-on-primary"
-                  : "bg-surface-press-light text-ink-deep",
+                'max-w-[85%] rounded-md px-3 py-2 text-sm',
+                m.role === 'user'
+                  ? 'ml-auto bg-accent-violet-deep text-on-primary'
+                  : 'bg-surface-press-light text-ink-deep',
               )}
             >
-              {m.role === "assistant" ? (
+              {m.role === 'assistant' ? (
                 <Markdown content={m.content} />
               ) : (
                 <span className="whitespace-pre-wrap break-words">
@@ -83,7 +83,7 @@ function ChatPane() {
                 <div className="mt-2 flex flex-wrap gap-1">
                   {m.sources.map((s, idx) => (
                     <Pill key={idx} tone="lime">
-                      {s.source ?? "source"}
+                      {s.source ?? 'source'}
                     </Pill>
                   ))}
                 </div>
@@ -94,10 +94,17 @@ function ChatPane() {
                     Confirm action: <strong>{m.pending.actionName}</strong>
                   </p>
                   <div className="flex gap-2">
-                    <Button size="sm" onClick={() => confirm(m.id, m.pending!, true)}>
+                    <Button
+                      size="sm"
+                      onClick={() => confirm(m.id, m.pending!, true)}
+                    >
                       Confirm
                     </Button>
-                    <Button size="sm" variant="outline" onClick={() => confirm(m.id, m.pending!, false)}>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => confirm(m.id, m.pending!, false)}
+                    >
                       Cancel
                     </Button>
                   </div>
@@ -145,10 +152,10 @@ export function CoachPage() {
               key={c.id}
               onClick={() => void loadConversation(c.id)}
               className={cn(
-                "flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm",
+                'flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm',
                 conversationId === c.id
-                  ? "bg-surface-press-light text-ink-deep"
-                  : "text-muted hover:bg-surface-press-light",
+                  ? 'bg-surface-press-light text-ink-deep'
+                  : 'text-muted hover:bg-surface-press-light',
               )}
             >
               <MessageSquare size={14} />

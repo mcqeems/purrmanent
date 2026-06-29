@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { queryKeys } from "@/lib/query/client";
-import type { ChecklistBoard, ChecklistItem } from "@/lib/types/api";
-import type { CustomTodoInput, MoveItemInput } from "@/lib/validation/schemas";
-import { checklistApi } from "./api";
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { queryKeys } from '@/lib/query/client';
+import type { ChecklistBoard, ChecklistItem } from '@/lib/types/api';
+import type { CustomTodoInput, MoveItemInput } from '@/lib/validation/schemas';
+import { checklistApi } from './api';
 
 export function useGlobalBoard() {
   return useQuery({
@@ -15,7 +15,7 @@ export function useGlobalBoard() {
 
 export function useGraduation() {
   return useQuery({
-    queryKey: ["checklist", "graduation"],
+    queryKey: ['checklist', 'graduation'],
     queryFn: checklistApi.graduation,
   });
 }
@@ -51,7 +51,7 @@ export function useAddCustomTodo(catId: number) {
 export function useMoveItem(catId: number, board: ChecklistBoard) {
   const qc = useQueryClient();
   const key =
-    board === "daily"
+    board === 'daily'
       ? queryKeys.boardToday(catId)
       : queryKeys.boardPhase(catId);
 

@@ -1,5 +1,5 @@
-import { PageHeader } from "@/components/layout/app-shell";
-import { AllCats } from "@/features/cats/all-cats";
+import { PageHeader } from '@/components/layout/app-shell';
+import { AllCats } from '@/features/cats/all-cats';
 
 export default function CatsPage() {
   return (

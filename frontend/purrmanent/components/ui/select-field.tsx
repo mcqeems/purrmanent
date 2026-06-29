@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import * as SelectPrimitive from "@radix-ui/react-select";
-import { Check, ChevronDown } from "lucide-react";
-import { cn } from "@/lib/utils/cn";
+import * as SelectPrimitive from '@radix-ui/react-select';
+import { Check, ChevronDown } from 'lucide-react';
+import { cn } from '@/lib/utils/cn';
 
 export interface SelectOption {
   value: string;
@@ -18,7 +18,7 @@ export function SelectField({
   value,
   onValueChange,
   options,
-  placeholder = "Choose…",
+  placeholder = 'Choose…',
   id,
   className,
 }: {
@@ -30,11 +30,14 @@ export function SelectField({
   className?: string;
 }) {
   return (
-    <SelectPrimitive.Root value={value || undefined} onValueChange={onValueChange}>
+    <SelectPrimitive.Root
+      value={value || undefined}
+      onValueChange={onValueChange}
+    >
       <SelectPrimitive.Trigger
         id={id}
         className={cn(
-          "flex w-full items-center justify-between rounded-sm border border-hairline-cool bg-surface-canvas-light px-3 py-2 text-left text-ink-deep focus:border-accent-violet data-[placeholder]:text-muted/70",
+          'flex w-full items-center justify-between rounded-sm border border-hairline-cool bg-surface-canvas-light px-3 py-2 text-left text-ink-deep focus:border-accent-violet data-[placeholder]:text-muted/70',
           className,
         )}
       >

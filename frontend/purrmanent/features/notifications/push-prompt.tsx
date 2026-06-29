@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Bell, BellRing } from "lucide-react";
-import { Button, Pill, useToast } from "@/components/ui";
-import { enablePush } from "./push";
+import { useState } from 'react';
+import { Bell, BellRing } from 'lucide-react';
+import { Button, Pill, useToast } from '@/components/ui';
+import { enablePush } from './push';
 
 function alreadyGranted(): boolean {
   return (
-    typeof window !== "undefined" &&
-    "Notification" in window &&
-    Notification.permission === "granted"
+    typeof window !== 'undefined' &&
+    'Notification' in window &&
+    Notification.permission === 'granted'
   );
 }
 
@@ -23,10 +23,10 @@ export function PushPrompt() {
     setBusy(true);
     try {
       const res = await enablePush();
-      toast({ tone: res.ok ? "success" : "error", description: res.message });
+      toast({ tone: res.ok ? 'success' : 'error', description: res.message });
       if (res.ok) setEnabled(true);
     } catch {
-      toast({ tone: "error", description: "Could not enable reminders." });
+      toast({ tone: 'error', description: 'Could not enable reminders.' });
     } finally {
       setBusy(false);
     }
@@ -42,7 +42,7 @@ export function PushPrompt() {
 
   return (
     <Button size="sm" variant="outline" onClick={onClick} disabled={busy}>
-      <Bell size={16} /> {busy ? "Enabling…" : "Enable reminders"}
+      <Bell size={16} /> {busy ? 'Enabling…' : 'Enable reminders'}
     </Button>
   );
 }

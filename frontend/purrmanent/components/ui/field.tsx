@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import * as React from "react";
-import * as LabelPrimitive from "@radix-ui/react-label";
-import { cn } from "@/lib/utils/cn";
+import * as React from 'react';
+import * as LabelPrimitive from '@radix-ui/react-label';
+import { cn } from '@/lib/utils/cn';
 
 const fieldBase =
-  "w-full rounded-sm border border-hairline-cool bg-surface-canvas-light px-3 py-2 text-ink-deep placeholder:text-muted/60 focus:border-accent-violet focus:shadow-[rgba(0,0,0,0.15)_0_2px_10px_inset] disabled:opacity-60";
+  'w-full rounded-sm border border-hairline-cool bg-surface-canvas-light px-3 py-2 text-ink-deep placeholder:text-muted/60 focus:border-accent-violet focus:shadow-[rgba(0,0,0,0.15)_0_2px_10px_inset] disabled:opacity-60';
 
 export const Input = React.forwardRef<
   HTMLInputElement,
@@ -19,7 +19,11 @@ export const Select = React.forwardRef<
   React.SelectHTMLAttributes<HTMLSelectElement>
 >(function Select({ className, ...props }, ref) {
   return (
-    <select ref={ref} className={cn(fieldBase, "appearance-none", className)} {...props} />
+    <select
+      ref={ref}
+      className={cn(fieldBase, 'appearance-none', className)}
+      {...props}
+    />
   );
 });
 
@@ -28,7 +32,11 @@ export const Textarea = React.forwardRef<
   React.TextareaHTMLAttributes<HTMLTextAreaElement>
 >(function Textarea({ className, ...props }, ref) {
   return (
-    <textarea ref={ref} className={cn(fieldBase, "min-h-24", className)} {...props} />
+    <textarea
+      ref={ref}
+      className={cn(fieldBase, 'min-h-24', className)}
+      {...props}
+    />
   );
 });
 
@@ -39,7 +47,7 @@ export const Label = React.forwardRef<
   return (
     <LabelPrimitive.Root
       ref={ref}
-      className={cn("text-sm font-medium", className)}
+      className={cn('text-sm font-medium', className)}
       {...props}
     />
   );

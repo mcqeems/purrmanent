@@ -1,11 +1,8 @@
-import { apiFetch } from "@/lib/api/client";
-import type { QuestionnaireInput } from "@/lib/validation/schemas";
-import {
-  PERSONALITIES,
-  ADOPTION_SOURCES,
-} from "@/lib/validation/schemas";
+import { apiFetch } from '@/lib/api/client';
+import type { QuestionnaireInput } from '@/lib/validation/schemas';
+import { PERSONALITIES, ADOPTION_SOURCES } from '@/lib/validation/schemas';
 
-const str = (v: unknown) => (typeof v === "string" ? v : undefined);
+const str = (v: unknown) => (typeof v === 'string' ? v : undefined);
 
 /**
  * Map the demo-prefill response onto questionnaire fields. The exact response
@@ -22,10 +19,10 @@ function mapPrefill(raw: Record<string, unknown>): Partial<QuestionnaireInput> {
   if (shelter) out.shelterCode = shelter;
   const src = str(raw.adoptionSource);
   if (src && (ADOPTION_SOURCES as readonly string[]).includes(src))
-    out.adoptionSource = src as QuestionnaireInput["adoptionSource"];
+    out.adoptionSource = src as QuestionnaireInput['adoptionSource'];
   const pers = str(raw.catPersonality) ?? str(raw.personality);
   if (pers && (PERSONALITIES as readonly string[]).includes(pers))
-    out.catPersonality = pers as QuestionnaireInput["catPersonality"];
+    out.catPersonality = pers as QuestionnaireInput['catPersonality'];
   return out;
 }
 
@@ -34,7 +31,7 @@ export async function fetchDemoPrefill(
   code: string,
 ): Promise<Partial<QuestionnaireInput> | undefined> {
   try {
-    const raw = await apiFetch<Record<string, unknown>>("/demo/prefill", {
+    const raw = await apiFetch<Record<string, unknown>>('/demo/prefill', {
       query: { code },
     });
     return raw ? mapPrefill(raw) : undefined;

@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { motion } from "motion/react";
-import type { ReactNode } from "react";
+import { motion } from 'motion/react';
+import type { ReactNode } from 'react';
 
 /** Page-level fade + slide-up on mount. */
 export function PageTransition({ children }: { children: ReactNode }) {
@@ -9,7 +9,7 @@ export function PageTransition({ children }: { children: ReactNode }) {
     <motion.div
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.25, ease: "easeOut" }}
+      transition={{ duration: 0.25, ease: 'easeOut' }}
     >
       {children}
     </motion.div>
@@ -53,7 +53,7 @@ export function FadeInItem({
         hidden: { opacity: 0, y: 10 },
         show: { opacity: 1, y: 0 },
       }}
-      transition={{ duration: 0.25, ease: "easeOut" }}
+      transition={{ duration: 0.25, ease: 'easeOut' }}
     >
       {children}
     </motion.div>

@@ -1,9 +1,9 @@
-import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import Link from 'next/link';
+import { ArrowLeft } from 'lucide-react';
 
 export function BackButton({
   href,
-  label = "Back",
+  label = 'Back',
 }: {
   href: string;
   label?: string;

@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useForm, Controller } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   createCatSchema,
   type CreateCatInput,
   GENDERS,
   PERSONALITIES,
   ADOPTION_SOURCES,
-} from "@/lib/validation/schemas";
-import type { Cat } from "@/lib/types/api";
-import { Button, Field, Input, SelectField } from "@/components/ui";
-import { useCreateCat, useUpdateCat } from "./hooks";
-import { PhotoUpload } from "./photo-upload";
+} from '@/lib/validation/schemas';
+import type { Cat } from '@/lib/types/api';
+import { Button, Field, Input, SelectField } from '@/components/ui';
+import { useCreateCat, useUpdateCat } from './hooks';
+import { PhotoUpload } from './photo-upload';
 
 export function CatForm({ cat, onDone }: { cat?: Cat; onDone?: () => void }) {
   const create = useCreateCat();
@@ -42,7 +42,7 @@ export function CatForm({ cat, onDone }: { cat?: Cat; onDone?: () => void }) {
   });
 
   const optionalNumber = {
-    setValueAs: (v: string) => (v === "" ? undefined : Number(v)),
+    setValueAs: (v: string) => (v === '' ? undefined : Number(v)),
   };
 
   async function onSubmit(values: CreateCatInput) {
@@ -52,7 +52,7 @@ export function CatForm({ cat, onDone }: { cat?: Cat; onDone?: () => void }) {
       else await create.mutateAsync(values);
       onDone?.();
     } catch (err) {
-      setServerError(err instanceof Error ? err.message : "Could not save.");
+      setServerError(err instanceof Error ? err.message : 'Could not save.');
     }
   }
 
@@ -70,11 +70,20 @@ export function CatForm({ cat, onDone }: { cat?: Cat; onDone?: () => void }) {
         />
       </Field>
       <Field label="Name" htmlFor="cf-name" error={errors.name?.message}>
-        <Input id="cf-name" {...register("name")} />
+        <Input id="cf-name" {...register('name')} />
       </Field>
       <div className="grid grid-cols-2 gap-3">
-        <Field label="Age (months)" htmlFor="cf-age" error={errors.ageMonths?.message}>
-          <Input id="cf-age" type="number" min={0} {...register("ageMonths", optionalNumber)} />
+        <Field
+          label="Age (months)"
+          htmlFor="cf-age"
+          error={errors.ageMonths?.message}
+        >
+          <Input
+            id="cf-age"
+            type="number"
+            min={0}
+            {...register('ageMonths', optionalNumber)}
+          />
         </Field>
         <Field label="Gender" htmlFor="cf-gender">
           <Controller
@@ -83,7 +92,7 @@ export function CatForm({ cat, onDone }: { cat?: Cat; onDone?: () => void }) {
             render={({ field }) => (
               <SelectField
                 id="cf-gender"
-                value={field.value ?? ""}
+                value={field.value ?? ''}
                 onValueChange={field.onChange}
                 placeholder="Unknown"
                 options={GENDERS.map((g) => ({ value: g, label: g }))}
@@ -93,31 +102,39 @@ export function CatForm({ cat, onDone }: { cat?: Cat; onDone?: () => void }) {
         </Field>
       </div>
       <Field label="Breed" htmlFor="cf-breed">
-        <Input id="cf-breed" {...register("breed")} />
+        <Input id="cf-breed" {...register('breed')} />
       </Field>
       <div className="grid grid-cols-2 gap-3">
-        <Field label="Personality" htmlFor="cf-pers" error={errors.personality?.message}>
+        <Field
+          label="Personality"
+          htmlFor="cf-pers"
+          error={errors.personality?.message}
+        >
           <Controller
             control={control}
             name="personality"
             render={({ field }) => (
               <SelectField
                 id="cf-pers"
-                value={field.value ?? ""}
+                value={field.value ?? ''}
                 onValueChange={field.onChange}
                 options={PERSONALITIES.map((p) => ({ value: p, label: p }))}
               />
             )}
           />
         </Field>
-        <Field label="Source" htmlFor="cf-src" error={errors.adoptionSource?.message}>
+        <Field
+          label="Source"
+          htmlFor="cf-src"
+          error={errors.adoptionSource?.message}
+        >
           <Controller
             control={control}
             name="adoptionSource"
             render={({ field }) => (
               <SelectField
                 id="cf-src"
-                value={field.value ?? ""}
+                value={field.value ?? ''}
                 onValueChange={field.onChange}
                 options={ADOPTION_SOURCES.map((s) => ({ value: s, label: s }))}
               />
@@ -125,12 +142,16 @@ export function CatForm({ cat, onDone }: { cat?: Cat; onDone?: () => void }) {
           />
         </Field>
       </div>
-      <Field label="Adoption date" htmlFor="cf-date" error={errors.adoptionDate?.message}>
-        <Input id="cf-date" type="date" {...register("adoptionDate")} />
+      <Field
+        label="Adoption date"
+        htmlFor="cf-date"
+        error={errors.adoptionDate?.message}
+      >
+        <Input id="cf-date" type="date" {...register('adoptionDate')} />
       </Field>
       {serverError && <p className="text-sm text-accent-pink">{serverError}</p>}
       <Button type="submit" className="w-full" disabled={pending}>
-        {pending ? "Saving…" : cat ? "Save changes" : "Add cat"}
+        {pending ? 'Saving…' : cat ? 'Save changes' : 'Add cat'}
       </Button>
     </form>
   );

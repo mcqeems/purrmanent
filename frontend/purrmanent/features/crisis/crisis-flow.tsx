@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { AlertTriangle } from "lucide-react";
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { AlertTriangle } from 'lucide-react';
 import {
   Button,
   Card,
@@ -11,11 +11,11 @@ import {
   SelectField,
   Spinner,
   useToast,
-} from "@/components/ui";
-import { useActiveCat } from "@/features/cats/active-cat-provider";
-import type { CrisisIdentifyResult } from "@/lib/types/api";
-import { SlideCarousel } from "./slide-carousel";
-import { useIdentifyCrisis, useResolveCrisis } from "./api";
+} from '@/components/ui';
+import { useActiveCat } from '@/features/cats/active-cat-provider';
+import type { CrisisIdentifyResult } from '@/lib/types/api';
+import { SlideCarousel } from './slide-carousel';
+import { useIdentifyCrisis, useResolveCrisis } from './api';
 
 export function CrisisFlow() {
   const router = useRouter();
@@ -25,9 +25,9 @@ export function CrisisFlow() {
   const resolve = useResolveCrisis();
 
   const [pickedCatId, setPickedCatId] = useState<number | null>(null);
-  const [prompt, setPrompt] = useState("");
+  const [prompt, setPrompt] = useState('');
   const [result, setResult] = useState<CrisisIdentifyResult | null>(null);
-  const [reason, setReason] = useState("");
+  const [reason, setReason] = useState('');
   const [showResolve, setShowResolve] = useState(false);
 
   const catId = pickedCatId ?? cats[0]?.id ?? null;
@@ -60,10 +60,12 @@ export function CrisisFlow() {
       reasonNotDone: isDone ? undefined : reason.trim() || undefined,
     });
     toast({
-      tone: "success",
-      description: isDone ? "Glad it helped!" : "Logged — consider calling a vet.",
+      tone: 'success',
+      description: isDone
+        ? 'Glad it helped!'
+        : 'Logged — consider calling a vet.',
     });
-    router.push("/dashboard");
+    router.push('/dashboard');
   }
 
   if (!result) {
@@ -81,7 +83,10 @@ export function CrisisFlow() {
               id="crisis-cat"
               value={String(catId)}
               onValueChange={(v) => setPickedCatId(Number(v))}
-              options={cats.map((c) => ({ value: String(c.id), label: c.name }))}
+              options={cats.map((c) => ({
+                value: String(c.id),
+                label: c.name,
+              }))}
             />
           </Field>
         )}
@@ -94,7 +99,7 @@ export function CrisisFlow() {
           />
         </Field>
         <Button onClick={start} disabled={identify.isPending || !prompt.trim()}>
-          {identify.isPending ? "Finding help…" : "Get help now"}
+          {identify.isPending ? 'Finding help…' : 'Get help now'}
         </Button>
         {identify.isError && (
           <p className="text-sm text-accent-pink">
@@ -108,7 +113,7 @@ export function CrisisFlow() {
   return (
     <div className="space-y-4">
       <p className="text-sm text-muted">
-        {result.source === "rule"
+        {result.source === 'rule'
           ? "Here's a step-by-step protocol."
           : "Here's guidance compiled for your situation."}
       </p>
@@ -120,7 +125,10 @@ export function CrisisFlow() {
       ) : (
         <Card className="space-y-3">
           <p className="font-semibold">Is {activeCat.name} okay now?</p>
-          <Field label="If not, what's still wrong? (optional)" htmlFor="reason">
+          <Field
+            label="If not, what's still wrong? (optional)"
+            htmlFor="reason"
+          >
             <Textarea
               id="reason"
               value={reason}
@@ -131,11 +139,17 @@ export function CrisisFlow() {
             <Button onClick={() => finish(true)} disabled={resolve.isPending}>
               Yes, resolved
             </Button>
-            <Button variant="outline" onClick={() => finish(false)} disabled={resolve.isPending}>
+            <Button
+              variant="outline"
+              onClick={() => finish(false)}
+              disabled={resolve.isPending}
+            >
               Not yet
             </Button>
           </div>
-          {resolve.isPending && <Spinner className="size-5 text-accent-violet" />}
+          {resolve.isPending && (
+            <Spinner className="size-5 text-accent-violet" />
+          )}
         </Card>
       )}
     </div>

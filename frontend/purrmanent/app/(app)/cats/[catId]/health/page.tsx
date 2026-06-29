@@ -1,6 +1,6 @@
-import { PageHeader } from "@/components/layout/app-shell";
-import { BackButton } from "@/components/layout/back-button";
-import { HealthView } from "@/features/health/health-view";
+import { PageHeader } from '@/components/layout/app-shell';
+import { BackButton } from '@/components/layout/back-button';
+import { HealthView } from '@/features/health/health-view';
 
 export default async function CatHealthPage({
   params,

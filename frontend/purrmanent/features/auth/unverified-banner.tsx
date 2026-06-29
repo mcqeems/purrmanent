@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { authClient, useSession } from "@/lib/auth/client";
-import { useToast } from "@/components/ui";
+import { useState } from 'react';
+import { authClient, useSession } from '@/lib/auth/client';
+import { useToast } from '@/components/ui';
 
 /**
  * Soft banner for unverified accounts. [BACKEND-TRUTH] verification is optional
@@ -23,7 +23,7 @@ export function UnverifiedBanner() {
       callbackURL: `${window.location.origin}/dashboard`,
     });
     setSent(true);
-    toast({ tone: "success", description: "Verification email sent." });
+    toast({ tone: 'success', description: 'Verification email sent.' });
   }
 
   return (
@@ -35,7 +35,7 @@ export function UnverifiedBanner() {
         disabled={sent}
         className="font-semibold text-accent-violet underline disabled:opacity-60"
       >
-        {sent ? "Sent" : "Resend email"}
+        {sent ? 'Sent' : 'Resend email'}
       </button>
     </div>
   );

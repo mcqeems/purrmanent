@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Bar,
@@ -9,16 +9,16 @@ import {
   ResponsiveContainer,
   Tooltip,
   XAxis,
-} from "recharts";
-import { Cat, ListTodo, Trophy, Flame } from "lucide-react";
-import { Card } from "@/components/ui";
-import { useGlobalBoard } from "@/features/checklist/hooks";
-import { useGamificationStatus } from "@/features/gamification/hooks";
+} from 'recharts';
+import { Cat, ListTodo, Trophy, Flame } from 'lucide-react';
+import { Card } from '@/components/ui';
+import { useGlobalBoard } from '@/features/checklist/hooks';
+import { useGamificationStatus } from '@/features/gamification/hooks';
 
 const COLORS = {
-  todo: "#cfcfdb",
-  progress: "#6a5fc1",
-  done: "#c2ef4e",
+  todo: '#cfcfdb',
+  progress: '#6a5fc1',
+  done: '#c2ef4e',
 };
 
 function StatCard({
@@ -61,9 +61,9 @@ export function DashboardStats() {
   const completion = grand > 0 ? Math.round((totals.done / grand) * 100) : 0;
 
   const donut = [
-    { name: "To-Do", value: totals.todo, key: "todo" as const },
-    { name: "In Progress", value: totals.progress, key: "progress" as const },
-    { name: "Done", value: totals.done, key: "done" as const },
+    { name: 'To-Do', value: totals.todo, key: 'todo' as const },
+    { name: 'In Progress', value: totals.progress, key: 'progress' as const },
+    { name: 'Done', value: totals.done, key: 'done' as const },
   ].filter((d) => d.value > 0);
 
   const perCat = boards.map((b) => {
@@ -86,15 +86,22 @@ export function DashboardStats() {
           <h3 className="mb-2 text-sm font-semibold">Task breakdown</h3>
           <ResponsiveContainer width="100%" height={200}>
             <PieChart>
-              <Pie data={donut} dataKey="value" nameKey="name" innerRadius={50} outerRadius={80} paddingAngle={2}>
+              <Pie
+                data={donut}
+                dataKey="value"
+                nameKey="name"
+                innerRadius={50}
+                outerRadius={80}
+                paddingAngle={2}
+              >
                 {donut.map((d) => (
                   <Cell key={d.key} fill={COLORS[d.key]} />
                 ))}
               </Pie>
               <Tooltip
-                contentStyle={{ borderRadius: 8, border: "1px solid #e5e7eb" }}
-                itemStyle={{ color: "#150f23" }}
-                labelStyle={{ color: "#150f23" }}
+                contentStyle={{ borderRadius: 8, border: '1px solid #e5e7eb' }}
+                itemStyle={{ color: '#150f23' }}
+                labelStyle={{ color: '#150f23' }}
               />
             </PieChart>
           </ResponsiveContainer>
@@ -118,10 +125,10 @@ export function DashboardStats() {
               <XAxis dataKey="name" tick={{ fontSize: 12 }} />
               <Tooltip
                 formatter={(value) => `${String(value)}%`}
-                contentStyle={{ borderRadius: 8, border: "1px solid #e5e7eb" }}
-                itemStyle={{ color: "#150f23" }}
-                labelStyle={{ color: "#150f23" }}
-                cursor={{ fill: "rgba(106,95,193,0.08)" }}
+                contentStyle={{ borderRadius: 8, border: '1px solid #e5e7eb' }}
+                itemStyle={{ color: '#150f23' }}
+                labelStyle={{ color: '#150f23' }}
+                cursor={{ fill: 'rgba(106,95,193,0.08)' }}
               />
               <Bar dataKey="pct" radius={[6, 6, 0, 0]} fill={COLORS.progress} />
             </BarChart>

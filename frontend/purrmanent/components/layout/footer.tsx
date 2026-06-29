@@ -17,9 +17,7 @@ export function Footer() {
       </svg>
       <div className="mx-auto flex max-w-6xl flex-col gap-1 px-6 py-8 text-sm text-ink-deep">
         <p className="font-display text-lg font-bold">Purrmanent</p>
-        <p className="text-muted">
-          90 days to a happy, settled cat. 🐾
-        </p>
+        <p className="text-muted">90 days to a happy, settled cat. 🐾</p>
         <p className="mt-4 text-xs text-muted">
           © {new Date().getFullYear()} Purrmanent.
         </p>

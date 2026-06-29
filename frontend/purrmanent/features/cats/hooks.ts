@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { queryKeys } from "@/lib/query/client";
-import type { CreateCatInput, UpdateCatInput } from "@/lib/validation/schemas";
-import { catsApi } from "./api";
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { queryKeys } from '@/lib/query/client';
+import type { CreateCatInput, UpdateCatInput } from '@/lib/validation/schemas';
+import { catsApi } from './api';
 
 export function useCats() {
   return useQuery({ queryKey: queryKeys.cats, queryFn: catsApi.list });

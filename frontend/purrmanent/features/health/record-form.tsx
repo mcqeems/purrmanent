@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Plus } from "lucide-react";
+import { useState } from 'react';
+import { Plus } from 'lucide-react';
 import {
   Button,
   Dialog,
@@ -11,18 +11,21 @@ import {
   Field,
   Input,
   SelectField,
-} from "@/components/ui";
-import type { HealthRecordType } from "@/lib/types/api";
-import { HEALTH_RECORD_TYPES } from "@/lib/validation/schemas";
-import { useCreateRecord } from "./hooks";
+} from '@/components/ui';
+import type { HealthRecordType } from '@/lib/types/api';
+import { HEALTH_RECORD_TYPES } from '@/lib/validation/schemas';
+import { useCreateRecord } from './hooks';
 
 // Mirrors the backend per-type required field (createHealthRecordSchema superRefine).
-const FIELD: Record<HealthRecordType, { key: string; label: string; numeric?: boolean }> = {
-  vaccination: { key: "vaccineName", label: "Vaccine name" },
-  deworming: { key: "product", label: "Product" },
-  vet_visit: { key: "reason", label: "Reason" },
-  weight: { key: "weightGrams", label: "Weight (grams)", numeric: true },
-  note: { key: "text", label: "Note" },
+const FIELD: Record<
+  HealthRecordType,
+  { key: string; label: string; numeric?: boolean }
+> = {
+  vaccination: { key: 'vaccineName', label: 'Vaccine name' },
+  deworming: { key: 'product', label: 'Product' },
+  vet_visit: { key: 'reason', label: 'Reason' },
+  weight: { key: 'weightGrams', label: 'Weight (grams)', numeric: true },
+  note: { key: 'text', label: 'Note' },
 };
 
 const today = () => new Date().toISOString().slice(0, 10);
@@ -30,10 +33,10 @@ const today = () => new Date().toISOString().slice(0, 10);
 export function RecordForm({ catId }: { catId: number }) {
   const create = useCreateRecord(catId);
   const [open, setOpen] = useState(false);
-  const [type, setType] = useState<HealthRecordType>("vaccination");
-  const [detail, setDetail] = useState("");
+  const [type, setType] = useState<HealthRecordType>('vaccination');
+  const [detail, setDetail] = useState('');
   const [recordedAt, setRecordedAt] = useState(today());
-  const [nextDueDate, setNextDueDate] = useState("");
+  const [nextDueDate, setNextDueDate] = useState('');
   const [error, setError] = useState<string | null>(null);
 
   const meta = FIELD[type];
@@ -55,11 +58,11 @@ export function RecordForm({ catId }: { catId: number }) {
         recordedAt,
         nextDueDate: nextDueDate || undefined,
       });
-      setDetail("");
-      setNextDueDate("");
+      setDetail('');
+      setNextDueDate('');
       setOpen(false);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Could not save the record.");
+      setError(e instanceof Error ? e.message : 'Could not save the record.');
     }
   }
 
@@ -79,14 +82,14 @@ export function RecordForm({ catId }: { catId: number }) {
               onValueChange={(v) => setType(v as HealthRecordType)}
               options={HEALTH_RECORD_TYPES.map((t) => ({
                 value: t,
-                label: t.replace("_", " "),
+                label: t.replace('_', ' '),
               }))}
             />
           </Field>
           <Field label={meta.label} htmlFor="hr-detail">
             <Input
               id="hr-detail"
-              type={meta.numeric ? "number" : "text"}
+              type={meta.numeric ? 'number' : 'text'}
               value={detail}
               onChange={(e) => setDetail(e.target.value)}
             />
@@ -117,7 +120,7 @@ export function RecordForm({ catId }: { catId: number }) {
               </Button>
             </DialogClose>
             <Button size="sm" onClick={submit} disabled={create.isPending}>
-              {create.isPending ? "Saving…" : "Save"}
+              {create.isPending ? 'Saving…' : 'Save'}
             </Button>
           </div>
         </div>

@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import {
   Button,
   Card,
@@ -10,9 +10,9 @@ import {
   DialogContent,
   Spinner,
   useToast,
-} from "@/components/ui";
-import { useCat, useDeleteCat } from "./hooks";
-import { CatForm } from "./cat-form";
+} from '@/components/ui';
+import { useCat, useDeleteCat } from './hooks';
+import { CatForm } from './cat-form';
 
 export function EditCat({ catId }: { catId: number }) {
   const router = useRouter();
@@ -28,10 +28,10 @@ export function EditCat({ catId }: { catId: number }) {
   async function remove() {
     try {
       await del.mutateAsync(catId);
-      toast({ tone: "success", description: `${cat!.name} was removed.` });
-      router.push("/dashboard");
+      toast({ tone: 'success', description: `${cat!.name} was removed.` });
+      router.push('/dashboard');
     } catch {
-      toast({ tone: "error", description: "Could not remove the cat." });
+      toast({ tone: 'error', description: 'Could not remove the cat.' });
     }
   }
 
@@ -72,7 +72,7 @@ export function EditCat({ catId }: { catId: number }) {
                   onClick={remove}
                   disabled={del.isPending}
                 >
-                  {del.isPending ? "Removing…" : "Remove"}
+                  {del.isPending ? 'Removing…' : 'Remove'}
                 </Button>
               </div>
             </DialogContent>

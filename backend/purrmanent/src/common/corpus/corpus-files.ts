@@ -51,7 +51,9 @@ export function loadCorpusChunks(dir = CORPUS_DIR): CorpusChunk[] {
     .sort();
 
   return files.map((file) => {
-    const { meta, body } = parseFrontmatter(readFileSync(join(dir, file), 'utf-8'));
+    const { meta, body } = parseFrontmatter(
+      readFileSync(join(dir, file), 'utf-8'),
+    );
     const parsed = corpusChunkSchema.safeParse({ ...meta, text: body });
     if (!parsed.success) {
       throw new Error(

@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { useEffect, useRef, useState } from "react";
-import { MessageCircle, Send, X } from "lucide-react";
-import { Button, Pill, Markdown } from "@/components/ui";
-import { cn } from "@/lib/utils/cn";
-import { useCopilot } from "./copilot-provider";
+import { useEffect, useRef, useState } from 'react';
+import { MessageCircle, Send, X } from 'lucide-react';
+import { Button, Pill, Markdown } from '@/components/ui';
+import { cn } from '@/lib/utils/cn';
+import { useCopilot } from './copilot-provider';
 
 export function Copilot() {
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState('');
   const { messages, streaming, send, confirm, open, setOpen } = useCopilot();
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -18,7 +18,7 @@ export function Copilot() {
   function submit() {
     if (!input.trim()) return;
     void send(input);
-    setInput("");
+    setInput('');
   }
 
   if (!open) {
@@ -42,7 +42,10 @@ export function Copilot() {
         </button>
       </header>
 
-      <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto p-4 text-sm">
+      <div
+        ref={scrollRef}
+        className="flex-1 space-y-3 overflow-y-auto p-4 text-sm"
+      >
         {messages.length === 0 && (
           <p className="text-on-dark-muted">
             Ask me about cat care, or try &ldquo;add a cat named Mochi&rdquo;.
@@ -53,21 +56,21 @@ export function Copilot() {
           <div
             key={m.id}
             className={cn(
-              "max-w-[85%] rounded-md px-3 py-2",
-              m.role === "user"
-                ? "ml-auto bg-accent-violet-deep"
-                : "bg-ink-deep",
+              'max-w-[85%] rounded-md px-3 py-2',
+              m.role === 'user'
+                ? 'ml-auto bg-accent-violet-deep'
+                : 'bg-ink-deep',
             )}
           >
             <div className="break-words">
-              <Markdown content={m.content || "…"} dark />
+              <Markdown content={m.content || '…'} dark />
             </div>
 
             {m.sources && m.sources.length > 0 && (
               <div className="mt-2 flex flex-wrap gap-1">
                 {m.sources.map((s, i) => (
                   <Pill key={i} tone="lime">
-                    {s.source ?? "source"}
+                    {s.source ?? 'source'}
                   </Pill>
                 ))}
               </div>
@@ -104,12 +107,17 @@ export function Copilot() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === "Enter") submit();
+            if (e.key === 'Enter') submit();
           }}
           placeholder="Ask the coach…"
           className="flex-1 rounded-md bg-ink-deep px-3 py-2 text-sm text-on-primary placeholder:text-on-dark-muted/60"
         />
-        <Button size="sm" onClick={submit} disabled={streaming} aria-label="Send">
+        <Button
+          size="sm"
+          onClick={submit}
+          disabled={streaming}
+          aria-label="Send"
+        >
           <Send size={16} />
         </Button>
       </div>

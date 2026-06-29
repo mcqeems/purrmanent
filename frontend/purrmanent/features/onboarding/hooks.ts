@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { apiFetch } from "@/lib/api/client";
-import { queryKeys } from "@/lib/query/client";
-import type { Cat } from "@/lib/types/api";
-import type { QuestionnaireInput } from "@/lib/validation/schemas";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { apiFetch } from '@/lib/api/client';
+import { queryKeys } from '@/lib/query/client';
+import type { Cat } from '@/lib/types/api';
+import type { QuestionnaireInput } from '@/lib/validation/schemas';
 
 export const onboardingApi = {
   submit: (body: QuestionnaireInput) =>
-    apiFetch<Cat>("/onboarding/submit", { method: "POST", body }),
+    apiFetch<Cat>('/onboarding/submit', { method: 'POST', body }),
 };
 
 export function useSubmitOnboarding() {

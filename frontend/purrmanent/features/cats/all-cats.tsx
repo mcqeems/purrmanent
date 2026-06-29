@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useMemo, useState } from "react";
-import Link from "next/link";
-import { Plus, Search } from "lucide-react";
+import { useMemo, useState } from 'react';
+import Link from 'next/link';
+import { Plus, Search } from 'lucide-react';
 import {
   Button,
   Card,
@@ -12,14 +12,14 @@ import {
   Input,
   Pill,
   Spinner,
-} from "@/components/ui";
-import { useCats } from "./hooks";
-import { CatForm } from "./cat-form";
+} from '@/components/ui';
+import { useCats } from './hooks';
+import { CatForm } from './cat-form';
 
 export function AllCats() {
   const { data: cats, isLoading, isError } = useCats();
   const [open, setOpen] = useState(false);
-  const [q, setQ] = useState("");
+  const [q, setQ] = useState('');
 
   const filtered = useMemo(() => {
     const query = q.trim().toLowerCase();
@@ -28,14 +28,16 @@ export function AllCats() {
     return list.filter(
       (c) =>
         c.name.toLowerCase().includes(query) ||
-        (c.breed ?? "").toLowerCase().includes(query) ||
+        (c.breed ?? '').toLowerCase().includes(query) ||
         c.personality.toLowerCase().includes(query),
     );
   }, [cats, q]);
 
   if (isLoading) return <Spinner className="size-6 text-accent-violet" />;
   if (isError)
-    return <p className="text-sm text-accent-pink">Could not load your cats.</p>;
+    return (
+      <p className="text-sm text-accent-pink">Could not load your cats.</p>
+    );
 
   return (
     <div className="space-y-4">
@@ -67,7 +69,7 @@ export function AllCats() {
 
       {filtered.length === 0 ? (
         <p className="text-sm text-muted">
-          {q ? `No cats match “${q}”.` : "No cats yet — add your first one."}
+          {q ? `No cats match “${q}”.` : 'No cats yet — add your first one.'}
         </p>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -79,8 +81,8 @@ export function AllCats() {
                   <Pill tone="lime">{cat.personality}</Pill>
                 </div>
                 <p className="text-sm text-muted">
-                  {cat.breed ?? "Cat"}
-                  {cat.ageMonths != null ? ` · ${cat.ageMonths} mo` : ""}
+                  {cat.breed ?? 'Cat'}
+                  {cat.ageMonths != null ? ` · ${cat.ageMonths} mo` : ''}
                 </p>
                 <span className="mt-2 text-sm font-semibold text-accent-violet">
                   Open board →

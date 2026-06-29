@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from 'next/link';
 import {
   ListChecks,
   Siren,
@@ -6,18 +6,42 @@ import {
   HeartPulse,
   Trophy,
   ClipboardList,
-} from "lucide-react";
-import { Button, Chip, Card } from "@/components/ui";
-import { PublicHeader } from "@/components/layout/public-header";
-import { Footer } from "@/components/layout/footer";
+} from 'lucide-react';
+import { Button, Chip, Card } from '@/components/ui';
+import { PublicHeader } from '@/components/layout/public-header';
+import { Footer } from '@/components/layout/footer';
 
 const FEATURES = [
-  { icon: ClipboardList, title: "Personalized plan", body: "A short questionnaire builds a 90-day plan tailored to your cat." },
-  { icon: ListChecks, title: "Kanban checklists", body: "Daily tasks and phase milestones across To-Do, In Progress, and Done." },
-  { icon: Siren, title: "Crisis mode", body: "Step-by-step guided protocols the moment something goes wrong." },
-  { icon: Sparkles, title: "AI coach", body: "Ask anything about cat care — and let it take actions for you." },
-  { icon: HeartPulse, title: "Health log", body: "Track vaccinations, vet visits, and weight with reminders." },
-  { icon: Trophy, title: "Progress & rewards", body: "Earn points and badges, and graduate at the finish line." },
+  {
+    icon: ClipboardList,
+    title: 'Personalized plan',
+    body: 'A short questionnaire builds a 90-day plan tailored to your cat.',
+  },
+  {
+    icon: ListChecks,
+    title: 'Kanban checklists',
+    body: 'Daily tasks and phase milestones across To-Do, In Progress, and Done.',
+  },
+  {
+    icon: Siren,
+    title: 'Crisis mode',
+    body: 'Step-by-step guided protocols the moment something goes wrong.',
+  },
+  {
+    icon: Sparkles,
+    title: 'AI coach',
+    body: 'Ask anything about cat care — and let it take actions for you.',
+  },
+  {
+    icon: HeartPulse,
+    title: 'Health log',
+    body: 'Track vaccinations, vet visits, and weight with reminders.',
+  },
+  {
+    icon: Trophy,
+    title: 'Progress & rewards',
+    body: 'Earn points and badges, and graduate at the finish line.',
+  },
 ];
 
 export default function Home() {
@@ -34,8 +58,8 @@ export default function Home() {
         </h1>
         <p className="max-w-xl text-lg text-on-dark-muted">
           Purrmanent turns the stressful early months of cat adoption into a
-          clear, day-by-day plan — with checklists, health tracking, an AI coach,
-          and a crisis mode for when you need it most.
+          clear, day-by-day plan — with checklists, health tracking, an AI
+          coach, and a crisis mode for when you need it most.
         </p>
         <div className="flex flex-wrap justify-center gap-3">
           <Button asChild variant="inverted">

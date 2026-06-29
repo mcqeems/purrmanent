@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { Info } from "lucide-react";
+import { Info } from 'lucide-react';
 import {
   Card,
   Dialog,
@@ -8,10 +8,10 @@ import {
   DialogTrigger,
   Pill,
   Spinner,
-} from "@/components/ui";
-import { cn } from "@/lib/utils/cn";
-import { useGraduation } from "@/features/checklist/hooks";
-import { BADGES, useGamificationStatus } from "./hooks";
+} from '@/components/ui';
+import { cn } from '@/lib/utils/cn';
+import { useGraduation } from '@/features/checklist/hooks';
+import { BADGES, useGamificationStatus } from './hooks';
 
 function GraduationHelp() {
   return (
@@ -81,15 +81,15 @@ export function ProgressView() {
               <Card
                 key={b.label}
                 className={cn(
-                  "flex flex-col items-center gap-1 text-center",
-                  !earned && "opacity-40",
+                  'flex flex-col items-center gap-1 text-center',
+                  !earned && 'opacity-40',
                 )}
               >
                 <span className="text-3xl" aria-hidden>
                   {b.icon}
                 </span>
                 <p className="text-sm font-semibold">{b.label}</p>
-                <Pill tone={earned ? "lime" : "neutral"}>{b.points} pts</Pill>
+                <Pill tone={earned ? 'lime' : 'neutral'}>{b.points} pts</Pill>
               </Card>
             );
           })}
@@ -103,7 +103,9 @@ export function ProgressView() {
         </div>
 
         {grads.length === 0 ? (
-          <p className="text-sm text-muted">Add a cat to start its 90-day journey.</p>
+          <p className="text-sm text-muted">
+            Add a cat to start its 90-day journey.
+          </p>
         ) : (
           <div className="grid gap-3 sm:grid-cols-2">
             {graduated.map((g) => (
@@ -140,12 +142,12 @@ export function ProgressView() {
                     />
                   </div>
                   <p className="mt-2 text-sm text-muted">
-                    {g.qualifyingDays} / {g.requiredDays} qualifying days ·{" "}
+                    {g.qualifyingDays} / {g.requiredDays} qualifying days ·{' '}
                     {g.requiredDays - g.qualifyingDays} to go
                   </p>
                   {g.missedDays > 0 && (
                     <p className="text-xs text-accent-pink">
-                      {g.missedDays} missed day{g.missedDays > 1 ? "s" : ""} —
+                      {g.missedDays} missed day{g.missedDays > 1 ? 's' : ''} —
                       complete every daily todo to keep your streak going.
                     </p>
                   )}

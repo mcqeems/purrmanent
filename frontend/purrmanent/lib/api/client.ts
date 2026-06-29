@@ -1,4 +1,4 @@
-import { API_BASE_URL, API_PREFIX } from "./config";
+import { API_BASE_URL, API_PREFIX } from './config';
 
 /** Backend error envelope: { error: { code, message, details } } (AllExceptionsFilter). */
 interface ApiErrorBody {
@@ -11,9 +11,14 @@ export class ApiError extends Error {
   readonly code: string;
   readonly details: unknown;
 
-  constructor(status: number, code: string, message: string, details?: unknown) {
+  constructor(
+    status: number,
+    code: string,
+    message: string,
+    details?: unknown,
+  ) {
     super(message);
-    this.name = "ApiError";
+    this.name = 'ApiError';
     this.status = status;
     this.code = code;
     this.details = details;
@@ -21,7 +26,7 @@ export class ApiError extends Error {
 
   /** True for 400 validation failures — drives per-field form errors. */
   get isValidation(): boolean {
-    return this.code === "VALIDATION_ERROR";
+    return this.code === 'VALIDATION_ERROR';
   }
 }
 
@@ -30,7 +35,7 @@ export type QueryParams = Record<
   string | number | boolean | undefined | null
 >;
 
-export interface ApiFetchOptions extends Omit<RequestInit, "body"> {
+export interface ApiFetchOptions extends Omit<RequestInit, 'body'> {
   body?: unknown;
   query?: QueryParams;
 }
@@ -38,7 +43,7 @@ export interface ApiFetchOptions extends Omit<RequestInit, "body"> {
 /** Build a fully-qualified URL with the /api prefix and a query string. */
 export function buildUrl(path: string, query?: QueryParams): string {
   const base = `${API_BASE_URL}${API_PREFIX}${
-    path.startsWith("/") ? path : `/${path}`
+    path.startsWith('/') ? path : `/${path}`
   }`;
   if (!query) return base;
   const qs = new URLSearchParams();
@@ -61,7 +66,7 @@ export async function parseError(res: Response): Promise<ApiError> {
   return new ApiError(
     res.status,
     err?.code ?? `HTTP_${res.status}`,
-    err?.message ?? res.statusText ?? "Request failed",
+    err?.message ?? res.statusText ?? 'Request failed',
     err?.details,
   );
 }
@@ -78,9 +83,9 @@ export async function apiFetch<T>(
   const { body, query, headers, ...rest } = options;
   const res = await fetch(buildUrl(path, query), {
     ...rest,
-    credentials: "include",
+    credentials: 'include',
     headers: {
-      ...(body !== undefined ? { "Content-Type": "application/json" } : {}),
+      ...(body !== undefined ? { 'Content-Type': 'application/json' } : {}),
       ...headers,
     },
     body: body !== undefined ? JSON.stringify(body) : undefined,

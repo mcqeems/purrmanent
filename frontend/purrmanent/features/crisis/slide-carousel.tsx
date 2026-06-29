@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { useMemo, useState } from "react";
-import useEmblaCarousel from "embla-carousel-react";
-import ReactMarkdown from "react-markdown";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Button, Checkbox } from "@/components/ui";
-import { cn } from "@/lib/utils/cn";
-import type { CrisisSlide } from "@/lib/types/api";
-import { useCompleteStep } from "./api";
+import { useMemo, useState } from 'react';
+import useEmblaCarousel from 'embla-carousel-react';
+import ReactMarkdown from 'react-markdown';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { Button, Checkbox } from '@/components/ui';
+import { cn } from '@/lib/utils/cn';
+import type { CrisisSlide } from '@/lib/types/api';
+import { useCompleteStep } from './api';
 
 export function SlideCarousel({
   eventId,
@@ -61,7 +61,11 @@ export function SlideCarousel({
                           checked={checked}
                           onCheckedChange={() => toggle(idx)}
                         />
-                        <span className={cn(checked && "text-on-dark-muted line-through")}>
+                        <span
+                          className={cn(
+                            checked && 'text-on-dark-muted line-through',
+                          )}
+                        >
                           {todo}
                         </span>
                       </li>
@@ -74,10 +78,18 @@ export function SlideCarousel({
         </div>
       </div>
       <div className="flex justify-between">
-        <Button variant="outline" size="sm" onClick={() => emblaApi?.scrollPrev()}>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => emblaApi?.scrollPrev()}
+        >
           <ChevronLeft size={16} /> Prev
         </Button>
-        <Button variant="outline" size="sm" onClick={() => emblaApi?.scrollNext()}>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => emblaApi?.scrollNext()}
+        >
           Next <ChevronRight size={16} />
         </Button>
       </div>

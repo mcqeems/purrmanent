@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useForm, Controller } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
+import { useState } from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
 import {
   questionnaireSchema,
   type QuestionnaireInput,
@@ -11,22 +11,22 @@ import {
   PERSONALITIES,
   ADOPTION_SOURCES,
   ADOPTER_EXPERIENCE,
-} from "@/lib/validation/schemas";
-import { Button, Card, Field, Input, SelectField } from "@/components/ui";
-import { useSubmitOnboarding } from "./hooks";
+} from '@/lib/validation/schemas';
+import { Button, Card, Field, Input, SelectField } from '@/components/ui';
+import { useSubmitOnboarding } from './hooks';
 
 const CONCERNS = [
-  "Litter box habits",
-  "Eating / appetite",
-  "Hiding a lot",
-  "Scratching furniture",
-  "Vet care & vaccines",
+  'Litter box habits',
+  'Eating / appetite',
+  'Hiding a lot',
+  'Scratching furniture',
+  'Vet care & vaccines',
 ];
 
 const STEP_FIELDS: (keyof QuestionnaireInput)[][] = [
-  ["catName", "catAgeMonths", "catGender", "catBreed", "catPersonality"],
-  ["adoptionDate", "adoptionSource", "shelterCode"],
-  ["adopterExperience", "homeType", "householdComposition", "concerns"],
+  ['catName', 'catAgeMonths', 'catGender', 'catBreed', 'catPersonality'],
+  ['adoptionDate', 'adoptionSource', 'shelterCode'],
+  ['adopterExperience', 'homeType', 'householdComposition', 'concerns'],
 ];
 
 export function QuestionnaireWizard({
@@ -51,7 +51,9 @@ export function QuestionnaireWizard({
     formState: { errors },
   } = form;
 
-  const optionalNumber = { setValueAs: (v: string) => (v === "" ? undefined : Number(v)) };
+  const optionalNumber = {
+    setValueAs: (v: string) => (v === '' ? undefined : Number(v)),
+  };
 
   async function next() {
     const valid = await trigger(STEP_FIELDS[step]);
@@ -64,13 +66,13 @@ export function QuestionnaireWizard({
       const cat = await submit.mutateAsync({
         ...values,
         timezone:
-          Intl.DateTimeFormat().resolvedOptions().timeZone ?? "Asia/Jakarta",
-        preferredLanguage: "en",
+          Intl.DateTimeFormat().resolvedOptions().timeZone ?? 'Asia/Jakarta',
+        preferredLanguage: 'en',
       });
       router.push(`/cats/${cat.id}`);
     } catch (err) {
       setServerError(
-        err instanceof Error ? err.message : "Could not save. Try again.",
+        err instanceof Error ? err.message : 'Could not save. Try again.',
       );
     }
   }
@@ -85,20 +87,37 @@ export function QuestionnaireWizard({
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {step === 0 && (
           <>
-            <Field label="Cat's name" htmlFor="catName" error={errors.catName?.message}>
-              <Input id="catName" {...register("catName")} />
+            <Field
+              label="Cat's name"
+              htmlFor="catName"
+              error={errors.catName?.message}
+            >
+              <Input id="catName" {...register('catName')} />
             </Field>
-            <Field label="Age (months)" htmlFor="catAgeMonths" error={errors.catAgeMonths?.message}>
-              <Input id="catAgeMonths" type="number" min={0} {...register("catAgeMonths", optionalNumber)} />
+            <Field
+              label="Age (months)"
+              htmlFor="catAgeMonths"
+              error={errors.catAgeMonths?.message}
+            >
+              <Input
+                id="catAgeMonths"
+                type="number"
+                min={0}
+                {...register('catAgeMonths', optionalNumber)}
+              />
             </Field>
-            <Field label="Gender" htmlFor="catGender" error={errors.catGender?.message}>
+            <Field
+              label="Gender"
+              htmlFor="catGender"
+              error={errors.catGender?.message}
+            >
               <Controller
                 control={control}
                 name="catGender"
                 render={({ field }) => (
                   <SelectField
                     id="catGender"
-                    value={field.value ?? ""}
+                    value={field.value ?? ''}
                     onValueChange={field.onChange}
                     placeholder="Unknown"
                     options={GENDERS.map((g) => ({ value: g, label: g }))}
@@ -106,17 +125,29 @@ export function QuestionnaireWizard({
                 )}
               />
             </Field>
-            <Field label="Breed" htmlFor="catBreed" error={errors.catBreed?.message}>
-              <Input id="catBreed" placeholder="e.g. Domestic shorthair" {...register("catBreed")} />
+            <Field
+              label="Breed"
+              htmlFor="catBreed"
+              error={errors.catBreed?.message}
+            >
+              <Input
+                id="catBreed"
+                placeholder="e.g. Domestic shorthair"
+                {...register('catBreed')}
+              />
             </Field>
-            <Field label="Personality" htmlFor="catPersonality" error={errors.catPersonality?.message}>
+            <Field
+              label="Personality"
+              htmlFor="catPersonality"
+              error={errors.catPersonality?.message}
+            >
               <Controller
                 control={control}
                 name="catPersonality"
                 render={({ field }) => (
                   <SelectField
                     id="catPersonality"
-                    value={field.value ?? ""}
+                    value={field.value ?? ''}
                     onValueChange={field.onChange}
                     options={PERSONALITIES.map((p) => ({ value: p, label: p }))}
                   />
@@ -128,56 +159,92 @@ export function QuestionnaireWizard({
 
         {step === 1 && (
           <>
-            <Field label="Adoption date" htmlFor="adoptionDate" error={errors.adoptionDate?.message}>
-              <Input id="adoptionDate" type="date" {...register("adoptionDate")} />
+            <Field
+              label="Adoption date"
+              htmlFor="adoptionDate"
+              error={errors.adoptionDate?.message}
+            >
+              <Input
+                id="adoptionDate"
+                type="date"
+                {...register('adoptionDate')}
+              />
             </Field>
-            <Field label="Adoption source" htmlFor="adoptionSource" error={errors.adoptionSource?.message}>
+            <Field
+              label="Adoption source"
+              htmlFor="adoptionSource"
+              error={errors.adoptionSource?.message}
+            >
               <Controller
                 control={control}
                 name="adoptionSource"
                 render={({ field }) => (
                   <SelectField
                     id="adoptionSource"
-                    value={field.value ?? ""}
+                    value={field.value ?? ''}
                     onValueChange={field.onChange}
-                    options={ADOPTION_SOURCES.map((s) => ({ value: s, label: s }))}
+                    options={ADOPTION_SOURCES.map((s) => ({
+                      value: s,
+                      label: s,
+                    }))}
                   />
                 )}
               />
             </Field>
-            <Field label="Shelter code (optional)" htmlFor="shelterCode" error={errors.shelterCode?.message}>
-              <Input id="shelterCode" {...register("shelterCode")} />
+            <Field
+              label="Shelter code (optional)"
+              htmlFor="shelterCode"
+              error={errors.shelterCode?.message}
+            >
+              <Input id="shelterCode" {...register('shelterCode')} />
             </Field>
           </>
         )}
 
         {step === 2 && (
           <>
-            <Field label="Your experience" htmlFor="adopterExperience" error={errors.adopterExperience?.message}>
+            <Field
+              label="Your experience"
+              htmlFor="adopterExperience"
+              error={errors.adopterExperience?.message}
+            >
               <Controller
                 control={control}
                 name="adopterExperience"
                 render={({ field }) => (
                   <SelectField
                     id="adopterExperience"
-                    value={field.value ?? ""}
+                    value={field.value ?? ''}
                     onValueChange={field.onChange}
-                    options={ADOPTER_EXPERIENCE.map((e) => ({ value: e, label: e }))}
+                    options={ADOPTER_EXPERIENCE.map((e) => ({
+                      value: e,
+                      label: e,
+                    }))}
                   />
                 )}
               />
             </Field>
             <Field label="Home type" htmlFor="homeType">
-              <Input id="homeType" placeholder="apartment, house…" {...register("homeType")} />
+              <Input
+                id="homeType"
+                placeholder="apartment, house…"
+                {...register('homeType')}
+              />
             </Field>
             <Field label="Household" htmlFor="householdComposition">
-              <Input id="householdComposition" placeholder="e.g. couple, kids, other pets" {...register("householdComposition")} />
+              <Input
+                id="householdComposition"
+                placeholder="e.g. couple, kids, other pets"
+                {...register('householdComposition')}
+              />
             </Field>
             <fieldset className="flex flex-col gap-2">
-              <legend className="text-sm font-medium text-ink-deep">Any concerns?</legend>
+              <legend className="text-sm font-medium text-ink-deep">
+                Any concerns?
+              </legend>
               {CONCERNS.map((c) => (
                 <label key={c} className="flex items-center gap-2 text-sm">
-                  <input type="checkbox" value={c} {...register("concerns")} />
+                  <input type="checkbox" value={c} {...register('concerns')} />
                   {c}
                 </label>
               ))}
@@ -185,7 +252,9 @@ export function QuestionnaireWizard({
           </>
         )}
 
-        {serverError && <p className="text-sm text-accent-pink">{serverError}</p>}
+        {serverError && (
+          <p className="text-sm text-accent-pink">{serverError}</p>
+        )}
 
         <div className="flex justify-between pt-2">
           <Button
@@ -202,7 +271,7 @@ export function QuestionnaireWizard({
             </Button>
           ) : (
             <Button type="submit" disabled={submit.isPending}>
-              {submit.isPending ? "Building your plan…" : "Build my plan"}
+              {submit.isPending ? 'Building your plan…' : 'Build my plan'}
             </Button>
           )}
         </div>

@@ -1,7 +1,7 @@
-import type { ReactNode } from "react";
-import { Nav } from "./nav";
-import { BottomNav } from "./bottom-nav";
-import { PageTransition } from "@/components/ui/motion";
+import type { ReactNode } from 'react';
+import { Nav } from './nav';
+import { BottomNav } from './bottom-nav';
+import { PageTransition } from '@/components/ui/motion';
 
 export function AppShell({
   children,

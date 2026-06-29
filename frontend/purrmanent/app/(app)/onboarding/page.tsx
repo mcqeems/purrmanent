@@ -1,5 +1,5 @@
-import { QuestionnaireWizard } from "@/features/onboarding/questionnaire-wizard";
-import { fetchDemoPrefill } from "@/features/onboarding/demo";
+import { QuestionnaireWizard } from '@/features/onboarding/questionnaire-wizard';
+import { fetchDemoPrefill } from '@/features/onboarding/demo';
 
 export default async function OnboardingPage({
   searchParams,

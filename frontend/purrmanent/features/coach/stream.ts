@@ -1,6 +1,6 @@
-import { buildUrl } from "@/lib/api/client";
-import type { CoachSource, PendingAction } from "@/lib/types/api";
-import type { ChatMessageInput } from "@/lib/validation/schemas";
+import { buildUrl } from '@/lib/api/client';
+import type { CoachSource, PendingAction } from '@/lib/types/api';
+import type { ChatMessageInput } from '@/lib/validation/schemas';
 
 export interface CoachStreamHandlers {
   onSources?: (sources: CoachSource[]) => void;
@@ -11,21 +11,21 @@ export interface CoachStreamHandlers {
 }
 
 function parseBlock(raw: string, handlers: CoachStreamHandlers): boolean {
-  let event = "message";
-  let data = "";
-  for (const line of raw.split("\n")) {
-    if (line.startsWith("event:")) event = line.slice(6).trim();
-    else if (line.startsWith("data:")) data += line.slice(5).trim();
+  let event = 'message';
+  let data = '';
+  for (const line of raw.split('\n')) {
+    if (line.startsWith('event:')) event = line.slice(6).trim();
+    else if (line.startsWith('data:')) data += line.slice(5).trim();
   }
   if (!data) return false;
-  if (data === "[DONE]") return true;
+  if (data === '[DONE]') return true;
   try {
     const parsed = JSON.parse(data) as unknown;
-    if (event === "sources") handlers.onSources?.(parsed as CoachSource[]);
-    else if (event === "delta")
-      handlers.onDelta?.(typeof parsed === "string" ? parsed : String(parsed));
-    else if (event === "confirm") handlers.onConfirm?.(parsed as PendingAction);
-    else if (event === "error") handlers.onError?.();
+    if (event === 'sources') handlers.onSources?.(parsed as CoachSource[]);
+    else if (event === 'delta')
+      handlers.onDelta?.(typeof parsed === 'string' ? parsed : String(parsed));
+    else if (event === 'confirm') handlers.onConfirm?.(parsed as PendingAction);
+    else if (event === 'error') handlers.onError?.();
   } catch {
     // ignore malformed block
   }
@@ -44,10 +44,10 @@ export async function streamCoachChat(
 ): Promise<void> {
   let res: Response;
   try {
-    res = await fetch(buildUrl("/coach/chat"), {
-      method: "POST",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
+    res = await fetch(buildUrl('/coach/chat'), {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
       signal,
     });
@@ -65,7 +65,7 @@ export async function streamCoachChat(
 
   const reader = res.body.getReader();
   const decoder = new TextDecoder();
-  let buffer = "";
+  let buffer = '';
   let finished = false;
 
   try {
@@ -74,7 +74,7 @@ export async function streamCoachChat(
       if (done) break;
       buffer += decoder.decode(value, { stream: true });
       let idx: number;
-      while ((idx = buffer.indexOf("\n\n")) !== -1) {
+      while ((idx = buffer.indexOf('\n\n')) !== -1) {
         const block = buffer.slice(0, idx);
         buffer = buffer.slice(idx + 2);
         if (parseBlock(block, handlers)) finished = true;

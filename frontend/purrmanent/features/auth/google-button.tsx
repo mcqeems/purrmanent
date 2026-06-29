@@ -1,9 +1,13 @@
-"use client";
+'use client';
 
-import { authClient } from "@/lib/auth/client";
-import { Button } from "@/components/ui";
+import { authClient } from '@/lib/auth/client';
+import { Button } from '@/components/ui';
 
-export function GoogleButton({ label = "Continue with Google" }: { label?: string }) {
+export function GoogleButton({
+  label = 'Continue with Google',
+}: {
+  label?: string;
+}) {
   return (
     <Button
       type="button"
@@ -11,7 +15,7 @@ export function GoogleButton({ label = "Continue with Google" }: { label?: strin
       className="w-full"
       onClick={() =>
         authClient.signIn.social({
-          provider: "google",
+          provider: 'google',
           callbackURL: `${window.location.origin}/dashboard`,
         })
       }
