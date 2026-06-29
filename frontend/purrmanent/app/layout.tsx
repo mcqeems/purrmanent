@@ -1,7 +1,11 @@
 import type { Metadata } from 'next';
-import { Rubik, Space_Grotesk } from 'next/font/google';
+import { Rubik, Space_Grotesk, Geist } from 'next/font/google';
 import { Providers } from '@/providers';
 import './globals.css';
+import { cn } from "@/lib/utils";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+
 
 // UI font (DESIGN.md) + chunky display substitute (Space Grotesk per DESIGN.md note).
 const rubik = Rubik({
@@ -28,7 +32,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`h-full antialiased ${rubik.variable} ${displayFace.variable}`}
+      className={cn("h-full", "antialiased", rubik.variable, displayFace.variable, "font-sans", geist.variable)}
     >
       <body className="min-h-full flex flex-col font-sans">
         <Providers>{children}</Providers>

@@ -1,7 +1,5 @@
 import Link from 'next/link';
 import { Button, Card } from '@/components/ui';
-import { PublicHeader } from '@/components/layout/public-header';
-import { Footer } from '@/components/layout/footer';
 
 const PHASES = [
   { k: '3 days', v: 'to decompress and feel safe in a quiet space.' },
@@ -12,8 +10,6 @@ const PHASES = [
 export default function AboutPage() {
   return (
     <div className="flex min-h-screen flex-col bg-surface-canvas-dark text-on-primary">
-      <PublicHeader />
-
       <main className="mx-auto max-w-3xl px-6 py-16">
         <h1 className="font-display text-4xl font-bold">About Purrmanent</h1>
         <p className="mt-4 text-lg text-on-dark-muted">
@@ -44,8 +40,6 @@ export default function AboutPage() {
           </Button>
         </div>
       </main>
-
-      <Footer />
     </div>
   );
 }

@@ -8,8 +8,6 @@ import {
   ClipboardList,
 } from 'lucide-react';
 import { Button, Chip, Card } from '@/components/ui';
-import { PublicHeader } from '@/components/layout/public-header';
-import { Footer } from '@/components/layout/footer';
 
 const FEATURES = [
   {
@@ -47,14 +45,14 @@ const FEATURES = [
 export default function Home() {
   return (
     <div className="flex min-h-screen flex-col bg-surface-canvas-dark text-on-primary">
-      <PublicHeader />
-
       <section className="mx-auto flex max-w-3xl flex-col items-center gap-6 px-6 py-20 text-center sm:py-28">
         <p className="text-sm font-medium uppercase tracking-[0.2px] text-accent-lime">
           90-day cat-parent guide
         </p>
         <h1 className="font-display text-5xl font-bold leading-tight sm:text-6xl">
-          The first 90 days, <Chip>made calm</Chip>
+          The first 90 days
+          <br />
+          <Chip>made calm</Chip>
         </h1>
         <p className="max-w-xl text-lg text-on-dark-muted">
           Purrmanent turns the stressful early months of cat adoption into a
@@ -101,8 +99,6 @@ export default function Home() {
           </Button>
         </div>
       </section>
-
-      <Footer />
     </div>
   );
 }
