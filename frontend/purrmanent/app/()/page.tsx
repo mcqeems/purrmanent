@@ -63,7 +63,7 @@ export default function Home() {
           <Button asChild variant="inverted">
             <Link href="/register">Get started free</Link>
           </Button>
-          <Button asChild variant="ghost">
+          <Button asChild variant="ghost-on-dark">
             <Link href="/login">Sign in</Link>
           </Button>
         </div>
