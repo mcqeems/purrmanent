@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Rubik, Inter } from 'next/font/google';
 import { Providers } from '@/providers';
 import './globals.css';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/utils/cn';
 
 const rubik = Rubik({
   subsets: ['latin'],
@@ -28,7 +28,13 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={cn('h-full', 'antialiased', rubik.variable, inter.variable, 'font-sans')}
+      className={cn(
+        'h-full',
+        'antialiased',
+        rubik.variable,
+        inter.variable,
+        'font-sans',
+      )}
     >
       <body className="min-h-full flex flex-col font-sans">
         <Providers>{children}</Providers>
