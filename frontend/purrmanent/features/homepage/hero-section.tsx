@@ -8,6 +8,7 @@ import BlurText from '@/components/BlurText';
 import ShinyText from '@/components/ShinyText';
 import TiltedCard from '@/components/TiltedCard';
 import { MOCK_DASHBOARD_SVG } from './mock-svgs';
+import logo from '@/app/assets/logo/logo-1000x1000.png';
 
 export function HeroSection() {
 	return (
@@ -42,7 +43,8 @@ export function HeroSection() {
 							text="PURRMANENT • PURRMANENT • "
 							spinDuration={12}
 							radius={45}
-							className="text-xs scale-75 text-accent-lime tracking-[1.5px] font-mono opacity-80 hover:opacity-100 transition-opacity absolute -right-20 -top-20 hidden md:block"
+							className="text-xs scale-75 text-accent-lime tracking-[1.5px] font-mono opacity-80 hover:opacity-100 transition-opacity absolute right-2 -top-25 hidden md:block"
+							image={logo}
 						/>
 					</h1>
 				</FadeInItem>
@@ -50,9 +52,10 @@ export function HeroSection() {
 				<FadeInItem yOffset={16}>
 					<div className="max-w-2xl text-lg md:text-xl text-on-dark-muted leading-[2.0] mt-2">
 						<BlurText
-							text="Purrmanent transforms the stressful early months of cat adoption into a clear, interactive roadmap based on the scientific 3-3-3 adjustment rule. Get personalized checklists, veterinary health logs, and RAG-backed AI coaching."
+							text="Purrmanent transforms the stressful early months of cat adoption into a clear, interactive roadmap based on the scientific 3-3-3 adjustment rule."
 							delay={15}
 							animateBy="words"
+							className="flex justify-center items-center"
 						/>
 					</div>
 				</FadeInItem>
@@ -81,11 +84,28 @@ export function HeroSection() {
 				</FadeInItem>
 
 				<FadeInItem yOffset={24} className="w-full mt-12 max-w-3xl relative">
-					<div className="absolute -top-12 -right-8 w-24 h-24 bg-accent-pink/15 border border-accent-pink/40 text-accent-pink rounded-full flex flex-col items-center justify-center rotate-12 z-20 font-display font-bold text-xs uppercase shadow-lg select-none hover:rotate-6 hover:scale-105 transition-all duration-300">
-						<Sparkles size={20} className="mb-1" />
-						<span>Vet Approved</span>
+					{/*
+						IMAGE PLACEHOLDER: Vet Approved Stamp
+						Description: A circular hand-drawn stamp emblem of a veterinary cross with cat ears, sketchy pencil texture, watercolor wash, warm green/lime tone.
+						Prompt for Image Generation Model:
+						"A circular hand-drawn stamp emblem of a veterinary cross with cat ears, sketchy pencil texture, watercolor wash, warm electric lime tone, white background, clean stamp outline, Sentry-style color palette --no text"
+					*/}
+					<div className="absolute -top-12 -right-8 w-24 h-24 bg-surface-canvas-dark border-2 border-dashed border-accent-lime/40 text-accent-lime rounded-full flex flex-col items-center justify-center rotate-12 z-20 font-display font-bold text-xs uppercase shadow-[0_0_15px_rgba(194,239,78,0.15)] select-none hover:rotate-6 hover:scale-105 transition-all duration-300">
+						<Sparkles
+							size={20}
+							className="mb-1 text-accent-lime animate-pulse"
+						/>
+						<span className="text-[9px] tracking-wider text-center px-2 font-mono">
+							Vet Approved
+						</span>
 					</div>
 
+					{/*
+						IMAGE PLACEHOLDER: Hero Main Decompression Illustration
+						Description: A cozy hand-drawn sketch illustration of an adopter slow-blinking at a cat in a living room, soft colored pencil and watercolor wash texture.
+						Prompt for Image Generation Model:
+						"A minimalist hand-drawn pencil sketch and watercolor wash illustration of a person sitting on a rug slow-blinking at a tabby cat, cozy living room background, soft colors, loose lines, white background, premium vector look --no 3d render, photorealistic"
+					*/}
 					<div className="border border-hairline-violet/60 rounded-xxl p-2 bg-primary/40 backdrop-blur-sm shadow-2xl hover:border-accent-lime/40 transition-colors duration-500">
 						<TiltedCard
 							imageSrc={MOCK_DASHBOARD_SVG}

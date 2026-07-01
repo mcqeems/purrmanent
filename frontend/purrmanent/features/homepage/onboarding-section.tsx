@@ -44,9 +44,15 @@ const ONBOARDING_STEPS = [
 export function OnboardingSection() {
 	return (
 		<section id="onboarding-steps" className="bg-surface-canvas-light py-24 text-ink-deep border-b border-hairline-cloud relative">
-			<div className="absolute bottom-8 left-12 w-28 h-28 hidden lg:flex flex-col items-center justify-center border border-accent-pink/30 bg-accent-pink/5 text-ink-deep rounded-full -rotate-12 p-4 select-none hover:rotate-0 hover:scale-105 transition-all duration-300 z-10">
+			{/* 
+				IMAGE PLACEHOLDER: "Log Daily Habits" Clipboard Sticker
+				Description: A hand-drawn pencil sketch and watercolor wash illustration of a clipboard checklist with cat paw prints, warm colors, sticker outline.
+				Prompt for Image Generation Model: 
+				"A hand-drawn pencil sketch and watercolor wash illustration of a clipboard checklist with cat paw prints, warm colors, white background, sticker border outline --no text"
+			*/}
+			<div className="absolute bottom-8 left-12 w-28 h-28 hidden lg:flex flex-col items-center justify-center border-2 border-dashed border-accent-pink/30 bg-surface-canvas-light text-ink-deep rounded-full -rotate-12 p-4 select-none hover:rotate-0 hover:scale-105 transition-all duration-300 z-10 shadow-[0_4px_12px_rgba(0,0,0,0.02)]">
 				<ListChecks size={28} className="text-accent-pink" />
-				<span className="text-[9px] font-bold uppercase tracking-wider text-center mt-2">Log Daily Habits</span>
+				<span className="text-[9px] font-bold uppercase tracking-wider text-center mt-1 font-mono text-accent-pink">Log Habits</span>
 			</div>
 
 			<div className="mx-auto max-w-6xl px-6">
@@ -95,7 +101,7 @@ export function OnboardingSection() {
 
 				<div className="text-center mt-14">
 					<Button id="btn-steps-register" asChild variant="emboss" size="lg" className="px-10">
-						<Link href="/register">Daftar Sekarang</Link>
+						<Link href="/register">Register Now</Link>
 					</Button>
 				</div>
 			</div>

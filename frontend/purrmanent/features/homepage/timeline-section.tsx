@@ -8,9 +8,12 @@ const TIMELINE_PHASES = [
 	{
 		phase: 'DAYS 1 - 3',
 		title: 'Decompression',
-		desc: 'Focus on setting up a quiet "safe zone". Your cat may hide, sleep, and eat sparingly. Keep food and water separated from the litter box.',
+		desc: 'Focus on setting up a quiet "safe zone". Your cat may hide, sleep, and eat sparingly. Keep food and water separated.',
 		focus: 'Safety & quiet space setup',
 		badge: '01',
+		illustrationName: 'Shy / Hiding Cat',
+		illustrationDesc: 'A hand-drawn sketch of a cat peeking out from under a bed.',
+		illustrationPrompt: '"A hand-drawn pencil sketch and watercolor wash illustration of a cat peeking shyly from under a bed skirt, soft warm colors, white background, simple outline doodle --no 3d render"',
 		tasks: [
 			'Select a quiet, low-traffic bedroom as your cat\'s basecamp.',
 			'Provide at least two cardboard boxes or hiding spots.',
@@ -21,9 +24,12 @@ const TIMELINE_PHASES = [
 	{
 		phase: 'WEEKS 1 - 3',
 		title: 'Building Routine',
-		desc: 'Your cat begins to explore the environment and understand feeding schedules. Introduce interactive play and establish clear daily rhythms.',
+		desc: 'Your cat begins to explore the environment and understand feeding schedules. Introduce interactive play and establish rhythms.',
 		focus: 'Feeding schedules & interactive play',
 		badge: '02',
+		illustrationName: 'Playing / Active Cat',
+		illustrationDesc: 'A hand-drawn sketch of a cat playing with a wand toy.',
+		illustrationPrompt: '"A hand-drawn pencil sketch and watercolor wash illustration of a cat playing with a wand toy, soft warm colors, white background, simple outline doodle --no 3d render"',
 		tasks: [
 			'Establish consistent twice-daily breakfast and dinner times.',
 			'Conduct two 15-minute high-energy play sessions with wand toys.',
@@ -34,9 +40,12 @@ const TIMELINE_PHASES = [
 	{
 		phase: 'MONTHS 1 - 3',
 		title: 'Home Integration',
-		desc: 'Building deep bonds of trust and mutual comfort. The cat feels secure, starts displaying their true personality, and integrates fully.',
+		desc: 'Building deep bonds of trust and comfort. The cat feels secure, starts displaying their true personality, and integrates fully.',
 		focus: 'Bonding, confidence & graduation',
 		badge: '03',
+		illustrationName: 'Relaxed / Integrated Cat',
+		illustrationDesc: 'A hand-drawn sketch of a relaxed cat sleeping on a cushion near a window.',
+		illustrationPrompt: '"A hand-drawn pencil sketch and watercolor wash illustration of a happy cat sleeping curled up on a pillow near a sunny window, soft warm colors, white background, simple outline doodle --no 3d render"',
 		tasks: [
 			'Expand roaming access to other rooms under supervised hours.',
 			'Introduce vertical spaces (high shelves, cat trees) for security.',
@@ -56,7 +65,7 @@ export function TimelineSection() {
 			<div className="mx-auto max-w-5xl relative z-10">
 				<FadeInItem viewport={true} yOffset={20} className="text-center mb-16">
 					<span className="text-xs font-bold uppercase tracking-[2px] text-accent-lime bg-accent-lime/10 px-3 py-1 rounded-full">
-						ADJUSTMENT LINIMASA (3-3-3 RULE)
+						3-3-3 ADJUSTMENT TIMELINE
 					</span>
 					<h2 className="font-display text-3.5xl font-bold text-on-primary mt-4">
 						Click a Phase to Reveal Checklist Tasks
@@ -97,6 +106,17 @@ export function TimelineSection() {
 										<p className="text-xs text-on-dark-muted leading-relaxed">
 											{p.desc}
 										</p>
+										{/* 
+											IMAGE PLACEHOLDER: Timeline Phase Illustration
+											Description: {p.illustrationDesc}
+											Prompt for Image Generation Model: 
+											{p.illustrationPrompt}
+										*/}
+										<div className="w-full h-[80px] border border-dashed border-hairline-violet/30 rounded-lg bg-surface-canvas-dark/30 flex flex-col items-center justify-center p-2 mt-4 group-hover:border-accent-lime/30 transition-colors duration-300">
+											<span className="text-[9px] font-mono text-accent-lime/60 group-hover:text-accent-lime font-bold uppercase tracking-wider text-center leading-normal">
+												[Sketch Image: {p.illustrationName}]
+											</span>
+										</div>
 									</div>
 									<div className="mt-8 w-full pt-4 border-t border-hairline-violet/20 flex items-center gap-2">
 										<Calendar size={14} className={isSelected ? 'text-accent-lime' : 'text-accent-violet'} />

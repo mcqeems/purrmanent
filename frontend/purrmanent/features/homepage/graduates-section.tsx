@@ -12,7 +12,9 @@ const GRADUATES = [
 		age: '1.5 Years Old',
 		tags: ['Shy Cat Path', 'Dog Housemate'],
 		story: 'Went from hiding behind the washing machine on Day 1 to sleeping soundly on the sofa with a golden retriever housemate by Day 90.',
-		mockup: MOCK_DASHBOARD_SVG
+		mockup: MOCK_DASHBOARD_SVG,
+		illustrationName: 'Milo Tabby Portrait',
+		illustrationPrompt: '"A circular hand-drawn cat portrait stamp of a tabby cat looking happy, watercolor wash, warm lines, white background, simple outline doodle --no text"'
 	},
 	{
 		name: 'Luna',
@@ -20,7 +22,9 @@ const GRADUATES = [
 		age: '6 Months Old',
 		tags: ['Bold Cat Path', 'Active Player'],
 		story: 'Luna was overly energetic, leading to playful scratching. Purrmanent\'s play schedules redirected her hunting instincts. She graduated fully settled.',
-		mockup: MOCK_HEALTH_LOG_SVG
+		mockup: MOCK_HEALTH_LOG_SVG,
+		illustrationName: 'Luna Black Cat Portrait',
+		illustrationPrompt: '"A circular hand-drawn cat portrait stamp of a black cat, watercolor wash, white background, simple outline doodle --no text"'
 	},
 	{
 		name: 'Cleo',
@@ -28,16 +32,24 @@ const GRADUATES = [
 		age: '4 Years Old',
 		tags: ['Balanced Path', 'Senior Care'],
 		story: 'Cleo integrated seamlessly using the standard timeline. Her adopters logged regular grooming schedules and vaccine checkups, ensuring a healthy senior lifestyle.',
-		mockup: MOCK_CRISIS_MODE_SVG
+		mockup: MOCK_CRISIS_MODE_SVG,
+		illustrationName: 'Cleo Calico Portrait',
+		illustrationPrompt: '"A circular hand-drawn cat portrait stamp of a calico cat, watercolor wash, white background, simple outline doodle --no text"'
 	}
 ];
 
 export function GraduatesSection() {
 	return (
 		<section id="graduates-portfolio" className="bg-surface-canvas-light py-24 text-ink-deep border-b border-hairline-cloud relative">
-			<div className="absolute top-12 right-12 w-28 h-28 hidden lg:flex flex-col items-center justify-center border border-accent-lime/30 bg-accent-lime/5 text-ink-deep rounded-xl rotate-12 p-4 select-none hover:rotate-0 hover:scale-105 transition-all duration-300">
+			{/* 
+				IMAGE PLACEHOLDER: "Graduated!" Cat Stamp Sticker
+				Description: A circular hand-drawn stamp emblem of a cat graduation cap with a tassel, sketchy pencil outline, textured watercolor wash.
+				Prompt for Image Generation Model: 
+				"A circular hand-drawn stamp emblem of a cat graduation cap with a tassel, sketchy pencil outline, textured watercolor wash, warm electric lime tone, white background, simple outline doodle, Sentry color theme --no text"
+			*/}
+			<div className="absolute top-12 right-12 w-28 h-28 hidden lg:flex flex-col items-center justify-center border-2 border-dashed border-accent-lime/30 bg-surface-canvas-light text-accent-lime rounded-full rotate-12 p-4 select-none hover:rotate-0 hover:scale-105 transition-all duration-300 shadow-[0_4px_12px_rgba(0,0,0,0.02)]">
 				<Trophy size={28} className="text-accent-lime stroke-[2]" />
-				<span className="text-[9px] font-bold uppercase tracking-wider text-center mt-2">Graduated!</span>
+				<span className="text-[9px] font-bold uppercase tracking-wider text-center mt-1 font-mono text-ink-deep">Graduated!</span>
 			</div>
 
 			<div className="mx-auto max-w-6xl px-6">
@@ -71,6 +83,28 @@ export function GraduatesSection() {
 
 							<div className="flex-1 flex flex-col justify-between px-2">
 								<div>
+									<div className="flex items-center gap-4 mb-4">
+										{/* 
+											IMAGE PLACEHOLDER: Graduate Portrait Stamp
+											Description: A circular hand-drawn cat portrait stamp for {g.name}.
+											Prompt for Image Generation Model: 
+											{g.illustrationPrompt}
+										*/}
+										<div className="size-14 border-2 border-dashed border-accent-violet/30 rounded-full bg-surface-press-light/30 flex items-center justify-center shrink-0 shadow-inner">
+											<span className="text-[8px] font-mono text-accent-violet/70 font-bold uppercase tracking-wider text-center leading-normal">
+												[Stamp: {g.name}]
+											</span>
+										</div>
+										<div>
+											<h3 className="font-display text-md font-bold text-ink-deep">
+												{g.name}
+											</h3>
+											<p className="text-[10px] text-muted font-normal leading-normal">
+												{g.breed} <br /> {g.age}
+											</p>
+										</div>
+									</div>
+
 									<div className="flex flex-wrap gap-1.5 mb-3">
 										{g.tags.map((t) => (
 											<span key={t} className="text-[9px] font-bold uppercase tracking-wider text-accent-violet bg-accent-violet/10 px-2 py-0.5 rounded">
@@ -78,10 +112,6 @@ export function GraduatesSection() {
 											</span>
 										))}
 									</div>
-
-									<h3 className="font-display text-lg font-bold text-ink-deep mb-1">
-										{g.name} &mdash; <span className="text-xs text-muted font-normal">{g.breed}, {g.age}</span>
-									</h3>
 
 									<p className="text-xs text-muted leading-relaxed mt-2">
 										{g.story}
