@@ -17,6 +17,10 @@ const buttonVariants = cva(
           'bg-on-dark-faint text-on-primary font-bold text-[14px] leading-[1.14] tracking-[0.2px] uppercase',
         'violet-token':
           'bg-accent-violet-mid text-on-primary font-medium text-[14px] leading-[1.29] tracking-[0.2px] uppercase border border-hairline-violet',
+        violet:
+          'bg-accent-violet-mid text-on-primary font-medium text-[14px] leading-[1.29] tracking-[0.2px] uppercase border border-hairline-violet',
+        emboss:
+          'bg-accent-lime text-ink-deep font-bold text-[14px] leading-[1.14] tracking-[0.2px] uppercase shadow-emboss rounded-[24px] border border-accent-lime/20 hover:bg-accent-lime/90 hover:scale-[0.97] active:scale-[0.95] transition-all duration-200',
         // Fallbacks for standard Shadcn UI variants
         destructive:
           'bg-danger text-on-primary font-bold text-[14px] leading-[1.14] tracking-[0.2px] uppercase active:bg-danger/90',

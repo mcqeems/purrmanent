@@ -172,3 +172,15 @@
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
 }
+
+@utility shadow-emboss {
+  box-shadow: rgba(0, 0, 0, 0.02) -0.195908px 0.78363px 0.807747px -0.535714px,
+              rgba(0, 0, 0, 0.02) -0.479912px 1.91965px 1.97873px -1.07143px,
+              rgba(0, 0, 0, 0.02) -0.909364px 3.63745px 3.7494px -1.60714px,
+              rgba(0, 0, 0, 0.02) -1.58751px 6.35004px 6.54548px -2.14286px,
+              rgba(0, 0, 0, 0.02) -2.76297px 11.0519px 11.392px -2.67857px,
+              rgba(0, 0, 0, 0.01) -5.0607px 20.2428px 20.8658px -3.21429px,
+              rgba(0, 0, 0, 0.01) -10px 40px 41.2311px -3.75px,
+              rgba(255, 255, 255, 0.5) 0px 6px 10px 0px inset;
+}
+
