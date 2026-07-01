@@ -13,7 +13,7 @@ const NAV_ITEMS = [
 	{ name: 'Timeline', href: '#timeline' },
 	{ name: 'Readiness', href: '#readiness-checklists' },
 	{ name: 'Paths', href: '#personality-paths' },
-	{ name: 'Graduates', href: '#graduates-portfolio' }
+	{ name: 'Graduates', href: '#graduates-portfolio' },
 ];
 
 export function PublicHeader() {
@@ -45,20 +45,32 @@ export function PublicHeader() {
 		collapsed: {
 			height: '62px',
 			borderRadius: '31px',
-			transition: { duration: 0.35, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }
+			transition: {
+				duration: 0.35,
+				ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
+			},
 		},
 		expanded: {
 			height: 'auto',
 			borderRadius: '28px',
-			transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }
-		}
+			transition: {
+				duration: 0.4,
+				ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
+			},
+		},
 	};
 
 	return (
 		<motion.header
 			variants={containerVariants}
 			initial={false}
-			animate={isMobile ? (isOpen ? 'expanded' : 'collapsed') : { height: '62px', borderRadius: '9999px' }}
+			animate={
+				isMobile
+					? isOpen
+						? 'expanded'
+						: 'collapsed'
+					: { height: '62px', borderRadius: '9999px' }
+			}
 			className="fixed top-6 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-6xl z-50 bg-surface-canvas-dark/80 backdrop-blur-lg border border-hairline-violet/15 shadow-2xl overflow-hidden"
 		>
 			{isMobile ? (
@@ -139,9 +151,11 @@ export function PublicHeader() {
 									<Button
 										asChild
 										variant="emboss"
-										className="w-full text-center py-5 font-bold uppercase tracking-[1.5px] text-sm"
+										className="w-full text-center py-3 font-bold uppercase tracking-[1.5px] text-sm"
 									>
-										<Link href="/register" onClick={() => setIsOpen(false)}>Get started</Link>
+										<Link href="/register" onClick={() => setIsOpen(false)}>
+											Get started
+										</Link>
 									</Button>
 								</div>
 							</motion.div>
@@ -193,12 +207,7 @@ export function PublicHeader() {
 						>
 							Sign in
 						</Link>
-						<Button
-							asChild
-							variant="emboss"
-							size="sm"
-							className="px-5"
-						>
+						<Button asChild variant="emboss" size="sm" className="px-5">
 							<Link href="/register">Get started</Link>
 						</Button>
 					</div>

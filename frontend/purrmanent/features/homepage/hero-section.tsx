@@ -11,7 +11,10 @@ import { MOCK_DASHBOARD_SVG } from './mock-svgs';
 
 export function HeroSection() {
 	return (
-		<section id="hero" className="relative overflow-hidden min-h-[98vh] flex items-center justify-center pt-28 pb-20 px-6 text-center bg-surface-canvas-dark">
+		<section
+			id="hero"
+			className="relative overflow-hidden min-h-[98vh] flex items-center justify-center pt-28 pb-20 px-6 text-center bg-surface-canvas-dark"
+		>
 			<div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(106,95,193,0.15),rgba(255,255,255,0))]" />
 
 			<Stagger
@@ -56,7 +59,13 @@ export function HeroSection() {
 
 				<FadeInItem yOffset={20}>
 					<div className="flex flex-wrap justify-center gap-4 mt-6">
-						<Button id="btn-hero-start" asChild variant="emboss" size="lg" className="px-8">
+						<Button
+							id="btn-hero-start"
+							asChild
+							variant="emboss"
+							size="lg"
+							className="px-8"
+						>
 							<Link href="/register">Get started free</Link>
 						</Button>
 						<Button
@@ -92,18 +101,30 @@ export function HeroSection() {
 
 					<div className="mt-8 flex flex-wrap items-center justify-center gap-8 border-t border-hairline-violet/30 pt-6">
 						<div className="text-center sm:text-left">
-							<p className="text-2xl font-bold font-display text-accent-lime">5,000+</p>
-							<p className="text-xs text-on-dark-muted font-medium uppercase tracking-wider">Cats Graduated</p>
+							<p className="text-2xl font-bold font-display text-accent-lime">
+								5,000+
+							</p>
+							<p className="text-xs text-on-dark-muted font-medium uppercase tracking-wider">
+								Cats Graduated
+							</p>
 						</div>
 						<div className="h-8 w-px bg-hairline-violet/30 hidden sm:block" />
 						<div className="text-center sm:text-left">
-							<p className="text-2xl font-bold font-display text-accent-pink">98.4%</p>
-							<p className="text-xs text-on-dark-muted font-medium uppercase tracking-wider">Integration Rate</p>
+							<p className="text-2xl font-bold font-display text-accent-pink">
+								98.4%
+							</p>
+							<p className="text-xs text-on-dark-muted font-medium uppercase tracking-wider">
+								Integration Rate
+							</p>
 						</div>
 						<div className="h-8 w-px bg-hairline-violet/30 hidden sm:block" />
 						<div className="text-center sm:text-left">
-							<p className="text-2xl font-bold font-display text-on-primary">120+</p>
-							<p className="text-xs text-on-dark-muted font-medium uppercase tracking-wider">Partner Shelters</p>
+							<p className="text-2xl font-bold font-display text-on-primary">
+								120+
+							</p>
+							<p className="text-xs text-on-dark-muted font-medium uppercase tracking-wider">
+								Partner Shelters
+							</p>
 						</div>
 					</div>
 				</FadeInItem>
