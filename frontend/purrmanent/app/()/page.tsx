@@ -1,5 +1,4 @@
 import { HeroSection } from '@/features/homepage/hero-section';
-import { PartnersStrip } from '@/features/homepage/partners-strip';
 import { WhySection } from '@/features/homepage/why-section';
 import { OnboardingSection } from '@/features/homepage/onboarding-section';
 import { TimelineSection } from '@/features/homepage/timeline-section';
@@ -12,7 +11,6 @@ export default function Home() {
 	return (
 		<div className="flex min-h-screen flex-col bg-surface-canvas-dark text-on-primary">
 			<HeroSection />
-			<PartnersStrip />
 			<WhySection />
 			<OnboardingSection />
 			<TimelineSection />
