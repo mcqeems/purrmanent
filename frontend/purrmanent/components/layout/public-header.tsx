@@ -170,7 +170,7 @@ export function PublicHeader() {
 						href="/"
 						className="flex items-center gap-2.5 group hover:scale-[1.02] active:scale-[0.98] transition-transform duration-200"
 					>
-						<div className="p-1 bg-surface-canvas-light rounded-lg group-hover:shadow-[0_0_12px_rgba(194,239,78,0.2)] transition-shadow">
+						<div className="p-1 bg-surface-canvas-light group-hover:bg-accent-lime rounded-lg group-hover:shadow-[0_0_12px_rgba(194,239,78,0.2)] transition-all">
 							<Image
 								src={logo}
 								alt="Purrmanent Logo"
