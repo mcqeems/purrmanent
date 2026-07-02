@@ -51,7 +51,7 @@ export function HeroSection() {
 				<FadeInItem yOffset={16}>
 					<div className="max-w-2xl text-lg md:text-xl text-on-dark-muted leading-[2.0] mt-2">
 						<BlurText
-							text="Purrmanent transforms the stressful early months of cat adoption into a clear, interactive roadmap based on the scientific 3-3-3 adjustment rule."
+							text="Transforms the stressful early months of cat adoption into a clear, interactive roadmap based on the scientific 3-3-3 adjustment rule."
 							delay={15}
 							animateBy="words"
 							className="flex justify-center items-center"
@@ -84,15 +84,27 @@ export function HeroSection() {
 
 				<FadeInItem
 					yOffset={24}
-					className="w-full max-w-3xl flex justify-center items-center"
+					className="w-full max-w-3xl flex flex-col justify-center items-center"
 				>
 					<Image
 						src={heroMainDecompressionIllustration}
 						alt="Purrmanent 90-Day Tracker Dashboard Screenshot"
 						className="opacity-75 hover:opacity-90 scale-95 hover:scale-100 transition-all duration-300"
-						height={500}
-						width={500}
+						height={400}
+						width={400}
 					/>
+
+					<div className="mt-12 max-w-2xl flex flex-col gap-4">
+						<h2 className="text-4xl font-bold font-display text-accent-lime">
+							Purrmanent
+						</h2>
+						<p className="text-center">
+							Purrmanent is a cat adoption tracker that helps you keep track of
+							your cat&apos;s progress through the 3-3-3 adjustment rule, with a
+							powerful feature that helps you visualize your cat's progress over
+							time.
+						</p>
+					</div>
 				</FadeInItem>
 			</Stagger>
 		</section>
