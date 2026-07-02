@@ -4,7 +4,7 @@ import {
 	ClipboardList,
 	Building,
 	Calendar,
-	Trophy
+	Trophy,
 } from 'lucide-react';
 import { Button, Stagger, FadeInItem } from '@/components/ui';
 
@@ -12,51 +12,47 @@ const ONBOARDING_STEPS = [
 	{
 		number: '1',
 		title: 'Link Your Shelter Account',
-		desc: 'Connect using your shelter code or adoption ID to load your cat\'s baseline medical records.',
-		icon: Building
+		desc: "Connect using your shelter code or adoption ID to load your cat's baseline medical records.",
+		icon: Building,
 	},
 	{
 		number: '2',
 		title: 'Complete Onboarding Profile',
-		desc: 'Fill out our behavioral questionnaire detailing your cat\'s initial temperament (shy, active, or bold).',
-		icon: ClipboardList
+		desc: "Fill out our behavioral questionnaire detailing your cat's initial temperament (shy, active, or bold).",
+		icon: ClipboardList,
 	},
 	{
 		number: '3',
 		title: 'Receive Custom 90-Day Plan',
-		desc: 'Our system generates your custom plan tailored to your cat\'s specific traits and your home environment.',
-		icon: Calendar
+		desc: "Our system generates your custom plan tailored to your cat's specific traits and your home environment.",
+		icon: Calendar,
 	},
 	{
 		number: '4',
 		title: 'Track Checklists & Logs Daily',
 		desc: 'Check off daily habits, log health metrics, and chat with our behaviorist AI when issues occur.',
-		icon: ListChecks
+		icon: ListChecks,
 	},
 	{
 		number: '5',
 		title: 'Graduate & Unlock Bond',
 		desc: 'Graduate on Day 90 with a fully decompressed, confident cat and a signed graduation certificate.',
-		icon: Trophy
-	}
+		icon: Trophy,
+	},
 ];
 
 export function OnboardingSection() {
 	return (
-		<section id="onboarding-steps" className="bg-surface-canvas-light py-24 text-ink-deep border-b border-hairline-cloud relative">
-			{/* 
-				IMAGE PLACEHOLDER: "Log Daily Habits" Clipboard Sticker
-				Description: A hand-drawn pencil sketch and watercolor wash illustration of a clipboard checklist with cat paw prints, warm colors, sticker outline.
-				Prompt for Image Generation Model: 
-				"A hand-drawn pencil sketch and watercolor wash illustration of a clipboard checklist with cat paw prints, warm colors, white background, sticker border outline --no text"
-			*/}
-			<div className="absolute bottom-8 left-12 w-28 h-28 hidden lg:flex flex-col items-center justify-center border-2 border-dashed border-accent-pink/30 bg-surface-canvas-light text-ink-deep rounded-full -rotate-12 p-4 select-none hover:rotate-0 hover:scale-105 transition-all duration-300 z-10 shadow-[0_4px_12px_rgba(0,0,0,0.02)]">
-				<ListChecks size={28} className="text-accent-pink" />
-				<span className="text-[9px] font-bold uppercase tracking-wider text-center mt-1 font-mono text-accent-pink">Log Habits</span>
-			</div>
-
+		<section
+			id="onboarding-steps"
+			className="bg-surface-canvas-light py-24 text-ink-deep border-b border-hairline-cloud relative"
+		>
 			<div className="mx-auto max-w-6xl px-6">
-				<FadeInItem viewport={true} yOffset={20} className="text-center mb-16 max-w-2xl mx-auto">
+				<FadeInItem
+					viewport={true}
+					yOffset={20}
+					className="text-center mb-16 max-w-2xl mx-auto"
+				>
 					<span className="text-xs font-bold uppercase tracking-[2px] text-accent-violet bg-accent-violet/10 px-3 py-1 rounded-full">
 						ROADMAP PIPELINE
 					</span>
@@ -64,14 +60,19 @@ export function OnboardingSection() {
 						How the program works
 					</h2>
 					<p className="text-muted mt-3 text-base leading-relaxed">
-						A systematic transition structure from shelter adoption to fully integrated family member.
+						A systematic transition structure from shelter adoption to fully
+						integrated family member.
 					</p>
 				</FadeInItem>
 
 				<div className="relative">
 					<div className="absolute top-1/2 left-4 right-4 h-0.5 bg-hairline-cloud -translate-y-1/2 hidden lg:block z-0" />
 
-					<Stagger viewport={true} delay={0.1} className="grid gap-8 lg:grid-cols-5 relative z-10">
+					<Stagger
+						viewport={true}
+						delay={0.1}
+						className="grid gap-8 lg:grid-cols-5 relative z-10"
+					>
 						{ONBOARDING_STEPS.map((s) => {
 							const StepIcon = s.icon;
 							return (
@@ -100,7 +101,13 @@ export function OnboardingSection() {
 				</div>
 
 				<div className="text-center mt-14">
-					<Button id="btn-steps-register" asChild variant="emboss" size="lg" className="px-10">
+					<Button
+						id="btn-steps-register"
+						asChild
+						variant="emboss"
+						size="lg"
+						className="px-10"
+					>
 						<Link href="/register">Register Now</Link>
 					</Button>
 				</div>
