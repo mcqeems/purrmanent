@@ -1,15 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import { Sparkles } from 'lucide-react';
 import { Button, Stagger, FadeInItem } from '@/components/ui';
 import CircularText from '@/components/CircularText';
 import BlurText from '@/components/BlurText';
 import ShinyText from '@/components/ShinyText';
-import TiltedCard from '@/components/TiltedCard';
-import { MOCK_DASHBOARD_SVG } from './mock-svgs';
 import logo from '@/app/assets/logo/logo-1000x1000.png';
-import vetApprovedStamp from '@/app/assets/hero/vet-approved-stamp.png';
 import heroMainDecompressionIllustration from '@/app/assets/hero/hero-main-decompression-illustration.png';
 import Image from 'next/image';
 
