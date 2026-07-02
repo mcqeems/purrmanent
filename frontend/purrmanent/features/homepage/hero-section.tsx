@@ -9,6 +9,9 @@ import ShinyText from '@/components/ShinyText';
 import TiltedCard from '@/components/TiltedCard';
 import { MOCK_DASHBOARD_SVG } from './mock-svgs';
 import logo from '@/app/assets/logo/logo-1000x1000.png';
+import vetApprovedStamp from '@/app/assets/hero/vet-approved-stamp.png';
+import heroMainDecompressionIllustration from '@/app/assets/hero/hero-main-decompression-illustration.png';
+import Image from 'next/image';
 
 export function HeroSection() {
 	return (
@@ -83,70 +86,17 @@ export function HeroSection() {
 					</div>
 				</FadeInItem>
 
-				<FadeInItem yOffset={24} className="w-full mt-12 max-w-3xl relative">
-					{/*
-						IMAGE PLACEHOLDER: Vet Approved Stamp
-						Description: A circular hand-drawn stamp emblem of a veterinary cross with cat ears, sketchy pencil texture, watercolor wash, warm green/lime tone.
-						Prompt for Image Generation Model:
-						"A circular hand-drawn stamp emblem of a veterinary cross with cat ears, sketchy pencil texture, watercolor wash, warm electric lime tone, white background, clean stamp outline, Sentry-style color palette --no text"
-					*/}
-					<div className="absolute -top-12 -right-8 w-24 h-24 bg-surface-canvas-dark border-2 border-dashed border-accent-lime/40 text-accent-lime rounded-full flex flex-col items-center justify-center rotate-12 z-20 font-display font-bold text-xs uppercase shadow-[0_0_15px_rgba(194,239,78,0.15)] select-none hover:rotate-6 hover:scale-105 transition-all duration-300">
-						<Sparkles
-							size={20}
-							className="mb-1 text-accent-lime animate-pulse"
-						/>
-						<span className="text-[9px] tracking-wider text-center px-2 font-mono">
-							Vet Approved
-						</span>
-					</div>
-
-					{/*
-						IMAGE PLACEHOLDER: Hero Main Decompression Illustration
-						Description: A cozy hand-drawn sketch illustration of an adopter slow-blinking at a cat in a living room, soft colored pencil and watercolor wash texture.
-						Prompt for Image Generation Model:
-						"A minimalist hand-drawn pencil sketch and watercolor wash illustration of a person sitting on a rug slow-blinking at a tabby cat, cozy living room background, soft colors, loose lines, white background, premium vector look --no 3d render, photorealistic"
-					*/}
-					<div className="border border-hairline-violet/60 rounded-xxl p-2 bg-primary/40 backdrop-blur-sm shadow-2xl hover:border-accent-lime/40 transition-colors duration-500">
-						<TiltedCard
-							imageSrc={MOCK_DASHBOARD_SVG}
-							altText="Purrmanent 90-Day Tracker Dashboard Screenshot"
-							captionText="Day 12: Building Feeding Routine Checklist"
-							containerHeight="400px"
-							imageHeight="380px"
-							imageWidth="100%"
-							scaleOnHover={1.03}
-							rotateAmplitude={4}
-						/>
-					</div>
-
-					<div className="mt-8 flex flex-wrap items-center justify-center gap-8 border-t border-hairline-violet/30 pt-6">
-						<div className="text-center sm:text-left">
-							<p className="text-2xl font-bold font-display text-accent-lime">
-								5,000+
-							</p>
-							<p className="text-xs text-on-dark-muted font-medium uppercase tracking-wider">
-								Cats Graduated
-							</p>
-						</div>
-						<div className="h-8 w-px bg-hairline-violet/30 hidden sm:block" />
-						<div className="text-center sm:text-left">
-							<p className="text-2xl font-bold font-display text-accent-pink">
-								98.4%
-							</p>
-							<p className="text-xs text-on-dark-muted font-medium uppercase tracking-wider">
-								Integration Rate
-							</p>
-						</div>
-						<div className="h-8 w-px bg-hairline-violet/30 hidden sm:block" />
-						<div className="text-center sm:text-left">
-							<p className="text-2xl font-bold font-display text-on-primary">
-								120+
-							</p>
-							<p className="text-xs text-on-dark-muted font-medium uppercase tracking-wider">
-								Partner Shelters
-							</p>
-						</div>
-					</div>
+				<FadeInItem
+					yOffset={24}
+					className="w-full max-w-3xl flex justify-center items-center"
+				>
+					<Image
+						src={heroMainDecompressionIllustration}
+						alt="Purrmanent 90-Day Tracker Dashboard Screenshot"
+						className="opacity-75 hover:opacity-90 scale-95 hover:scale-100 transition-all duration-300"
+						height={500}
+						width={500}
+					/>
 				</FadeInItem>
 			</Stagger>
 		</section>
