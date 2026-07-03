@@ -13,7 +13,6 @@ const NAV_ITEMS = [
 	{ name: 'Timeline', href: '#timeline' },
 	{ name: 'Readiness', href: '#readiness-checklists' },
 	{ name: 'Paths', href: '#personality-paths' },
-	{ name: 'Graduates', href: '#graduates-portfolio' },
 ];
 
 export function PublicHeader() {

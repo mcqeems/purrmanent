@@ -5,11 +5,10 @@ import {
 	ClipboardList,
 	ShieldCheck,
 	Building,
-	Heart,
 } from 'lucide-react';
 import { Card, Stagger, FadeInItem } from '@/components/ui';
 import Image from 'next/image';
-import catInCardboard from '@/app/assets/hero/cat-in-cardboard-box-illustration.png';
+import catInCardboard from '@/app/assets/home/cat-in-cardboard-box-illustration.png';
 
 const FEATURES = [
 	{
@@ -48,9 +47,9 @@ export function WhySection() {
 	return (
 		<section
 			id="why-us"
-			className="bg-surface-canvas-light py-24 text-ink-deep border-b border-hairline-cloud relative"
+			className="bg-surface-canvas-light text-ink-deep relative "
 		>
-			<div className="mx-auto max-w-6xl px-6">
+			<div className="mx-auto max-w-6xl px-6 border-b border-hairline-cloud py-24">
 				<div className="grid md:grid-cols-3 gap-8 items-center mb-16">
 					<FadeInItem
 						viewport={true}

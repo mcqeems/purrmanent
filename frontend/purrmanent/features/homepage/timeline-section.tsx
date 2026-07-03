@@ -1,8 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { Calendar, Activity, Check } from 'lucide-react';
+import { Activity, Check } from 'lucide-react';
 import { Card, FadeInItem } from '@/components/ui';
+import Image from 'next/image';
+import catHiding from '@/app/assets/home/cat-hiding.png';
+import catPlayingToys from '@/app/assets/home/cat-playing-toys.png';
+import catSleepingWindow from '@/app/assets/home/cat-sleeping-window.png';
+import vetApprovedStamp from '@/app/assets/home/vet-approved-stamp.png';
 
 const TIMELINE_PHASES = [
 	{
@@ -14,8 +19,7 @@ const TIMELINE_PHASES = [
 		illustrationName: 'Shy / Hiding Cat',
 		illustrationDesc:
 			'A hand-drawn sketch of a cat peeking out from under a bed.',
-		illustrationPrompt:
-			'"A hand-drawn pencil sketch and watercolor wash illustration of a cat peeking shyly from under a bed skirt, soft warm colors, white background, simple outline doodle --no 3d render"',
+		illustration: catHiding,
 		tasks: [
 			"Select a quiet, low-traffic bedroom as your cat's basecamp.",
 			'Provide at least two cardboard boxes or hiding spots.',
@@ -31,8 +35,7 @@ const TIMELINE_PHASES = [
 		badge: '02',
 		illustrationName: 'Playing / Active Cat',
 		illustrationDesc: 'A hand-drawn sketch of a cat playing with a wand toy.',
-		illustrationPrompt:
-			'"A hand-drawn pencil sketch and watercolor wash illustration of a cat playing with a wand toy, soft warm colors, white background, simple outline doodle --no 3d render"',
+		illustration: catPlayingToys,
 		tasks: [
 			'Establish consistent twice-daily breakfast and dinner times.',
 			'Conduct two 15-minute high-energy play sessions with wand toys.',
@@ -49,8 +52,7 @@ const TIMELINE_PHASES = [
 		illustrationName: 'Relaxed / Integrated Cat',
 		illustrationDesc:
 			'A hand-drawn sketch of a relaxed cat sleeping on a cushion near a window.',
-		illustrationPrompt:
-			'"A hand-drawn pencil sketch and watercolor wash illustration of a happy cat sleeping curled up on a pillow near a sunny window, soft warm colors, white background, simple outline doodle --no 3d render"',
+		illustration: catSleepingWindow,
 		tasks: [
 			'Expand roaming access to other rooms under supervised hours.',
 			'Introduce vertical spaces (high shelves, cat trees) for security.',
@@ -68,7 +70,7 @@ export function TimelineSection() {
 			id="timeline"
 			className="bg-surface-canvas-dark py-24 px-6 border-b border-hairline-violet/30 relative overflow-hidden"
 		>
-			<div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,rgba(106,95,193,0.08),rgba(255,255,255,0))]" />
+			<div className="absolute inset-0" />
 
 			<div className="mx-auto max-w-5xl relative z-10">
 				<FadeInItem viewport={true} yOffset={20} className="text-center mb-16">
@@ -125,29 +127,19 @@ export function TimelineSection() {
 										<p className="text-xs text-on-dark-muted leading-relaxed">
 											{p.desc}
 										</p>
-										{/*
-											IMAGE PLACEHOLDER: Timeline Phase Illustration
-											Description: {p.illustrationDesc}
-											Prompt for Image Generation Model:
-											{p.illustrationPrompt}
-										*/}
-										<div className="w-full h-[80px] border border-dashed border-hairline-violet/30 rounded-lg bg-surface-canvas-dark/30 flex flex-col items-center justify-center p-2 mt-4 group-hover:border-accent-lime/30 transition-colors duration-300">
-											<span className="text-[9px] font-mono text-accent-lime/60 group-hover:text-accent-lime font-bold uppercase tracking-wider text-center leading-normal">
-												[Sketch Image: {p.illustrationName}]
-											</span>
+										<div className="w-full flex flex-col items-center justify-center p-2 mt-4">
+											<Image
+												src={p.illustration}
+												alt={p.illustrationName}
+												className={`w-full h-full object-cover rounded-lg opacity-75 group-hover:scale-105 group-hover:opacity-100 ${isSelected ? 'scale-105 opacity-100' : 'scale-100 opacity-75'} transition-all duration-300`}
+											/>
 										</div>
 									</div>
 									<div className="mt-8 w-full pt-4 border-t border-hairline-violet/20 flex items-center gap-2">
-										<Calendar
-											size={14}
-											className={
-												isSelected ? 'text-accent-lime' : 'text-accent-violet'
-											}
-										/>
 										<span
 											className={`text-xs font-semibold ${isSelected ? 'text-accent-lime' : 'text-accent-violet'}`}
 										>
-											Focus: {p.focus}
+											● {p.focus}
 										</span>
 									</div>
 								</button>
@@ -159,8 +151,16 @@ export function TimelineSection() {
 				<FadeInItem viewport={true} yOffset={20} className="mt-10">
 					<Card
 						variant="featured"
-						className="bg-surface-night border border-accent-lime/30 p-8 rounded-xl shadow-xl"
+						className="bg-surface-night border border-accent-lime/30 p-8 rounded-xl shadow-xl relative"
 					>
+						<div className="absolute md:h-24 md:w-24 h-16 w-16 md:-top-10 md:-right-10 -top-5 -right-5 rotate-25">
+							<Image
+								src={vetApprovedStamp}
+								alt="Vet Approved Stamp"
+								width={100}
+								height={100}
+							/>
+						</div>
 						<div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6 pb-4 border-b border-hairline-violet/30">
 							<div>
 								<span className="text-[10px] uppercase font-bold text-accent-lime tracking-wider font-mono">

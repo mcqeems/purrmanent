@@ -1,10 +1,10 @@
 import { HeroSection } from '@/features/homepage/hero-section';
 import { WhySection } from '@/features/homepage/why-section';
 import { OnboardingSection } from '@/features/homepage/onboarding-section';
+import { AiCoachSection } from '@/features/homepage/ai-coach-section';
 import { TimelineSection } from '@/features/homepage/timeline-section';
 import { ReadinessSection } from '@/features/homepage/readiness-section';
 import { PersonalityPathsSection } from '@/features/homepage/personality-paths-section';
-import { GraduatesSection } from '@/features/homepage/graduates-section';
 import { CtaSection } from '@/features/homepage/cta-section';
 
 export default function Home() {
@@ -13,10 +13,10 @@ export default function Home() {
 			<HeroSection />
 			<WhySection />
 			<OnboardingSection />
+			<AiCoachSection />
 			<TimelineSection />
 			<ReadinessSection />
 			<PersonalityPathsSection />
-			<GraduatesSection />
 			<CtaSection />
 		</div>
 	);

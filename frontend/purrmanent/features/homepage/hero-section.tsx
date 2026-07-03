@@ -6,7 +6,7 @@ import CircularText from '@/components/CircularText';
 import BlurText from '@/components/BlurText';
 import ShinyText from '@/components/ShinyText';
 import logo from '@/app/assets/logo/logo-1000x1000.png';
-import heroMainDecompressionIllustration from '@/app/assets/hero/hero-main-decompression-illustration.png';
+import heroMainDecompressionIllustration from '@/app/assets/home/hero-main-decompression-illustration.png';
 import Image from 'next/image';
 
 export function HeroSection() {

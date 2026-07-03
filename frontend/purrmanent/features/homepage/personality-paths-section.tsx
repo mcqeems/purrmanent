@@ -9,6 +9,10 @@ import {
 	FadeInItem,
 } from '@/components/ui';
 import Link from 'next/link';
+import Image, { type StaticImageData } from 'next/image';
+import shyCatHiding from '@/app/assets/home/shy-cat-hiding.png';
+import activeCatLeaping from '@/app/assets/home/active-cat-leaping.png';
+import balancedCatWalking from '@/app/assets/home/balanced-cat-walking.png';
 
 const PATH_SHY_STEPS = [
 	{
@@ -89,6 +93,7 @@ function PathCard({
 	support,
 	btnId,
 	btnLabel,
+	illustration,
 	illustrationName,
 	illustrationDesc,
 	illustrationPrompt,
@@ -101,6 +106,7 @@ function PathCard({
 	support: string[];
 	btnId: string;
 	btnLabel: string;
+	illustration: StaticImageData;
 	illustrationName: string;
 	illustrationDesc: string;
 	illustrationPrompt: string;
@@ -165,10 +171,12 @@ function PathCard({
 						Prompt for Image Generation Model:
 						{illustrationPrompt}
 					*/}
-					<div className="w-full h-full border border-dashed border-accent-violet/30 rounded-xl bg-surface-press-light/20 flex flex-col items-center justify-center p-2">
-						<span className="text-[8px] font-mono text-accent-violet/70 font-bold uppercase tracking-wider text-center leading-normal">
-							[Illustration: {illustrationName}]
-						</span>
+					<div className="w-full h-full rounded-xl overflow-hidden flex items-center justify-center">
+						<Image
+							src={illustration}
+							alt={illustrationName}
+							className="object-contain w-full h-full"
+						/>
 					</div>
 					<div className="mt-8">
 						<Button id={btnId} asChild variant="emboss" className="w-full">
@@ -246,9 +254,10 @@ export function PersonalityPathsSection() {
 							]}
 							btnId="btn-shy-activate"
 							btnLabel="Activate Shy Plan"
+							illustration={shyCatHiding}
 							illustrationName="Shy Cat Hiding"
 							illustrationDesc="A shy cat peeking out from behind a curtain."
-							illustrationPrompt='"A hand-drawn pencil sketch and watercolor wash illustration of a shy cat hiding behind a curtain, peeking out, soft colors, white background, simple outline doodle --no 3d render"'
+							illustrationPrompt='"A hand-drawn pencil sketch and watercolor wash illustration of a shy cat hiding behind a curtain, peeking out, soft colors, white background, simple outline doodle. Purrmanent theme: accent lime #c2ef4e and violet #6a5fc1 as dominant tones, must work on dark #1f1633 and light #ffffff backgrounds --no 3d render, photorealistic"'
 						/>
 					</TabsContent>
 
@@ -266,9 +275,10 @@ export function PersonalityPathsSection() {
 							]}
 							btnId="btn-bold-activate"
 							btnLabel="Activate Bold Plan"
+							illustration={activeCatLeaping}
 							illustrationName="Active Cat Leaping"
 							illustrationDesc="An active cat leaping in the air catching a feather toy."
-							illustrationPrompt='"A hand-drawn pencil sketch and watercolor wash illustration of an active cat leaping in the air catching a feather toy, soft colors, white background, simple outline doodle --no 3d render"'
+							illustrationPrompt='"A hand-drawn pencil sketch and watercolor wash illustration of an active cat leaping in the air catching a feather toy, soft colors, white background, simple outline doodle. Purrmanent theme: accent lime #c2ef4e and violet #6a5fc1 as dominant tones, must work on dark #1f1633 and light #ffffff backgrounds --no 3d render, photorealistic"'
 						/>
 					</TabsContent>
 
@@ -286,9 +296,10 @@ export function PersonalityPathsSection() {
 							]}
 							btnId="btn-balanced-activate"
 							btnLabel="Activate Balanced Plan"
+							illustration={balancedCatWalking}
 							illustrationName="Balanced Cat Walking"
 							illustrationDesc="A happy cat walking forward confidently with its tail up."
-							illustrationPrompt='"A hand-drawn pencil sketch and watercolor wash illustration of a happy cat walking forward confidently, tail up, soft colors, white background, simple outline doodle --no 3d render"'
+							illustrationPrompt='"A hand-drawn pencil sketch and watercolor wash illustration of a happy cat walking forward confidently, tail up, soft colors, white background, simple outline doodle. Purrmanent theme: accent lime #c2ef4e and violet #6a5fc1 as dominant tones, must work on dark #1f1633 and light #ffffff backgrounds --no 3d render, photorealistic"'
 						/>
 					</TabsContent>
 				</Tabs>
