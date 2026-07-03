@@ -24,7 +24,7 @@ export function RegisterForm() {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<RegisterFormInput>({ resolver: zodResolver(registerFormSchema) });
+  } = useForm<RegisterFormInput>({ resolver: zodResolver(registerFormSchema), mode: 'onChange' });
 
   async function onSubmit(values: RegisterFormInput) {
     setServerError(null);
@@ -46,13 +46,14 @@ export function RegisterForm() {
       <h1 className="text-2xl font-semibold">Create your account</h1>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <Field label="Name" htmlFor="name" error={errors.name?.message}>
-          <Input id="name" autoComplete="name" {...register('name')} />
+          <Input id="name" autoComplete="name" aria-invalid={!!errors.name} {...register('name')} />
         </Field>
         <Field label="Email" htmlFor="email" error={errors.email?.message}>
           <Input
             id="email"
             type="email"
             autoComplete="email"
+            aria-invalid={!!errors.email}
             {...register('email')}
           />
         </Field>
@@ -66,6 +67,7 @@ export function RegisterForm() {
             id="password"
             type="password"
             autoComplete="new-password"
+            aria-invalid={!!errors.password}
             {...register('password')}
           />
         </Field>

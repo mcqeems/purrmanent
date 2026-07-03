@@ -5,7 +5,7 @@ import * as LabelPrimitive from '@radix-ui/react-label';
 import { cn } from '@/lib/utils/cn';
 
 const fieldBase =
-  'w-full rounded-sm border border-hairline-cool bg-surface-canvas-light px-3 py-2 text-ink-deep placeholder:text-muted/60 focus:border-accent-violet focus:shadow-[rgba(0,0,0,0.15)_0_2px_10px_inset] disabled:opacity-60';
+  'w-full rounded-sm border border-hairline-cool bg-surface-canvas-light px-3 py-2 text-ink-deep placeholder:text-muted/60 focus:border-accent-violet focus:shadow-[rgba(0,0,0,0.15)_0_2px_10px_inset] disabled:opacity-60 aria-invalid:border-accent-pink aria-invalid:focus:border-accent-pink';
 
 export const Input = React.forwardRef<
   HTMLInputElement,
