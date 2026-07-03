@@ -60,10 +60,21 @@ export function LoginForm() {
         {serverError && (
           <p className="text-sm text-accent-pink">{serverError}</p>
         )}
-        <Button type="submit" className="w-full" disabled={isSubmitting}>
+        <Button
+          type="submit"
+          variant="emboss"
+          size="lg"
+          className="w-full"
+          disabled={isSubmitting}
+        >
           {isSubmitting ? 'Signing in…' : 'Sign in'}
         </Button>
       </form>
+      <div className="flex items-center gap-3">
+        <div className="flex-1 h-px bg-hairline-cloud" />
+        <span className="text-xs text-on-dark-muted">or</span>
+        <div className="flex-1 h-px bg-hairline-cloud" />
+      </div>
       <GoogleButton />
       <p className="text-center text-sm text-on-dark-muted">
         No account?{' '}
