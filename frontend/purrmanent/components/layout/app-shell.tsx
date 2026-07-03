@@ -1,23 +1,21 @@
 import type { ReactNode } from 'react';
-import { Nav } from './nav';
-import { BottomNav } from './bottom-nav';
+import { AppSidebar } from './app-sidebar';
+import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui';
 import { PageTransition } from '@/components/ui/motion';
 
-export function AppShell({
-  children,
-  navRight,
-}: {
-  children: ReactNode;
-  navRight?: ReactNode;
-}) {
+export function AppShell({ children }: { children: ReactNode }) {
   return (
-    <div className="flex min-h-screen flex-col bg-surface-canvas-light text-ink">
-      <Nav right={navRight} />
-      <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 pb-24 sm:px-6 sm:py-8 sm:pb-8">
-        <PageTransition>{children}</PageTransition>
-      </main>
-      <BottomNav />
-    </div>
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset className="bg-surface-canvas-light">
+        <header className="sticky top-0 z-40 flex items-center gap-2 border-b border-hairline-cloud bg-surface-canvas-light px-4 py-3 sm:px-6">
+          <SidebarTrigger />
+        </header>
+        <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:px-6 sm:py-8">
+          <PageTransition>{children}</PageTransition>
+        </main>
+      </SidebarInset>
+    </SidebarProvider>
   );
 }
 

@@ -37,6 +37,7 @@ const buttonVariants = cva(
 				sm: 'h-9 rounded-md px-3',
 				lg: 'h-12 rounded-md px-8',
 				icon: 'h-10 w-10 rounded-md',
+				'icon-sm': 'h-8 w-8 rounded-md',
 				'ghost-on-dark': 'p-2 rounded-xl',
 				'violet-token': 'px-4 py-2 rounded-xl',
 			},

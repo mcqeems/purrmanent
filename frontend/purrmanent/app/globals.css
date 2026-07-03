@@ -163,14 +163,16 @@
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
   --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  /* Sidebar — themed to DESIGN.md (light canvas, violet accent) rather than
+     shadcn's default zinc palette, so it matches the rest of the authenticated shell. */
+  --sidebar: var(--color-surface-canvas-light);
+  --sidebar-foreground: var(--color-ink-deep);
+  --sidebar-primary: var(--color-accent-violet);
+  --sidebar-primary-foreground: var(--color-on-primary);
+  --sidebar-accent: color-mix(in srgb, var(--color-accent-violet) 12%, transparent);
+  --sidebar-accent-foreground: var(--color-accent-violet-deep);
+  --sidebar-border: var(--color-hairline-cloud);
+  --sidebar-ring: var(--color-ring-focus);
 }
 
 @utility shadow-emboss {

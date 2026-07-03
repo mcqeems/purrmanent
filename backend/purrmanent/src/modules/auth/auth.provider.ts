@@ -93,7 +93,7 @@ export const authInstanceProvider: Provider = {
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="padding:24px">
     <tr><td align="center">
       <table role="presentation" width="480" cellpadding="0" cellspacing="0" style="background:#fff;border-radius:12px;padding:32px">
-        <tr><td style="font-size:20px;font-weight:700;color:#e07a5f">🐾 Purrmanent</td></tr>
+        <tr><td style="font-size:20px;font-weight:700;color:#e07a5f">Purrmanent</td></tr>
         <tr><td style="padding-top:16px;font-size:18px;font-weight:700">${opts.heading}</td></tr>
         <tr><td style="padding-top:8px;font-size:15px;line-height:1.5">${opts.intro}</td></tr>
         <tr><td style="padding:24px 0">
@@ -106,7 +106,7 @@ export const authInstanceProvider: Provider = {
     </td></tr>
   </table>
 </body></html>`;
-      const text = `Purrmanent 🐾
+      const text = `Purrmanent
 
 ${opts.heading}
 

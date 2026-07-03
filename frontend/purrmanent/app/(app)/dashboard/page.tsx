@@ -38,7 +38,7 @@ export default function DashboardPage() {
           <p className="mb-4 text-muted">
             Let&apos;s set up your first cat&apos;s plan.
           </p>
-          <Button asChild>
+          <Button asChild variant="emboss">
             <Link href="/onboarding">Start onboarding</Link>
           </Button>
         </div>

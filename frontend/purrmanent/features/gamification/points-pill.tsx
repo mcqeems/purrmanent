@@ -8,10 +8,12 @@ export function PointsPill() {
   return (
     <Link
       href="/progress"
-      className="inline-flex items-center gap-1 rounded-full bg-surface-night px-3 py-1 text-sm font-semibold text-on-primary"
+      className="inline-flex shrink-0 items-center gap-1 rounded-full bg-surface-night px-3 py-1 text-sm font-semibold text-on-primary group-data-[collapsible=icon]:px-2"
       title="Your points"
     >
-      <span aria-hidden>★</span>
+      <span aria-hidden className="group-data-[collapsible=icon]:hidden">
+        ★
+      </span>
       {data?.points ?? 0}
     </Link>
   );
