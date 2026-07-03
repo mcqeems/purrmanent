@@ -1,12 +1,23 @@
 'use client';
 
-import type { ReactNode } from 'react';
+import { type ReactNode, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'motion/react';
 import logo from '@/app/assets/logo/logo-1000x1000.png';
+import { useSession } from '@/lib/auth/client';
+import { useRouter } from 'next/navigation';
 
 export default function AuthLayout({ children }: { children: ReactNode }) {
+	const { data, isPending } = useSession();
+	const router = useRouter();
+
+	useEffect(() => {
+		if (!isPending && data) {
+			router.push('/dashboard');
+		}
+	}, [data, isPending, router]);
+
 	return (
 		<div className="flex min-h-screen flex-col items-center justify-center gap-8 bg-surface-canvas-dark px-4 py-12 text-on-primary">
 			<Link href="/" className="flex items-center gap-2.5">

@@ -8,23 +8,23 @@ import { CopilotProvider } from '@/features/coach/copilot-provider';
 import { AppShell } from '@/components/layout/app-shell';
 
 export default function AppLayout({ children }: { children: ReactNode }) {
-  return (
-    <AuthGuard>
-      <ActiveCatProvider>
-        <CopilotProvider>
-          <AppShell
-            navRight={
-              <>
-                <PointsPill />
-                <UserMenu />
-              </>
-            }
-          >
-            <UnverifiedBanner />
-            {children}
-          </AppShell>
-        </CopilotProvider>
-      </ActiveCatProvider>
-    </AuthGuard>
-  );
+	return (
+		<AuthGuard>
+			<ActiveCatProvider>
+				<CopilotProvider>
+					<AppShell
+						navRight={
+							<>
+								<PointsPill />
+								<UserMenu />
+							</>
+						}
+					>
+						<UnverifiedBanner />
+						{children}
+					</AppShell>
+				</CopilotProvider>
+			</ActiveCatProvider>
+		</AuthGuard>
+	);
 }
