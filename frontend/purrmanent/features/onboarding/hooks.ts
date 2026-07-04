@@ -3,12 +3,21 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiFetch } from '@/lib/api/client';
 import { queryKeys } from '@/lib/query/client';
-import type { Cat } from '@/lib/types/api';
 import type { QuestionnaireInput } from '@/lib/validation/schemas';
+
+/** Mirrors the backend's OnboardingResult (onboarding.service.ts) — submit
+ * returns the created cat's id + a redirect target, not a full Cat entity. */
+export interface OnboardingResult {
+  catId: number;
+  redirectTo: string;
+}
 
 export const onboardingApi = {
   submit: (body: QuestionnaireInput) =>
-    apiFetch<Cat>('/onboarding/submit', { method: 'POST', body }),
+    apiFetch<OnboardingResult>('/onboarding/submit', {
+      method: 'POST',
+      body,
+    }),
 };
 
 export function useSubmitOnboarding() {

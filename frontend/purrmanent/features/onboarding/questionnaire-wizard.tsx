@@ -1,256 +1,41 @@
 'use client';
 
-import { useState } from 'react';
-import { useForm, Controller } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
+import { Button, Card } from '@/components/ui';
+import type { QuestionnaireInput } from '@/lib/validation/schemas';
+import { useOnboardingFlow } from './use-onboarding-flow';
 import {
-  questionnaireSchema,
-  type QuestionnaireInput,
-  GENDERS,
-  PERSONALITIES,
-  ADOPTION_SOURCES,
-  ADOPTER_EXPERIENCE,
-} from '@/lib/validation/schemas';
-import { Button, Card, Field, Input, SelectField } from '@/components/ui';
-import { useSubmitOnboarding } from './hooks';
-
-const CONCERNS = [
-  'Litter box habits',
-  'Eating / appetite',
-  'Hiding a lot',
-  'Scratching furniture',
-  'Vet care & vaccines',
-];
-
-const STEP_FIELDS: (keyof QuestionnaireInput)[][] = [
-  ['catName', 'catAgeMonths', 'catGender', 'catBreed', 'catPersonality'],
-  ['adoptionDate', 'adoptionSource', 'shelterCode'],
-  ['adopterExperience', 'homeType', 'householdComposition', 'concerns'],
-];
+  OnboardingStepFields,
+  ONBOARDING_STEP_FIELDS,
+  ONBOARDING_STEP_LABELS,
+} from './onboarding-steps';
 
 export function QuestionnaireWizard({
   prefill,
 }: {
   prefill?: Partial<QuestionnaireInput>;
 }) {
-  const router = useRouter();
-  const submit = useSubmitOnboarding();
-  const [step, setStep] = useState(0);
-  const [serverError, setServerError] = useState<string | null>(null);
-
-  const form = useForm<QuestionnaireInput>({
-    resolver: zodResolver(questionnaireSchema),
-    defaultValues: { concerns: [], ...prefill },
-  });
+  const { form, step, next, back, onSubmit, serverError, isLastStep, isPending } =
+    useOnboardingFlow(prefill);
   const {
     register,
-    handleSubmit,
-    trigger,
     control,
     formState: { errors },
   } = form;
 
-  const optionalNumber = {
-    setValueAs: (v: string) => (v === '' ? undefined : Number(v)),
-  };
-
-  async function next() {
-    const valid = await trigger(STEP_FIELDS[step]);
-    if (valid) setStep((s) => Math.min(s + 1, STEP_FIELDS.length - 1));
-  }
-
-  async function onSubmit(values: QuestionnaireInput) {
-    setServerError(null);
-    try {
-      const cat = await submit.mutateAsync({
-        ...values,
-        timezone:
-          Intl.DateTimeFormat().resolvedOptions().timeZone ?? 'Asia/Jakarta',
-        preferredLanguage: 'en',
-      });
-      router.push(`/cats/${cat.id}`);
-    } catch (err) {
-      setServerError(
-        err instanceof Error ? err.message : 'Could not save. Try again.',
-      );
-    }
-  }
-
   return (
     <Card className="mx-auto max-w-xl">
       <p className="mb-1 text-sm font-medium uppercase tracking-[0.2px] text-accent-violet">
-        Step {step + 1} of {STEP_FIELDS.length}
+        Step {step + 1} of {ONBOARDING_STEP_FIELDS.length} — {ONBOARDING_STEP_LABELS[step]}
       </p>
       <h1 className="mb-6 text-2xl font-semibold">Tell us about your cat</h1>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        {step === 0 && (
-          <>
-            <Field
-              label="Cat's name"
-              htmlFor="catName"
-              error={errors.catName?.message}
-            >
-              <Input id="catName" {...register('catName')} />
-            </Field>
-            <Field
-              label="Age (months)"
-              htmlFor="catAgeMonths"
-              error={errors.catAgeMonths?.message}
-            >
-              <Input
-                id="catAgeMonths"
-                type="number"
-                min={0}
-                {...register('catAgeMonths', optionalNumber)}
-              />
-            </Field>
-            <Field
-              label="Gender"
-              htmlFor="catGender"
-              error={errors.catGender?.message}
-            >
-              <Controller
-                control={control}
-                name="catGender"
-                render={({ field }) => (
-                  <SelectField
-                    id="catGender"
-                    value={field.value ?? ''}
-                    onValueChange={field.onChange}
-                    placeholder="Unknown"
-                    options={GENDERS.map((g) => ({ value: g, label: g }))}
-                  />
-                )}
-              />
-            </Field>
-            <Field
-              label="Breed"
-              htmlFor="catBreed"
-              error={errors.catBreed?.message}
-            >
-              <Input
-                id="catBreed"
-                placeholder="e.g. Domestic shorthair"
-                {...register('catBreed')}
-              />
-            </Field>
-            <Field
-              label="Personality"
-              htmlFor="catPersonality"
-              error={errors.catPersonality?.message}
-            >
-              <Controller
-                control={control}
-                name="catPersonality"
-                render={({ field }) => (
-                  <SelectField
-                    id="catPersonality"
-                    value={field.value ?? ''}
-                    onValueChange={field.onChange}
-                    options={PERSONALITIES.map((p) => ({ value: p, label: p }))}
-                  />
-                )}
-              />
-            </Field>
-          </>
-        )}
-
-        {step === 1 && (
-          <>
-            <Field
-              label="Adoption date"
-              htmlFor="adoptionDate"
-              error={errors.adoptionDate?.message}
-            >
-              <Input
-                id="adoptionDate"
-                type="date"
-                {...register('adoptionDate')}
-              />
-            </Field>
-            <Field
-              label="Adoption source"
-              htmlFor="adoptionSource"
-              error={errors.adoptionSource?.message}
-            >
-              <Controller
-                control={control}
-                name="adoptionSource"
-                render={({ field }) => (
-                  <SelectField
-                    id="adoptionSource"
-                    value={field.value ?? ''}
-                    onValueChange={field.onChange}
-                    options={ADOPTION_SOURCES.map((s) => ({
-                      value: s,
-                      label: s,
-                    }))}
-                  />
-                )}
-              />
-            </Field>
-            <Field
-              label="Shelter code (optional)"
-              htmlFor="shelterCode"
-              error={errors.shelterCode?.message}
-            >
-              <Input id="shelterCode" {...register('shelterCode')} />
-            </Field>
-          </>
-        )}
-
-        {step === 2 && (
-          <>
-            <Field
-              label="Your experience"
-              htmlFor="adopterExperience"
-              error={errors.adopterExperience?.message}
-            >
-              <Controller
-                control={control}
-                name="adopterExperience"
-                render={({ field }) => (
-                  <SelectField
-                    id="adopterExperience"
-                    value={field.value ?? ''}
-                    onValueChange={field.onChange}
-                    options={ADOPTER_EXPERIENCE.map((e) => ({
-                      value: e,
-                      label: e,
-                    }))}
-                  />
-                )}
-              />
-            </Field>
-            <Field label="Home type" htmlFor="homeType">
-              <Input
-                id="homeType"
-                placeholder="apartment, house…"
-                {...register('homeType')}
-              />
-            </Field>
-            <Field label="Household" htmlFor="householdComposition">
-              <Input
-                id="householdComposition"
-                placeholder="e.g. couple, kids, other pets"
-                {...register('householdComposition')}
-              />
-            </Field>
-            <fieldset className="flex flex-col gap-2">
-              <legend className="text-sm font-medium text-ink-deep">
-                Any concerns?
-              </legend>
-              {CONCERNS.map((c) => (
-                <label key={c} className="flex items-center gap-2 text-sm">
-                  <input type="checkbox" value={c} {...register('concerns')} />
-                  {c}
-                </label>
-              ))}
-            </fieldset>
-          </>
-        )}
+      <form onSubmit={onSubmit} className="space-y-4">
+        <OnboardingStepFields
+          step={step}
+          register={register}
+          control={control}
+          errors={errors}
+        />
 
         {serverError && (
           <p className="text-sm text-accent-pink">{serverError}</p>
@@ -260,18 +45,18 @@ export function QuestionnaireWizard({
           <Button
             type="button"
             variant="outline"
-            onClick={() => setStep((s) => Math.max(s - 1, 0))}
+            onClick={back}
             disabled={step === 0}
           >
             Back
           </Button>
-          {step < STEP_FIELDS.length - 1 ? (
+          {!isLastStep ? (
             <Button type="button" onClick={next}>
               Next
             </Button>
           ) : (
-            <Button type="submit" disabled={submit.isPending}>
-              {submit.isPending ? 'Building your plan…' : 'Build my plan'}
+            <Button type="submit" disabled={isPending}>
+              {isPending ? 'Building your plan…' : 'Build my plan'}
             </Button>
           )}
         </div>

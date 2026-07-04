@@ -9,12 +9,14 @@ import { PushPrompt } from '@/features/notifications/push-prompt';
 import { DashboardAsk } from '@/features/coach/dashboard-ask';
 import { DashboardStats } from '@/features/dashboard/dashboard-stats';
 import { SiteTour } from '@/features/onboarding/site-tour';
+import { OnboardingModal } from '@/features/onboarding/onboarding-modal';
 
 export default function DashboardPage() {
   const { data: cats, isLoading } = useCats();
 
   return (
     <>
+      <OnboardingModal />
       <DashboardAsk />
       <PageHeader
         title="Overview"
@@ -39,7 +41,7 @@ export default function DashboardPage() {
             Let&apos;s set up your first cat&apos;s plan.
           </p>
           <Button asChild variant="emboss">
-            <Link href="/onboarding">Start onboarding</Link>
+            <Link href="/cats">Add a cat</Link>
           </Button>
         </div>
       ) : (

@@ -3,3 +3,4 @@
 // lives at `@/lib/utils/cn` — re-export it here so vendor files resolve
 // without patching every generated component.
 export { cn } from './utils/cn';
+export { capitalizeFirstChar } from './utils/capitalizeFirstChar';

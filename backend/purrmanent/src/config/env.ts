@@ -37,8 +37,8 @@ export const envSchema = z.object({
   // AI / RAG (Bynara router, OpenAI-compatible)
   LLM_API_KEY: z.string().optional(),
   LLM_BASE_URL: z.string().default('https://router.bynara.id/v1'),
-  LLM_MODEL: z.string().default('mimo-v2.5-free'),
-  LLM_MODEL_PRO: z.string().default('mimo-v2.5-pro-free'),
+  LLM_MODEL: z.string().default('mimo-v2.5-hermes'),
+  LLM_MODEL_PRO: z.string().default('mimo-v2.5-pro-hermes'),
   TAVILY_API_KEY: z.string().optional(),
 
   // Web Push (VAPID)
