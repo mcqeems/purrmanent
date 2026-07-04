@@ -71,6 +71,7 @@ export function useCoach() {
           onDelta: (t) => appendDelta(aId, t),
           onSources: (s) => patch(aId, { sources: s }),
           onConfirm: (p) => patch(aId, { pending: p }),
+          onConversation: (c) => setConversationId(c.id),
           onError: () =>
             appendDelta(aId, 'Sorry, I had trouble reaching my knowledge.'),
         },

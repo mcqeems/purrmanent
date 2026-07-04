@@ -31,7 +31,7 @@ export function CatForm({ cat, onDone }: { cat?: Cat; onDone?: () => void }) {
       ? {
           name: cat.name,
           ageMonths: cat.ageMonths ?? undefined,
-          gender: cat.gender ?? undefined,
+          gender: cat.gender === 'male' || cat.gender === 'female' ? cat.gender : undefined,
           breed: cat.breed ?? undefined,
           personality: cat.personality,
           adoptionDate: cat.adoptionDate,

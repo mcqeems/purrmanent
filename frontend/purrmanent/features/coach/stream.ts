@@ -6,6 +6,7 @@ export interface CoachStreamHandlers {
   onSources?: (sources: CoachSource[]) => void;
   onDelta?: (text: string) => void;
   onConfirm?: (pending: PendingAction) => void;
+  onConversation?: (conv: { id: number }) => void;
   onError?: () => void;
   onDone?: () => void;
 }
@@ -25,6 +26,7 @@ function parseBlock(raw: string, handlers: CoachStreamHandlers): boolean {
     else if (event === 'delta')
       handlers.onDelta?.(typeof parsed === 'string' ? parsed : String(parsed));
     else if (event === 'confirm') handlers.onConfirm?.(parsed as PendingAction);
+    else if (event === 'conversation') handlers.onConversation?.(parsed as { id: number });
     else if (event === 'error') handlers.onError?.();
   } catch {
     // ignore malformed block
