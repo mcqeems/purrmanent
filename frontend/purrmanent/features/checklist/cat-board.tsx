@@ -23,9 +23,11 @@ import type {
   ChecklistBoard,
   ChecklistItem,
   KanbanStatus,
+  PendingAction,
 } from '@/lib/types/api';
 import { KanbanBoard } from './kanban-board';
 import { streamCoachChat } from '@/features/coach/stream';
+import { confirmAction } from '@/features/coach/api';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   useAddCustomTodo,
@@ -60,11 +62,27 @@ function BoardView({
   const allDone = !empty && items.every((i) => i.kanbanStatus === 'done');
 
   async function askCoach(prompt: string) {
-    await toast.promise(streamCoachChat({ message: prompt }, {}), {
-      loading: 'AI coach is generating your checklist…',
-      success: 'Checklist updated!',
-      error: "AI coach couldn't generate the checklist.",
-    });
+    let pending: PendingAction | null = null;
+    await toast.promise(
+      streamCoachChat(
+        { message: prompt },
+        { onConfirm: (p) => { pending = p; } },
+      ).then(async () => {
+        if (pending) {
+          await confirmAction({
+            actionName: pending.actionName,
+            args: pending.args,
+            confirm: true,
+            catId,
+          });
+        }
+      }),
+      {
+        loading: 'AI coach is generating your checklist…',
+        success: 'Checklist updated!',
+        error: "AI coach couldn't generate the checklist.",
+      },
+    );
     await qc.invalidateQueries({ queryKey: ['checklist'] });
   }
 
