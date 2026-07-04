@@ -62,28 +62,28 @@ function BoardView({
   const allDone = !empty && items.every((i) => i.kanbanStatus === 'done');
 
   async function askCoach(prompt: string) {
+    const id = toast.loading('AI coach is generating your checklist…');
     let pending: PendingAction | null = null;
-    await toast.promise(
-      streamCoachChat(
-        { message: prompt },
-        { onConfirm: (p) => { pending = p; } },
-      ).then(async () => {
-        if (pending) {
-          await confirmAction({
-            actionName: pending.actionName,
-            args: pending.args,
-            confirm: true,
-            catId,
-          });
-        }
-      }),
-      {
-        loading: 'AI coach is generating your checklist…',
-        success: 'Checklist updated!',
-        error: "AI coach couldn't generate the checklist.",
-      },
-    );
-    await qc.invalidateQueries({ queryKey: ['checklist'] });
+    const handlers = { onConfirm: (p: PendingAction) => { pending = p; } };
+    try {
+      await streamCoachChat({ message: prompt }, handlers);
+      if (!pending) {
+        await streamCoachChat({ message: 'Yes, add them all.' }, handlers);
+      }
+      if (pending) {
+        const p = pending as PendingAction;
+        await confirmAction({
+          actionName: p.actionName,
+          args: p.args,
+          confirm: true,
+          catId,
+        });
+      }
+      await qc.invalidateQueries({ queryKey: ['checklist'] });
+      toast.success('Checklist updated!', { id });
+    } catch {
+      toast.error("AI coach couldn't generate the checklist.", { id });
+    }
   }
 
   return (
