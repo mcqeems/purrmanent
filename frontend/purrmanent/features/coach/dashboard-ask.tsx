@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Sparkles, ArrowUp } from 'lucide-react';
-import { useCopilot } from './copilot-provider';
 
 const SUGGESTIONS = [
   'How often should I feed my cat?',
@@ -12,14 +11,12 @@ const SUGGESTIONS = [
 ];
 
 export function DashboardAsk() {
-  const { ask } = useCopilot();
   const router = useRouter();
   const [value, setValue] = useState('');
 
   function submit(text: string) {
     const t = text.trim();
     if (!t) return;
-    ask(t);
     setValue('');
     router.push('/coach');
   }

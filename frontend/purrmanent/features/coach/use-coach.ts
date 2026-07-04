@@ -2,7 +2,6 @@
 
 import { useCallback, useRef, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { useActiveCat } from '@/features/cats/active-cat-provider';
 import type { CoachSource, PendingAction } from '@/lib/types/api';
 import { streamCoachChat } from './stream';
 import { confirmAction, parseMention, coachHistoryApi } from './api';
@@ -16,7 +15,6 @@ export interface CoachMessage {
 }
 
 export function useCoach() {
-  const { activeCatId } = useActiveCat();
   const qc = useQueryClient();
   const [messages, setMessages] = useState<CoachMessage[]>([]);
   const [streaming, setStreaming] = useState(false);
@@ -67,7 +65,6 @@ export function useCoach() {
         {
           message: trimmed,
           contextMention: parseMention(trimmed) ?? null,
-          catId: activeCatId ?? undefined,
           conversationId: conversationId ?? undefined,
         },
         {
@@ -81,7 +78,7 @@ export function useCoach() {
       setStreaming(false);
       void qc.invalidateQueries({ queryKey: ['coach', 'conversations'] });
     },
-    [activeCatId, conversationId, streaming, qc],
+    [conversationId, streaming, qc],
   );
 
   const confirm = useCallback(
@@ -91,7 +88,6 @@ export function useCoach() {
         actionName: pending.actionName,
         args: pending.args,
         confirm: ok,
-        catId: activeCatId ?? undefined,
       });
       setMessages((prev) => [
         ...prev,
@@ -99,7 +95,7 @@ export function useCoach() {
       ]);
       if (ok && res.ok) void qc.invalidateQueries();
     },
-    [activeCatId, qc],
+    [qc],
   );
 
   return {

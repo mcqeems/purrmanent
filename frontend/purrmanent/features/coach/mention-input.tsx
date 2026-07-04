@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useRef, useState } from 'react';
-import { useActiveCat } from '@/features/cats/active-cat-provider';
+import { useCats } from '@/features/cats/hooks';
 import { cn } from '@/lib/utils/cn';
 
 interface MentionOption {
@@ -27,7 +27,7 @@ export function MentionInput({
   disabled?: boolean;
   placeholder?: string;
 }) {
-  const { cats } = useActiveCat();
+  const { data: cats = [] } = useCats();
   const inputRef = useRef<HTMLInputElement>(null);
   const [activeQuery, setActiveQuery] = useState<string | null>(null);
 

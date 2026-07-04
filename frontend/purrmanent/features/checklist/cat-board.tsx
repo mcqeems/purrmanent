@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { Plus } from 'lucide-react';
 import {
   Button,
@@ -26,7 +25,8 @@ import type {
   KanbanStatus,
 } from '@/lib/types/api';
 import { KanbanBoard } from './kanban-board';
-import { useCopilot } from '@/features/coach/copilot-provider';
+import { streamCoachChat } from '@/features/coach/stream';
+import { useQueryClient } from '@tanstack/react-query';
 import {
   useAddCustomTodo,
   useMoveItem,
@@ -49,8 +49,8 @@ function BoardView({
   isError: boolean;
   onMove: (itemId: number, newStatus: KanbanStatus) => void;
 }) {
-  const { ask } = useCopilot();
-  const router = useRouter();
+  const { toast } = useToast();
+  const qc = useQueryClient();
   if (isLoading) return <Spinner className="size-6 text-accent-violet" />;
   if (isError)
     return (
@@ -60,9 +60,15 @@ function BoardView({
   const empty = items.length === 0;
   const allDone = !empty && items.every((i) => i.kanbanStatus === 'done');
 
-  function askCoach(prompt: string) {
-    ask(prompt);
-    router.push('/coach');
+  async function askCoach(prompt: string) {
+    toast({ description: 'AI coach is generating your checklist…' });
+    try {
+      await streamCoachChat({ message: prompt }, {});
+      await qc.invalidateQueries({ queryKey: ['checklist'] });
+      toast({ tone: 'success', description: 'Checklist updated!' });
+    } catch {
+      toast({ tone: 'error', description: 'AI coach couldn\'t generate the checklist.' });
+    }
   }
 
   return (

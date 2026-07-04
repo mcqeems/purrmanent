@@ -12,7 +12,7 @@ import {
   Spinner,
   useToast,
 } from '@/components/ui';
-import { useActiveCat } from '@/features/cats/active-cat-provider';
+import { useCats } from '@/features/cats/hooks';
 import type { CrisisIdentifyResult } from '@/lib/types/api';
 import { SlideCarousel } from './slide-carousel';
 import { useIdentifyCrisis, useResolveCrisis } from './api';
@@ -20,7 +20,7 @@ import { useIdentifyCrisis, useResolveCrisis } from './api';
 export function CrisisFlow() {
   const router = useRouter();
   const { toast } = useToast();
-  const { cats } = useActiveCat();
+  const { data: cats = [] } = useCats();
   const identify = useIdentifyCrisis();
   const resolve = useResolveCrisis();
 
