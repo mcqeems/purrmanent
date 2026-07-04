@@ -1,11 +1,13 @@
 'use client';
 
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { LogOut } from 'lucide-react';
+import { LogOut, User } from 'lucide-react';
 import { authClient, useSession } from '@/lib/auth/client';
 import {
   Avatar,
   AvatarFallback,
+  AvatarImage,
   Button,
   DropdownMenu,
   DropdownMenuContent,
@@ -48,6 +50,7 @@ export function SidebarUserMenu() {
         }
       >
         <Avatar size="sm">
+          {user?.image && <AvatarImage src={user.image} alt={user.name} />}
           <AvatarFallback>{initials(user?.name)}</AvatarFallback>
         </Avatar>
         <span className="truncate text-sm font-medium text-ink-deep group-data-[collapsible=icon]:hidden">
@@ -61,6 +64,10 @@ export function SidebarUserMenu() {
           </DropdownMenuLabel>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
+        <DropdownMenuItem render={<Link href="/profile" />}>
+          <User />
+          View profile
+        </DropdownMenuItem>
         <DropdownMenuItem onClick={logout} variant="destructive">
           <LogOut />
           Log out
