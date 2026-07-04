@@ -44,6 +44,7 @@ export class CoachController {
       if (ev.type === 'sources') send('sources', ev.data);
       else if (ev.type === 'delta') send('delta', ev.data);
       else if (ev.type === 'confirm') send('confirm', ev.data);
+      else if (ev.type === 'conversation') send('conversation', ev.data);
       else if (ev.type === 'error') send('error', true);
     }
     res.write('data: [DONE]\n\n');

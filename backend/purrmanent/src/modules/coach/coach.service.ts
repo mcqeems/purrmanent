@@ -20,7 +20,7 @@ import { ChatMessageDto, ConfirmActionDto } from './coach.schema';
 import { buildCoachPrompt } from './coach.prompt';
 
 export interface CoachEvent {
-  type: 'sources' | 'delta' | 'confirm' | 'done' | 'error';
+  type: 'sources' | 'delta' | 'confirm' | 'done' | 'error' | 'conversation';
   data?: unknown;
 }
 
@@ -164,7 +164,10 @@ export class CoachService {
       }
       return conv;
     }
-    return this.getOrCreateConversation(userId, dto.catId);
+    // Omitted conversationId: Always create a new conversation thread
+    return this.conversations.save(
+      this.conversations.create({ userId, catId: dto.catId ?? null }),
+    );
   }
 
   /**
@@ -252,6 +255,7 @@ export class CoachService {
 
       // Resolve which conversation this turn belongs to (continue or new).
       const conv = await this.resolveConversation(userId, dto);
+      yield { type: 'conversation', data: { id: conv.id } };
 
       // RAG is a tool now (search_knowledge): we retrieve only when the model
       // asks, so action-only turns don't fetch unrelated passages. Track the
