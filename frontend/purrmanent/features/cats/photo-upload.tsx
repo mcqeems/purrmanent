@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Spinner, useToast } from '@/components/ui';
+import { Spinner, toast } from '@/components/ui';
 import {
   supabase,
   SUPABASE_BUCKET,
@@ -15,12 +15,11 @@ export function PhotoUpload({
   value?: string;
   onChange: (url: string) => void;
 }) {
-  const { toast } = useToast();
   const [busy, setBusy] = useState(false);
 
   async function handleFile(file: File) {
     if (!supabase) {
-      toast({ tone: 'error', description: "Image upload isn't configured." });
+      toast.error("Image upload isn't configured.");
       return;
     }
     setBusy(true);
@@ -35,9 +34,9 @@ export function PhotoUpload({
         .from(SUPABASE_BUCKET)
         .getPublicUrl(path);
       onChange(data.publicUrl);
-      toast({ tone: 'success', description: 'Photo uploaded.' });
+      toast.success('Photo uploaded.');
     } catch {
-      toast({ tone: 'error', description: 'Upload failed. Try again.' });
+      toast.error('Upload failed. Try again.');
     } finally {
       setBusy(false);
     }

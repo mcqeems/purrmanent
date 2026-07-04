@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { authClient, useSession } from '@/lib/auth/client';
-import { Avatar, AvatarFallback, AvatarImage, Spinner, useToast } from '@/components/ui';
+import { Avatar, AvatarFallback, AvatarImage, Spinner, toast } from '@/components/ui';
 import {
   supabase,
   SUPABASE_BUCKET,
@@ -26,13 +26,12 @@ function initials(name?: string | null) {
  */
 export function ProfilePhotoUpload() {
   const { data } = useSession();
-  const { toast } = useToast();
   const [busy, setBusy] = useState(false);
   const user = data?.user;
 
   async function handleFile(file: File) {
     if (!supabase) {
-      toast({ tone: 'error', description: "Image upload isn't configured." });
+      toast.error("Image upload isn't configured.");
       return;
     }
     setBusy(true);
@@ -52,9 +51,9 @@ export function ProfilePhotoUpload() {
       });
       if (updateError) throw updateError;
 
-      toast({ tone: 'success', description: 'Profile photo updated.' });
+      toast.success('Profile photo updated.');
     } catch {
-      toast({ tone: 'error', description: 'Upload failed. Try again.' });
+      toast.error('Upload failed. Try again.');
     } finally {
       setBusy(false);
     }

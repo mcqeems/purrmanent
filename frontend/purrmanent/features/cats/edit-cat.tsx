@@ -9,14 +9,13 @@ import {
   DialogClose,
   DialogContent,
   Spinner,
-  useToast,
+  toast,
 } from '@/components/ui';
 import { useCat, useDeleteCat } from './hooks';
 import { CatForm } from './cat-form';
 
 export function EditCat({ catId }: { catId: number }) {
   const router = useRouter();
-  const { toast } = useToast();
   const { data: cat, isLoading, isError } = useCat(catId);
   const del = useDeleteCat();
   const [confirm, setConfirm] = useState(false);
@@ -28,10 +27,10 @@ export function EditCat({ catId }: { catId: number }) {
   async function remove() {
     try {
       await del.mutateAsync(catId);
-      toast({ tone: 'success', description: `${cat!.name} was removed.` });
+      toast.success(`${cat!.name} was removed.`);
       router.push('/dashboard');
     } catch {
-      toast({ tone: 'error', description: 'Could not remove the cat.' });
+      toast.error('Could not remove the cat.');
     }
   }
 

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { X } from 'lucide-react';
 import { authClient, useSession } from '@/lib/auth/client';
-import { useToast } from '@/components/ui';
+import { toast } from '@/components/ui';
 
 // Dismissal is per-tab-session only: sessionStorage clears the closed state on
 // refresh/new session but keeps it closed for the rest of the current browser session.
@@ -15,7 +15,6 @@ const DISMISS_KEY = 'purrmanent.unverifiedBannerDismissed';
  */
 export function UnverifiedBanner() {
 	const { data } = useSession();
-	const { toast } = useToast();
 	const [sent, setSent] = useState(false);
 	const [dismissed, setDismissed] = useState(
 		() => typeof window !== 'undefined' && sessionStorage.getItem(DISMISS_KEY) === '1',
@@ -36,7 +35,7 @@ export function UnverifiedBanner() {
 			callbackURL: `${window.location.origin}/dashboard`,
 		});
 		setSent(true);
-		toast({ tone: 'success', description: 'Verification email sent.' });
+		toast.success('Verification email sent.');
 	}
 
 	return (

@@ -10,7 +10,7 @@ import {
   Textarea,
   SelectField,
   Spinner,
-  useToast,
+  toast,
 } from '@/components/ui';
 import { useCats } from '@/features/cats/hooks';
 import type { CrisisIdentifyResult } from '@/lib/types/api';
@@ -19,7 +19,6 @@ import { useIdentifyCrisis, useResolveCrisis } from './api';
 
 export function CrisisFlow() {
   const router = useRouter();
-  const { toast } = useToast();
   const { data: cats = [] } = useCats();
   const identify = useIdentifyCrisis();
   const resolve = useResolveCrisis();
@@ -59,12 +58,9 @@ export function CrisisFlow() {
       isDone,
       reasonNotDone: isDone ? undefined : reason.trim() || undefined,
     });
-    toast({
-      tone: 'success',
-      description: isDone
-        ? 'Glad it helped!'
-        : 'Logged — consider calling a vet.',
-    });
+    toast.success(
+      isDone ? 'Glad it helped!' : 'Logged — consider calling a vet.',
+    );
     router.push('/dashboard');
   }
 

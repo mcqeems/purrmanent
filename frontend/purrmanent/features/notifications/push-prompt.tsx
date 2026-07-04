@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Bell, BellRing } from 'lucide-react';
-import { Button, Pill, useToast } from '@/components/ui';
+import { Button, Pill, toast } from '@/components/ui';
 import { enablePush } from './push';
 
 function alreadyGranted(): boolean {
@@ -14,7 +14,6 @@ function alreadyGranted(): boolean {
 }
 
 export function PushPrompt() {
-  const { toast } = useToast();
   const [busy, setBusy] = useState(false);
   // Lazy init from the live permission so a reload reflects the enabled state.
   const [enabled, setEnabled] = useState(alreadyGranted);
@@ -23,10 +22,14 @@ export function PushPrompt() {
     setBusy(true);
     try {
       const res = await enablePush();
-      toast({ tone: res.ok ? 'success' : 'error', description: res.message });
-      if (res.ok) setEnabled(true);
+      if (res.ok) {
+        toast.success(res.message);
+        setEnabled(true);
+      } else {
+        toast.error(res.message);
+      }
     } catch {
-      toast({ tone: 'error', description: 'Could not enable reminders.' });
+      toast.error('Could not enable reminders.');
     } finally {
       setBusy(false);
     }

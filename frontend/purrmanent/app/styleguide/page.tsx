@@ -17,11 +17,10 @@ import {
   DialogTrigger,
   DialogContent,
   Checkbox,
-  useToast,
+  toast,
 } from '@/components/ui';
 
 export default function StyleguidePage() {
-  const { toast } = useToast();
   const [checked, setChecked] = useState(true);
 
   return (
@@ -114,13 +113,7 @@ export default function StyleguidePage() {
         </Dialog>
         <Button
           variant="outline"
-          onClick={() =>
-            toast({
-              tone: 'success',
-              title: 'Nice',
-              description: 'Toast fired.',
-            })
-          }
+          onClick={() => toast.success('Toast fired.')}
         >
           Fire toast
         </Button>
