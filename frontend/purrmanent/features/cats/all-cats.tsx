@@ -43,10 +43,10 @@ export function AllCats() {
 	return (
 		<div className="space-y-4">
 			<div className="flex items-center gap-3">
-				<div className="relative max-w-sm flex-1">
+				<div className="relative flex-1">
 					<Search
 						size={16}
-						className="absolute left-3 top-1/2 -translate-y-1/2 text-muted"
+						className="absolute left-3 top-1/2 -translate-y-1/2 text-muted "
 					/>
 					<Input
 						value={q}
@@ -58,7 +58,7 @@ export function AllCats() {
 				</div>
 				<Dialog open={open} onOpenChange={setOpen}>
 					<DialogTrigger asChild>
-						<Button size="sm">
+						<Button size="sm" variant="emboss">
 							<Plus size={16} /> Add cat
 						</Button>
 					</DialogTrigger>
@@ -76,7 +76,7 @@ export function AllCats() {
 				<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 					{filtered.map((cat) => (
 						<Link key={cat.id} href={`/cats/${cat.id}`} className="block">
-							<Card className="flex flex-col gap-2 transition-shadow hover:shadow-[rgba(0,0,0,0.1)_0_10px_15px_-3px]">
+							<Card className="flex flex-col gap-2 hover:shadow-[rgba(0,0,0,0.1)_0_10px_15px_-3px] hover:bg-sidebar-accent transition-all duration-200">
 								<div className="flex items-center justify-between">
 									<h3 className="text-lg font-semibold">{cat.name}</h3>
 									<Pill tone="lime">
@@ -87,7 +87,7 @@ export function AllCats() {
 									{cat.breed ?? 'Cat'}
 									{cat.ageMonths != null ? ` · ${cat.ageMonths} months` : ''}
 								</p>
-								<span className="mt-2 text-sm font-semibold text-accent-violet">
+								<span className="mt-2 text-sm font-semibold text-muted">
 									Open board →
 								</span>
 							</Card>

@@ -56,7 +56,7 @@ interface CustomPieSectorProps extends PieSectorShapeProps {
 }
 
 const CustomPieSector = (props: CustomPieSectorProps) => {
-	const { payload, ...rest } = props;
+	const { payload, key: _key, ...rest } = props;
 
 	const fillColor = payload?.key ? COLORS[payload.key] : '#cccccc';
 
