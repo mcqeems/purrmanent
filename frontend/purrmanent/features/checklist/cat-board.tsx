@@ -17,7 +17,7 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
-  useToast,
+  toast,
 } from '@/components/ui';
 import type {
   ChecklistBoard,
@@ -49,7 +49,6 @@ function BoardView({
   isError: boolean;
   onMove: (itemId: number, newStatus: KanbanStatus) => void;
 }) {
-  const { toast } = useToast();
   const qc = useQueryClient();
   if (isLoading) return <Spinner className="size-6 text-accent-violet" />;
   if (isError)
@@ -61,14 +60,12 @@ function BoardView({
   const allDone = !empty && items.every((i) => i.kanbanStatus === 'done');
 
   async function askCoach(prompt: string) {
-    toast({ description: 'AI coach is generating your checklist…' });
-    try {
-      await streamCoachChat({ message: prompt }, {});
-      await qc.invalidateQueries({ queryKey: ['checklist'] });
-      toast({ tone: 'success', description: 'Checklist updated!' });
-    } catch {
-      toast({ tone: 'error', description: 'AI coach couldn\'t generate the checklist.' });
-    }
+    await toast.promise(streamCoachChat({ message: prompt }, {}), {
+      loading: 'AI coach is generating your checklist…',
+      success: 'Checklist updated!',
+      error: "AI coach couldn't generate the checklist.",
+    });
+    await qc.invalidateQueries({ queryKey: ['checklist'] });
   }
 
   return (
@@ -103,7 +100,6 @@ function BoardView({
 }
 
 function useMoveHandler(catId: number, board: ChecklistBoard) {
-  const { toast } = useToast();
   const move = useMoveItem(catId, board);
   return (itemId: number, newStatus: KanbanStatus) =>
     move.mutate(
@@ -111,13 +107,9 @@ function useMoveHandler(catId: number, board: ChecklistBoard) {
       {
         onSuccess: (res) => {
           if (res.pointsAdded > 0)
-            toast({
-              tone: 'success',
-              description: `+${res.pointsAdded} points!`,
-            });
+            toast.success(`+${res.pointsAdded} points!`);
         },
-        onError: () =>
-          toast({ tone: 'error', description: "Couldn't move that item." }),
+        onError: () => toast.error("Couldn't move that item."),
       },
     );
 }
