@@ -58,7 +58,7 @@ export function PhotoUpload({
 				</div>
 			)}
 			<label
-				className={`cursor-pointer rounded-md border border-hairline-cool px-3 py-2 text-sm ${
+				className={`cursor-pointer hover:bg-surface-press-light rounded-md border border-hairline-cool px-3 py-2 text-sm ${
 					!isUploadConfigured || busy ? 'opacity-60' : ''
 				}`}
 			>

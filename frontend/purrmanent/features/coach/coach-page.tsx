@@ -47,7 +47,7 @@ function InputPill({
 						transition={{ duration: 0.15 }}
 						type="button"
 						onClick={onSubmit}
-						className="ml-2 flex size-9 items-center justify-center rounded-full bg-[#9bcff2] text-slate-900 transition-colors hover:bg-[#7cb9e8] shadow-sm cursor-pointer"
+						className="ml-2 flex size-9 items-center justify-center rounded-full bg-accent-lime/75 hover:bg-accent-lime text-slate-900 transition-colors hover:bg-[#7cb9e8] shadow-sm cursor-pointer"
 						aria-label="Send"
 						disabled={streaming}
 					>

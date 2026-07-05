@@ -1,9 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { X } from 'lucide-react';
+import { X, MailCheck } from 'lucide-react';
 import { authClient, useSession } from '@/lib/auth/client';
-import { toast } from '@/components/ui';
+import { toast, Alert, AlertAction, AlertDescription } from '@/components/ui';
 
 // Dismissal is per-tab-session only: sessionStorage clears the closed state on
 // refresh/new session but keeps it closed for the rest of the current browser session.
@@ -39,9 +39,10 @@ export function UnverifiedBanner() {
 	}
 
 	return (
-		<div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-md border border-accent-pink/40 bg-accent-pink/10 px-4 py-3 text-sm text-ink-deep">
-			<span>Please verify your email to secure your account.</span>
-			<div className="flex items-center gap-3">
+		<Alert className="mb-4 border-accent-pink/40 bg-accent-pink/10 text-ink-deep">
+			<MailCheck className="text-accent-pink" />
+			<AlertDescription>
+				Please verify your email to secure your account.{' '}
 				<button
 					type="button"
 					onClick={resend}
@@ -50,6 +51,8 @@ export function UnverifiedBanner() {
 				>
 					{sent ? 'Sent' : 'Resend email'}
 				</button>
+			</AlertDescription>
+			<AlertAction>
 				<button
 					type="button"
 					onClick={dismiss}
@@ -58,7 +61,7 @@ export function UnverifiedBanner() {
 				>
 					<X className="size-4" />
 				</button>
-			</div>
-		</div>
+			</AlertAction>
+		</Alert>
 	);
 }

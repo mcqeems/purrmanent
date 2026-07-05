@@ -25,6 +25,7 @@ export {
   DropdownMenuSeparator,
 } from './dropdown-menu';
 export { Separator } from './separator';
+export { Alert, AlertTitle, AlertDescription, AlertAction } from './alert';
 export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from './tooltip';
 export {
   Sidebar,

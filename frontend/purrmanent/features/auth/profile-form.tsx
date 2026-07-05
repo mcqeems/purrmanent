@@ -14,7 +14,7 @@ type ProfileFormInput = z.infer<typeof profileFormSchema>;
 
 /** Editable profile fields (name). Email/verification live elsewhere — see
  * UnverifiedBanner — since better-auth treats email changes separately. */
-export function ProfileForm() {
+export function ProfileForm({ onCancel }: { onCancel?: () => void }) {
   const { data } = useSession();
   const user = data?.user;
   const [serverError, setServerError] = useState<string | null>(null);
@@ -52,9 +52,16 @@ export function ProfileForm() {
       {saved && !isDirty && (
         <p className="text-sm text-accent-violet">Saved.</p>
       )}
-      <Button type="submit" disabled={isSubmitting || !isDirty}>
-        {isSubmitting ? 'Saving…' : 'Save changes'}
-      </Button>
+      <div className="flex gap-2">
+        {onCancel && (
+          <Button type="button" variant="outline" onClick={onCancel}>
+            Cancel
+          </Button>
+        )}
+        <Button type="submit" disabled={isSubmitting || !isDirty}>
+          {isSubmitting ? 'Saving...' : 'Save changes'}
+        </Button>
+      </div>
     </form>
   );
 }
