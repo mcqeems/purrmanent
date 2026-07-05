@@ -12,6 +12,8 @@ import {
 	OnboardingStepFields,
 	ONBOARDING_STEP_LABELS,
 } from './onboarding-steps';
+import Image from 'next/image';
+import catSleep from '@/app/assets/onboarding/cat-sleep.png';
 
 function dismissedKey(userId: string) {
 	return `purrmanent.onboardingDismissed.${userId}`;
@@ -91,12 +93,20 @@ export function OnboardingModal() {
 								</p>
 							</div>
 							{/* Illustration placeholder — replace with art (see component doc comment). */}
-							<div className="flex aspect-square w-full max-w-56 items-center justify-center rounded-2xl border border-dashed border-on-dark-faint bg-on-dark-faint/40">
+							<div className="flex justify-center item-center">
+								<Image
+									src={catSleep}
+									alt="Cat Sleeping"
+									width={500}
+									height={500}
+								/>
+							</div>
+							{/*<div className="flex aspect-square w-full max-w-56 items-center justify-center rounded-2xl border border-dashed border-on-dark-faint bg-on-dark-faint/40">
 								<Cat
 									className="size-20 text-on-dark-muted"
 									strokeWidth={1.25}
 								/>
-							</div>
+							</div>*/}
 						</div>
 
 						{/* Right panel — step indicator + form content. */}
