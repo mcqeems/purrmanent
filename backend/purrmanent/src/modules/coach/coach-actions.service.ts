@@ -184,7 +184,8 @@ export class CoachActionsService {
         description:
           'Add a health record (vaccination, deworming, vet_visit, weight, or ' +
           'note) for a cat. recordData fields depend on the type (e.g. ' +
-          'vaccineName for vaccination, weightGrams for weight, text for note).',
+          'vaccineName for vaccination, weightGrams for weight, text for note). ' +
+          'You MUST call list_cats first to get the correct numeric catId.',
         schema: createHealthRecordSchema,
         mutates: true,
         handler: (userId, args) =>
@@ -218,7 +219,8 @@ export class CoachActionsService {
       {
         name: 'add_checklist_item',
         description:
-          'Add a custom checklist to-do item for a cat (board: daily or phase).',
+          'Add a custom checklist to-do item for a cat (board: daily or phase). ' +
+          'You MUST call list_cats first to get the correct numeric catId.',
         schema: customTodoSchema,
         mutates: true,
         handler: (userId, args) =>
@@ -264,6 +266,185 @@ export class CoachActionsService {
             userId,
             args as Parameters<CrisisService['resolve']>[1],
           ),
+      },
+
+      // ── Bulk reads ─────────────────────────────────────────────────────
+      {
+        name: 'get_multiple_cat_details',
+        description:
+          'Get details for multiple cats at once by their ids. ' +
+          'Use this when the user asks about several cats in one question.',
+        schema: z.object({
+          catIds: z.array(z.number().int().positive()).min(1).max(20),
+        }),
+        mutates: false,
+        handler: async (userId, args) => {
+          const { catIds } = args as { catIds: number[] };
+          return Promise.all(
+            catIds.map((id) => this.cats.findOneForUser(userId, id)),
+          );
+        },
+      },
+      {
+        name: 'get_multiple_health_timelines',
+        description:
+          'Get the health record timelines for multiple cats at once. ' +
+          'Use this when comparing or reviewing health across cats.',
+        schema: z.object({
+          catIds: z.array(z.number().int().positive()).min(1).max(20),
+        }),
+        mutates: false,
+        handler: async (userId, args) => {
+          const { catIds } = args as { catIds: number[] };
+          return Promise.all(
+            catIds.map((id) => this.health.timeline(userId, id)),
+          );
+        },
+      },
+
+      // ── Bulk writes (confirmed before execution) ───────────────────────
+      {
+        name: 'add_cats',
+        description:
+          'Add multiple cats at once. Ask the user for every required field ' +
+          '(name, personality, adoption date, adoption source) for EACH cat ' +
+          'BEFORE calling this — do not invent values.',
+        schema: z.object({
+          cats: z.array(createCatSchema).min(1).max(10),
+        }),
+        mutates: true,
+        handler: async (userId, args) => {
+          const { cats } = args as { cats: CreateCatDto[] };
+          return Promise.all(cats.map((cat) => this.cats.create(userId, cat)));
+        },
+      },
+      {
+        name: 'add_checklist_items',
+        description:
+          'Add multiple custom checklist to-do items for a cat in one call. ' +
+          'Use this instead of add_checklist_item when adding more than one task. ' +
+          'You MUST call list_cats first to get the correct numeric catId.',
+        schema: z.object({
+          catId: z.number().int().positive(),
+          items: z
+            .array(
+              z.object({
+                itemText: z.string().min(1).max(500),
+                board: z.enum(['daily', 'phase']).default('daily'),
+              }),
+            )
+            .min(1)
+            .max(20),
+        }),
+        mutates: true,
+        handler: async (userId, args) => {
+          const { catId, items } = args as {
+            catId: number;
+            items: { itemText: string; board: 'daily' | 'phase' }[];
+          };
+          return Promise.all(
+            items.map((item) =>
+              this.checklist.addCustom(userId, { catId, ...item }),
+            ),
+          );
+        },
+      },
+      {
+        name: 'move_checklist_items',
+        description:
+          'Move multiple checklist items to a new Kanban status at once. ' +
+          'Use this instead of move_checklist_item when moving more than one item.',
+        schema: z.object({
+          moves: z
+            .array(
+              z.object({
+                itemId: z.number().int().positive(),
+                newStatus: z.enum(['todo', 'progress', 'done']),
+              }),
+            )
+            .min(1)
+            .max(20),
+        }),
+        mutates: true,
+        handler: async (userId, args) => {
+          const { moves } = args as {
+            moves: {
+              itemId: number;
+              newStatus: 'todo' | 'progress' | 'done';
+            }[];
+          };
+          return Promise.all(
+            moves.map((move) => this.checklist.move(userId, move)),
+          );
+        },
+      },
+      {
+        name: 'add_health_records',
+        description:
+          'Add multiple health records at once (vaccination, deworming, ' +
+          'vet_visit, weight, or note). Use this instead of add_health_record ' +
+          'when logging more than one record. ' +
+          'You MUST call list_cats first to get the correct numeric catId for each record.',
+        schema: z.object({
+          records: z.array(createHealthRecordSchema).min(1).max(10),
+        }),
+        mutates: true,
+        handler: async (userId, args) => {
+          const { records } = args as {
+            records: Parameters<HealthService['create']>[1][];
+          };
+          return Promise.all(
+            records.map((record) => this.health.create(userId, record)),
+          );
+        },
+      },
+      {
+        name: 'update_health_records',
+        description:
+          'Update multiple health records at once by their recordIds. ' +
+          'Use this instead of update_health_record when updating more than one.',
+        schema: z.object({
+          records: z
+            .array(
+              updateHealthRecordSchema.extend({
+                recordId: z.number().int().positive(),
+              }),
+            )
+            .min(1)
+            .max(10),
+        }),
+        mutates: true,
+        handler: async (userId, args) => {
+          const { records } = args as {
+            records: {
+              recordId: number;
+              recordData?: Record<string, unknown>;
+              recordedAt?: string;
+              nextDueDate?: string | null;
+            }[];
+          };
+          return Promise.all(
+            records.map(({ recordId, ...rest }) =>
+              this.health.update(userId, recordId, rest),
+            ),
+          );
+        },
+      },
+      {
+        name: 'remove_health_records',
+        description:
+          'Delete multiple health records at once by their recordIds. ' +
+          'Use this instead of remove_health_record when deleting more than one.',
+        schema: z.object({
+          recordIds: z.array(z.number().int().positive()).min(1).max(20),
+        }),
+        mutates: true,
+        handler: async (userId, args) => {
+          const { recordIds } = args as { recordIds: number[] };
+          return Promise.all(
+            recordIds.map((id) => this.health.remove(userId, id)),
+          );
+        },
       },
     ];
     this.actions = new Map(list.map((a) => [a.name, a]));

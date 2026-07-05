@@ -134,91 +134,111 @@ function PhoneMockup() {
 	const [coachIsTyping, setCoachIsTyping] = useState(false);
 	const [isTypingPhase, setIsTypingPhase] = useState(true);
 	const scrollRef = useRef<HTMLDivElement>(null);
+	const containerRef = useRef<HTMLDivElement>(null);
+	const startedRef = useRef(false);
 
+	// Start animation only when the phone is on screen
 	useEffect(() => {
-		if (hasAnimatedGlobal) {
-			const initialHistory: {
-				sender: 'you' | 'coach';
-				text: React.ReactNode;
-			}[] = [];
-			CONVERSATION.forEach((pair) => {
-				initialHistory.push({ sender: 'you', text: pair.user });
-				initialHistory.push({ sender: 'coach', text: pair.coach });
-			});
-			setChatHistory(initialHistory);
-			setIsTypingPhase(false);
-			setInputText('');
-			setCoachIsTyping(false);
-			return;
+		const el = containerRef.current;
+		if (!el) return;
+
+		function startAnimation() {
+			if (startedRef.current) return;
+			startedRef.current = true;
+
+			if (hasAnimatedGlobal) {
+				const initialHistory: {
+					sender: 'you' | 'coach';
+					text: React.ReactNode;
+				}[] = [];
+				CONVERSATION.forEach((pair) => {
+					initialHistory.push({ sender: 'you', text: pair.user });
+					initialHistory.push({ sender: 'coach', text: pair.coach });
+				});
+				setChatHistory(initialHistory);
+				setIsTypingPhase(false);
+				setInputText('');
+				setCoachIsTyping(false);
+				return;
+			}
+
+			let active = true;
+
+			const runSequence = async () => {
+				if (!active) return;
+
+				setChatHistory([]);
+				setInputText('');
+				setCoachIsTyping(false);
+				setIsTypingPhase(true);
+				await new Promise((resolve) => setTimeout(resolve, 1500));
+				if (!active) return;
+
+				for (let i = 0; i < CONVERSATION.length; i++) {
+					if (!active) break;
+					const pair = CONVERSATION[i];
+
+					setIsTypingPhase(true);
+					const userText = pair.user;
+					for (let charIndex = 0; charIndex <= userText.length; charIndex++) {
+						if (!active) break;
+						setInputText(userText.slice(0, charIndex));
+						await new Promise((resolve) => setTimeout(resolve, TYPING_SPEED));
+					}
+					if (!active) break;
+
+					await new Promise((resolve) => setTimeout(resolve, 600));
+					if (!active) break;
+
+					setInputText('');
+					setIsTypingPhase(false);
+					setChatHistory((prev) => [...prev, { sender: 'you', text: userText }]);
+
+					await new Promise((resolve) => setTimeout(resolve, 800));
+					if (!active) break;
+
+					setCoachIsTyping(true);
+					await new Promise((resolve) => setTimeout(resolve, 1500));
+					if (!active) break;
+
+					setCoachIsTyping(false);
+					setChatHistory((prev) => [
+						...prev,
+						{ sender: 'coach', text: pair.coach },
+					]);
+
+					if (i < CONVERSATION.length - 1) {
+						await new Promise((resolve) => setTimeout(resolve, 2000));
+					}
+				}
+
+				if (active) {
+					hasAnimatedGlobal = true;
+				}
+			};
+
+			runSequence();
+
+			// ponytail: cleanup stored in ref so observer callback can't double-start
+			cleanupRef.current = () => { active = false; };
 		}
 
-		let active = true;
+		const cleanupRef = { current: () => {} };
 
-		const runSequence = async () => {
-			if (!active) return;
-
-			// Reset sequence once at the very start
-			setChatHistory([]);
-			setInputText('');
-			setCoachIsTyping(false);
-			setIsTypingPhase(true);
-			await new Promise((resolve) => setTimeout(resolve, 1500));
-			if (!active) return;
-
-			for (let i = 0; i < CONVERSATION.length; i++) {
-				if (!active) break;
-				const pair = CONVERSATION[i];
-
-				// 1. Type user message character by character
-				setIsTypingPhase(true);
-				const userText = pair.user;
-				for (let charIndex = 0; charIndex <= userText.length; charIndex++) {
-					if (!active) break;
-					setInputText(userText.slice(0, charIndex));
-					await new Promise((resolve) => setTimeout(resolve, TYPING_SPEED));
+		const observer = new IntersectionObserver(
+			([entry]) => {
+				if (entry.isIntersecting) {
+					observer.disconnect();
+					startAnimation();
 				}
-				if (!active) break;
-
-				// Wait after typing completes
-				await new Promise((resolve) => setTimeout(resolve, 600));
-				if (!active) break;
-
-				// 2. Add user message to history and clear input field
-				setInputText('');
-				setIsTypingPhase(false);
-				setChatHistory((prev) => [...prev, { sender: 'you', text: userText }]);
-
-				// Delay before Coach starts typing
-				await new Promise((resolve) => setTimeout(resolve, 800));
-				if (!active) break;
-
-				// 3. Coach typing indicator
-				setCoachIsTyping(true);
-				await new Promise((resolve) => setTimeout(resolve, 1500));
-				if (!active) break;
-
-				// 4. Coach replies
-				setCoachIsTyping(false);
-				setChatHistory((prev) => [
-					...prev,
-					{ sender: 'coach', text: pair.coach },
-				]);
-
-				// Delay before starting next user message typing (only if not last message)
-				if (i < CONVERSATION.length - 1) {
-					await new Promise((resolve) => setTimeout(resolve, 2000));
-				}
-			}
-
-			if (active) {
-				hasAnimatedGlobal = true;
-			}
-		};
-
-		runSequence();
+			},
+			{ threshold: 0.3 },
+		);
+		observer.observe(el);
 
 		return () => {
-			active = false;
+			observer.disconnect();
+			cleanupRef.current();
 		};
 	}, []);
 
@@ -232,7 +252,7 @@ function PhoneMockup() {
 	}, [chatHistory, coachIsTyping]);
 
 	return (
-		<div className="relative w-[300px] h-[610px] flex-shrink-0 scale-100">
+		<div ref={containerRef} className="relative w-[300px] h-[610px] flex-shrink-0 scale-100">
 			<Image
 				src={phoneFrame}
 				alt="Phone frame"

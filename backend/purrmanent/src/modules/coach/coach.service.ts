@@ -45,7 +45,14 @@ const TOOL_GUIDANCE =
   'cite them like [1], [2]. Only call an action tool when the user clearly asks ' +
   'for that action; before calling it, make sure you have every required ' +
   'argument — if something is missing, ask the user for it instead of guessing. ' +
-  'Never fabricate values.';
+  'Never fabricate values. ' +
+  'When the user asks you to add, move, update, or remove MULTIPLE items at once, ' +
+  'prefer the bulk version of the action (e.g. add_checklist_items instead of ' +
+  'add_checklist_item, get_multiple_cat_details instead of get_cat_details). ' +
+  'Use the single action only when operating on exactly one item. ' +
+  'IMPORTANT: whenever an action requires a catId, ALWAYS call list_cats or ' +
+  'get_cat_details FIRST to discover the correct numeric cat id. Never guess ' +
+  'or invent a catId — use the exact id returned by the tool.';
 
 /**
  * RAG is exposed as a tool (not pre-fetched every turn) so action-only prompts
@@ -444,7 +451,7 @@ export class CoachService {
     res: ActionResult,
   ): Promise<string> {
     if (!res.ok) {
-      return `Sorry, I couldn't complete that: ${res.error ?? 'unknown error'}.`;
+      return 'Sorry, I couldn\'t complete that. Please make sure the cat or item still exists and try again.';
     }
     const done = `Done — I've completed "${res.action}".`;
     if (!this.llm.enabled) return done;

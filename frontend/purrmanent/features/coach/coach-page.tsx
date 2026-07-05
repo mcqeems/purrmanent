@@ -16,6 +16,15 @@ const ACTIONS = [
 	'How often should I feed an adult cat?',
 ];
 
+function Thinking() {
+	return (
+		<div className="flex items-center gap-2 px-1">
+			<TypingDots className="text-accent-violet" />
+			<span className="text-xs text-muted">Coach is thinking…</span>
+		</div>
+	);
+}
+
 function InputPill({
 	value,
 	onChange,
@@ -62,6 +71,7 @@ function InputPill({
 export function CoachPage() {
 	const { messages, streaming, send, confirm, conversationId } = useCopilot();
 	const { data: session } = useSession();
+	const [confirmingAction, setConfirmingAction] = useState(false);
 
 	const [input, setInput] = useState('');
 	const [greeting, setGreeting] = useState('');
@@ -105,7 +115,7 @@ export function CoachPage() {
 	return (
 		<div className="relative flex flex-col flex-1 h-full w-full bg-transparent">
 			{/* Main Layout Container */}
-			<div className="relative z-10 flex flex-col flex-1 h-full select-none">
+			<div className="relative z-10 flex flex-col flex-1 h-full">
 				{/* Messages Pane */}
 				<div
 					className={cn(
@@ -159,15 +169,26 @@ export function CoachPage() {
 											</p>
 											<div className="flex gap-2">
 												<Button
+													variant="emboss"
 													size="sm"
-													onClick={() => confirm(m.id, m.pending!, true)}
+													onClick={async () => {
+														setConfirmingAction(true);
+														await confirm(m.id, m.pending!, true).then(() =>
+															setConfirmingAction(false),
+														);
+													}}
 												>
 													Confirm
 												</Button>
 												<Button
 													size="sm"
 													variant="outline"
-													onClick={() => confirm(m.id, m.pending!, false)}
+													onClick={async () => {
+														setConfirmingAction(true);
+														await confirm(m.id, m.pending!, false).then(() =>
+															setConfirmingAction(false),
+														);
+													}}
 												>
 													Cancel
 												</Button>
@@ -177,12 +198,7 @@ export function CoachPage() {
 								</div>
 							);
 						})}
-					{streaming && (
-						<div className="flex items-center gap-2 px-1">
-							<TypingDots className="text-accent-violet" />
-							<span className="text-xs text-muted">Coach is thinking…</span>
-						</div>
-					)}
+					{(streaming || confirmingAction) && <Thinking />}
 				</div>
 
 				{/* Input & Home Welcome Section */}
