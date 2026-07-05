@@ -98,7 +98,7 @@ export function RegisterForm() {
 			<GoogleButton label="Sign up with Google" />
 			<p className="text-center text-sm text-on-dark-muted">
 				Already have an account?{' '}
-				<Link href="/login" className="text-accent-lime underline">
+				<Link href="/login" className="text-accent-lime hover:underline">
 					Sign in
 				</Link>
 			</p>

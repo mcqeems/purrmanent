@@ -38,7 +38,7 @@ function MoveMenu({
 			<DropdownMenu.Trigger asChild>
 				<button
 					aria-label="Change status"
-					className="-mr-1 rounded p-1 text-muted hover:bg-surface-press-light hover:text-ink-deep transition-colors duration-200 cursor-pointer"
+					className="-mr-1 rounded p-1 text-muted hover:bg-surface-press-light hover:text-ink-deep transition-colors duration-200 cursor-pointer "
 				>
 					<MoreVertical size={16} />
 				</button>

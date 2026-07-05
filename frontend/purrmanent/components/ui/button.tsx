@@ -12,7 +12,7 @@ const buttonVariants = cva(
 				default:
 					'bg-primary/80 hover:bg-primary/90 text-on-primary font-bold text-[14px] leading-[1.14] tracking-[0.2px]   active:bg-primary',
 				inverted:
-					'bg-on-primary text-ink-deep font-bold text-[14px] leading-[1.14] tracking-[0.2px]   active:bg-surface-press-light active:text-ink-press shadow-[0_2px_8px_0_rgba(0,0,0,0.08)]',
+					'bg-surface-canvas-light hover:bg-surface-press-stronger text-ink-deep font-bold text-[14px] leading-[1.14] tracking-[0.2px] active:bg-surface-press-light active:text-ink-press shadow-[0_2px_8px_0_rgba(0,0,0,0.08)] disabled:text-ink-deep/75 disabled:bg-surface-press-stronger disabled:text-muted',
 				'ghost-on-dark':
 					'bg-on-dark-faint text-on-primary font-bold text-[14px] leading-[1.14] tracking-[0.2px]',
 				'violet-token':
