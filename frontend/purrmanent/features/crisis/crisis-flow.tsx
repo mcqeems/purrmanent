@@ -159,7 +159,6 @@ export function CrisisFlow() {
 							disabled={resolve.isPending}
 						>
 							Not yet
-							{resolve.isPending && <Spinner className="w-4 h-4" />}
 						</Button>
 					</div>
 				</Card>
