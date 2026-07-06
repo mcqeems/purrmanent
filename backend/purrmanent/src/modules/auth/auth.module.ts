@@ -13,9 +13,10 @@ import { AuthController } from './auth.controller';
  *
  * AUTH_INSTANCE is an async factory provider — resolved during
  * NestFactory.create(), so main.ts can read it before app.listen().
- * 
- * Guards are applied in order: CsrfGuard runs first (validates Origin/Referer
- * for state-changing requests), then AuthGuard (validates session).
+ *
+ * Guards are applied in registration order: CsrfGuard runs first (validates
+ * Origin/Referer + X-Requested-With for state-changing requests), then
+ * AuthGuard (validates session). Both respect @Public() routes.
  */
 @Global()
 @Module({
