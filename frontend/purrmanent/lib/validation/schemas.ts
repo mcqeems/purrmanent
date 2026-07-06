@@ -50,11 +50,6 @@ export const registerSchema = z.object({
 	name: z.string().min(1).max(100).optional(),
 });
 
-export const sendVerificationSchema = z.object({
-	email: z.email(),
-	callbackURL: z.string().optional(),
-});
-
 // ── Cats ────────────────────────────────────────────────────────────────────
 export const createCatSchema = z.object({
 	name: z.string().min(1, 'Name is required').max(100),
@@ -164,12 +159,6 @@ export const createHealthRecordSchema = z
 		}
 	});
 
-export const updateHealthRecordSchema = z.object({
-	recordData: z.record(z.string(), z.unknown()).optional(),
-	recordedAt: isoDate.optional(),
-	nextDueDate: isoDate.nullable().optional(),
-});
-
 // Inferred input types
 export type LoginInput = z.infer<typeof loginSchema>;
 export type RegisterInput = z.infer<typeof registerSchema>;
@@ -182,6 +171,4 @@ export type IdentifyCrisisInput = z.infer<typeof identifyCrisisSchema>;
 export type CrisisStepInput = z.infer<typeof crisisStepSchema>;
 export type ResolveCrisisInput = z.infer<typeof resolveCrisisSchema>;
 export type ChatMessageInput = z.infer<typeof chatMessageSchema>;
-export type ConfirmActionInput = z.infer<typeof confirmActionSchema>;
 export type CreateHealthRecordInput = z.infer<typeof createHealthRecordSchema>;
-export type UpdateHealthRecordInput = z.infer<typeof updateHealthRecordSchema>;

@@ -8,8 +8,6 @@ export type KanbanStatus = 'todo' | 'progress' | 'done';
 export type ChecklistBoard = 'daily' | 'phase';
 export type HealthRecordType =
   'vaccination' | 'deworming' | 'vet_visit' | 'weight' | 'note';
-export type AdopterExperience = 'first-time' | 'some' | 'experienced';
-export type MentionColumn = KanbanStatus;
 
 export interface SessionUser {
   id: number;
@@ -100,15 +98,6 @@ export interface CrisisIdentifyResult {
   source: 'rule' | 'ai';
   scenarioKey: string | null;
   slides: CrisisSlide[];
-}
-
-export interface CrisisEvent {
-  id: number;
-  catId: number;
-  userId: number;
-  isDone?: boolean;
-  outcome?: string;
-  stepsCompleted: number[];
 }
 
 /** Coach SSE event payloads (POST /api/coach/chat). */
