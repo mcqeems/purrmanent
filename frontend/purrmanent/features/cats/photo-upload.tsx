@@ -27,6 +27,9 @@ export function PhotoUpload({
 		try {
 			const ext = file.name.split('.').pop()?.toLowerCase() ?? 'jpg';
 			const path = `cats/${crypto.randomUUID()}.${ext}`;
+			if (path.includes('..')) {
+				throw new Error('Invalid path');
+			}
 			const { error } = await supabase.storage
 				.from(SUPABASE_BUCKET)
 				.upload(path, file, { upsert: false, contentType: file.type });
