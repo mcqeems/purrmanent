@@ -1,5 +1,5 @@
 import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { join, resolve, relative, isAbsolute } from 'node:path';
 import { parseMarkdownSlides, Slide } from './parsers/markdown-slide.parser';
 
 export interface ProtocolMeta {
@@ -109,10 +109,10 @@ const PROTOCOL_DIR = join(process.cwd(), 'data', 'crisis-protocols');
 
 /** Read + parse a protocol's markdown into slides. */
 export function loadProtocolSlides(file: string): Slide[] {
-  const base = path.resolve(PROTOCOL_DIR);
-  const target = path.resolve(base, file);
-  const rel = path.relative(base, target);
-  if (rel.startsWith('..') || path.isAbsolute(rel)) {
+  const base = resolve(PROTOCOL_DIR);
+  const target = resolve(base, file);
+  const rel = relative(base, target);
+  if (rel.startsWith('..') || isAbsolute(rel)) {
     throw new Error('Invalid file path');
   }
   const md = readFileSync(target, 'utf-8');
