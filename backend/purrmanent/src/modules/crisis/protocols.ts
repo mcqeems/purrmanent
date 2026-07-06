@@ -109,7 +109,13 @@ const PROTOCOL_DIR = join(process.cwd(), 'data', 'crisis-protocols');
 
 /** Read + parse a protocol's markdown into slides. */
 export function loadProtocolSlides(file: string): Slide[] {
-  const md = readFileSync(join(PROTOCOL_DIR, file), 'utf-8');
+  const base = path.resolve(PROTOCOL_DIR);
+  const target = path.resolve(base, file);
+  const rel = path.relative(base, target);
+  if (rel.startsWith('..') || path.isAbsolute(rel)) {
+    throw new Error('Invalid file path');
+  }
+  const md = readFileSync(target, 'utf-8');
   return parseMarkdownSlides(md);
 }
 
