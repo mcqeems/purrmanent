@@ -171,44 +171,70 @@ function PhoneMockup() {
 				setInputText('');
 				setCoachIsTyping(false);
 				setIsTypingPhase(true);
-				await new Promise((resolve) => setTimeout(resolve, 1500));
+				await new Promise((resolve) => setTimeout(resolve, 750));
 				if (!active) return;
 
 				for (let i = 0; i < CONVERSATION.length; i++) {
 					if (!active) break;
 					const pair = CONVERSATION[i];
 
-					setIsTypingPhase(true);
-					const userText = pair.user;
-					for (let charIndex = 0; charIndex <= userText.length; charIndex++) {
+					if (i === 0) {
+						// First message: skip typing animation, show immediately
+						setIsTypingPhase(false);
+						setInputText('');
+						setChatHistory((prev) => [
+							...prev,
+							{ sender: 'you', text: pair.user },
+						]);
+
+						await new Promise((resolve) => setTimeout(resolve, 800));
 						if (!active) break;
-						setInputText(userText.slice(0, charIndex));
-						await new Promise((resolve) => setTimeout(resolve, TYPING_SPEED));
-					}
-					if (!active) break;
 
-					await new Promise((resolve) => setTimeout(resolve, 600));
-					if (!active) break;
+						setCoachIsTyping(true);
+						await new Promise((resolve) => setTimeout(resolve, 1500));
+						if (!active) break;
 
-					setInputText('');
-					setIsTypingPhase(false);
-					setChatHistory((prev) => [...prev, { sender: 'you', text: userText }]);
+						setCoachIsTyping(false);
+						setChatHistory((prev) => [
+							...prev,
+							{ sender: 'coach', text: pair.coach },
+						]);
 
-					await new Promise((resolve) => setTimeout(resolve, 800));
-					if (!active) break;
+						await new Promise((resolve) => setTimeout(resolve, 800));
+						if (!active) break;
+					} else {
+						// Second message: typing animation
+						setIsTypingPhase(true);
+						const userText = pair.user;
+						for (let charIndex = 0; charIndex <= userText.length; charIndex++) {
+							if (!active) break;
+							setInputText(userText.slice(0, charIndex));
+							await new Promise((resolve) => setTimeout(resolve, TYPING_SPEED));
+						}
+						if (!active) break;
 
-					setCoachIsTyping(true);
-					await new Promise((resolve) => setTimeout(resolve, 1500));
-					if (!active) break;
+						await new Promise((resolve) => setTimeout(resolve, 600));
+						if (!active) break;
 
-					setCoachIsTyping(false);
-					setChatHistory((prev) => [
-						...prev,
-						{ sender: 'coach', text: pair.coach },
-					]);
+						setInputText('');
+						setIsTypingPhase(false);
+						setChatHistory((prev) => [
+							...prev,
+							{ sender: 'you', text: userText },
+						]);
 
-					if (i < CONVERSATION.length - 1) {
-						await new Promise((resolve) => setTimeout(resolve, 2000));
+						await new Promise((resolve) => setTimeout(resolve, 800));
+						if (!active) break;
+
+						setCoachIsTyping(true);
+						await new Promise((resolve) => setTimeout(resolve, 1500));
+						if (!active) break;
+
+						setCoachIsTyping(false);
+						setChatHistory((prev) => [
+							...prev,
+							{ sender: 'coach', text: pair.coach },
+						]);
 					}
 				}
 
@@ -220,7 +246,9 @@ function PhoneMockup() {
 			runSequence();
 
 			// ponytail: cleanup stored in ref so observer callback can't double-start
-			cleanupRef.current = () => { active = false; };
+			cleanupRef.current = () => {
+				active = false;
+			};
 		}
 
 		const cleanupRef = { current: () => {} };
@@ -252,7 +280,10 @@ function PhoneMockup() {
 	}, [chatHistory, coachIsTyping]);
 
 	return (
-		<div ref={containerRef} className="relative w-[300px] h-[610px] flex-shrink-0 scale-100">
+		<div
+			ref={containerRef}
+			className="relative w-[300px] h-[610px] flex-shrink-0 scale-100"
+		>
 			<Image
 				src={phoneFrame}
 				alt="Phone frame"
@@ -340,7 +371,7 @@ const RIGHT_CARDS = [
 	{
 		icon: AlertTriangle,
 		label: 'Crisis Support',
-		title: 'When something\'s wrong',
+		title: "When something's wrong",
 		desc: 'Get step-by-step guidance when your cat needs help.',
 	},
 ] as const;
