@@ -411,7 +411,8 @@ export class CoachService {
         yield { type: 'delta', data: FALLBACK_MESSAGE };
       }
       await this.persist(conv, dto, full, lastSources, lastRetrieved);
-      await this.updateSummary(conv, dto.message, full);
+      // ponytail: summary is for future context only — no need to block [DONE]
+      void this.updateSummary(conv, dto.message, full);
       yield { type: 'done' };
     } catch (err) {
       this.logger.error(`coach.run failed: ${String(err)}`);
