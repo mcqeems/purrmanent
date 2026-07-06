@@ -38,6 +38,7 @@ export function ProfilePhotoUpload() {
     try {
       const ext = file.name.split('.').pop()?.toLowerCase() ?? 'jpg';
       const path = `profiles/${crypto.randomUUID()}.${ext}`;
+      if (path.includes('..')) throw new Error('Invalid path');
       const { error: uploadError } = await supabase.storage
         .from(SUPABASE_BUCKET)
         .upload(path, file, { upsert: false, contentType: file.type });
