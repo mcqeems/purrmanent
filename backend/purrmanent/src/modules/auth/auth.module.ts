@@ -2,6 +2,7 @@ import { Global, Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthService } from './auth.service';
 import { AuthGuard } from './auth.guard';
+import { CsrfGuard } from './csrf.guard';
 import { authInstanceProvider, AUTH_INSTANCE } from './auth.provider';
 import { AuthController } from './auth.controller';
 
@@ -12,6 +13,10 @@ import { AuthController } from './auth.controller';
  *
  * AUTH_INSTANCE is an async factory provider — resolved during
  * NestFactory.create(), so main.ts can read it before app.listen().
+ *
+ * Guards are applied in registration order: CsrfGuard runs first (blocks
+ * cross-site form POSTs before authentication), then AuthGuard (resolves the
+ * session). Both respect @Public() routes.
  */
 @Global()
 @Module({
@@ -19,6 +24,7 @@ import { AuthController } from './auth.controller';
   providers: [
     authInstanceProvider,
     AuthService,
+    { provide: APP_GUARD, useClass: CsrfGuard },
     { provide: APP_GUARD, useClass: AuthGuard },
   ],
   exports: [AuthService, AUTH_INSTANCE],

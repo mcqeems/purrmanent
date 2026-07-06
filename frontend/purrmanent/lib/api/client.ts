@@ -80,6 +80,10 @@ export async function parseError(res: Response): Promise<ApiError> {
  * The single boundary to the backend. Always credentialed (cookie session),
  * JSON-encoded, and envelope-aware. snake_case query params are passed via
  * `query` so callers never build URLs by hand.
+ *
+ * Includes X-Requested-With header for CSRF protection on state-changing
+ * requests (POST, PUT, PATCH, DELETE). Simple HTML forms cannot set custom
+ * headers, so this prevents cross-site form POST attacks.
  */
 export async function apiFetch<T>(
   path: string,
@@ -91,6 +95,7 @@ export async function apiFetch<T>(
     credentials: 'include',
     headers: {
       ...(body !== undefined ? { 'Content-Type': 'application/json' } : {}),
+      'X-Requested-With': 'XMLHttpRequest',
       ...headers,
     },
     body: body !== undefined ? JSON.stringify(body) : undefined,
