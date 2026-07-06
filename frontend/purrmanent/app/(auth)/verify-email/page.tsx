@@ -1,4 +1,10 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
+
+export const metadata: Metadata = {
+	title: 'Verify Email | Purrmanent',
+	description: 'Check your inbox to verify your email address.',
+};
 
 export default function VerifyEmailPage() {
   return (

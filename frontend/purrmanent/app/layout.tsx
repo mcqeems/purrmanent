@@ -17,9 +17,52 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://purrmanent.web.id'),
   title: 'Purrmanent',
   description:
-    'Purrmanent is a 90-day guide for new cat parents — a clear, day-by-day plan based on the 3-3-3 adjustment rule.',
+    'Your 90-day interactive guide for new cat parents. Track health, manage daily checklists, get AI coaching, and earn graduation certificates.',
+  keywords: [
+    'cat care',
+    'new cat',
+    'pet adoption',
+    'cat guide',
+    '3-3-3 rule',
+    'cat health',
+    'kitten',
+    'cat parent',
+  ],
+  authors: [{ name: 'Purrmanent' }],
+  creator: 'Purrmanent',
+  robots: { index: true, follow: true },
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: 'https://purrmanent.web.id',
+    siteName: 'Purrmanent',
+    title: 'Purrmanent — 90-Day Cat Parent Guide',
+    description:
+      'Your 90-day interactive guide for new cat parents. Track health, manage daily checklists, get AI coaching, and earn graduation certificates.',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Purrmanent logo',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Purrmanent — 90-Day Cat Parent Guide',
+    description:
+      'Your 90-day interactive guide for new cat parents. Track health, manage daily checklists, get AI coaching, and earn graduation certificates.',
+    images: ['/og-image.png'],
+  },
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon-32x32.png',
+    apple: '/apple-touch-icon.png',
+  },
 };
 
 export default function RootLayout({
