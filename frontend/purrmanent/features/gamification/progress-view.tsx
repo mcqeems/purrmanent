@@ -9,7 +9,7 @@ import {
 	DialogContent,
 	DialogTrigger,
 	Pill,
-	Spinner,
+	Skeleton,
 } from '@/components/ui';
 import { cn } from '@/lib/utils/cn';
 import { useGraduation } from '@/features/checklist/hooks';
@@ -62,7 +62,42 @@ export function ProgressView() {
 	const graduated = grads.filter((g) => g.graduated);
 	const inProgress = grads.filter((g) => !g.graduated);
 
-	if (isLoading) return <Spinner className="size-6 text-accent-violet" />;
+	if (isLoading)
+		return (
+			<div className="space-y-8">
+				<Card className="flex items-center justify-between p-6">
+					<div className="space-y-2">
+						<Skeleton className="h-4 w-20" />
+						<Skeleton className="h-10 w-32" />
+					</div>
+					<Skeleton className="h-[150px] w-[150px] rounded-lg" />
+				</Card>
+				<section className="space-y-3">
+					<Skeleton className="h-6 w-16" />
+					<div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+						{Array.from({ length: 4 }).map((_, i) => (
+							<Card key={i} className="flex flex-col items-center gap-1 p-4">
+								<Skeleton className="h-24 w-24 rounded-lg" />
+								<Skeleton className="h-4 w-16" />
+								<Skeleton className="h-5 w-12 rounded-full" />
+							</Card>
+						))}
+					</div>
+				</section>
+				<section className="space-y-3">
+					<Skeleton className="h-6 w-40" />
+					<div className="grid gap-3 sm:grid-cols-2">
+						{Array.from({ length: 2 }).map((_, i) => (
+							<Card key={i} className="min-h-[190px] p-6">
+								<Skeleton className="mx-auto h-4 w-20" />
+								<Skeleton className="mx-auto mt-2 h-6 w-32" />
+								<Skeleton className="mx-auto mt-1 h-3 w-48" />
+							</Card>
+						))}
+					</div>
+				</section>
+			</div>
+		);
 
 	return (
 		<div className="space-y-8">

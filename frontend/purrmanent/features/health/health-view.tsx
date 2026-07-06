@@ -2,7 +2,7 @@
 
 import { format, parseISO, isValid } from 'date-fns';
 import { Trash2 } from 'lucide-react';
-import { Card, Pill, Spinner } from '@/components/ui';
+import { Card, Pill, Skeleton } from '@/components/ui';
 import type { HealthRecord } from '@/lib/types/api';
 import { useDeleteRecord, useHealthTimeline } from './hooks';
 import { RecordForm } from './record-form';
@@ -54,7 +54,23 @@ export function HealthView({ catId }: { catId: number }) {
 			<section className="space-y-3">
 				<h2 className="text-lg font-semibold">Health timeline</h2>
 				{isLoading ? (
-					<Spinner className="size-6 text-accent-violet" />
+					<div className="space-y-2">
+						{Array.from({ length: 4 }).map((_, i) => (
+							<div
+								key={i}
+								className="flex items-center justify-between rounded-md border border-hairline-cloud bg-surface-canvas-light p-3"
+							>
+								<div className="flex flex-col gap-1.5">
+									<div className="flex items-center gap-2">
+										<Skeleton className="h-5 w-20 rounded-full" />
+										<Skeleton className="h-3 w-20" />
+									</div>
+									<Skeleton className="h-3 w-32" />
+								</div>
+								<Skeleton className="size-4" />
+							</div>
+						))}
+					</div>
 				) : isError ? (
 					<p className="text-sm text-accent-pink">Could not load records.</p>
 				) : records && records.length > 0 ? (

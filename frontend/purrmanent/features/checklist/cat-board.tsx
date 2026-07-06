@@ -15,7 +15,7 @@ import {
 	Field,
 	Input,
 	SelectField,
-	Spinner,
+	Skeleton,
 	Tabs,
 	TabsContent,
 	TabsList,
@@ -55,7 +55,18 @@ function BoardView({
 	onMove: (itemId: number, newStatus: KanbanStatus) => void;
 }) {
 	const qc = useQueryClient();
-	if (isLoading) return <Spinner className="size-6 text-accent-violet" />;
+	if (isLoading)
+		return (
+			<div className="flex flex-col gap-3 sm:flex-row">
+				{Array.from({ length: 3 }).map((_, i) => (
+					<div key={i} className="flex-1 space-y-2">
+						<Skeleton className="h-4 w-16" />
+						<Skeleton className="h-12 w-full rounded-md" />
+						<Skeleton className="h-12 w-full rounded-md" />
+					</div>
+				))}
+			</div>
+		);
 	if (isError)
 		return (
 			<p className="text-sm text-accent-pink">Could not load the board.</p>

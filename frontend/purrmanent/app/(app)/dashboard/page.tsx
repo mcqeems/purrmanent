@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { PageHeader } from '@/components/layout/app-shell';
-import { Button, Spinner } from '@/components/ui';
+import { Button, Card, Skeleton } from '@/components/ui';
 import { useCats } from '@/features/cats/hooks';
 import { GlobalOverview } from '@/features/checklist/global-overview';
 import { DashboardAsk } from '@/features/coach/dashboard-ask';
@@ -30,7 +30,43 @@ export default function DashboardPage() {
 				}
 			/>
 			{isLoading ? (
-				<Spinner className="size-6 text-accent-violet" />
+				<div className="space-y-8">
+					<div className="mb-8 space-y-4">
+						<div className="grid grid-cols-2 gap-3 lg:grid-cols-5">
+							{Array.from({ length: 5 }).map((_, i) => (
+								<Card key={i} className="flex items-center gap-3 p-4">
+									<Skeleton className="size-10 rounded-lg" />
+									<div className="space-y-1">
+										<Skeleton className="h-3 w-12" />
+										<Skeleton className="h-6 w-10" />
+									</div>
+								</Card>
+							))}
+						</div>
+						<div className="grid gap-4 lg:grid-cols-2">
+							<Card className="p-4">
+								<Skeleton className="mb-2 h-4 w-24" />
+								<Skeleton className="h-[200px] w-full rounded-lg" />
+							</Card>
+							<Card className="p-4">
+								<Skeleton className="mb-2 h-4 w-32" />
+								<Skeleton className="h-[200px] w-full rounded-lg" />
+							</Card>
+						</div>
+					</div>
+					<div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+						{Array.from({ length: 3 }).map((_, i) => (
+							<Card key={i} className="flex flex-col gap-3">
+								<Skeleton className="h-5 w-24" />
+								<div className="flex gap-2">
+									<Skeleton className="h-5 w-16 rounded-full" />
+									<Skeleton className="h-5 w-16 rounded-full" />
+									<Skeleton className="h-5 w-16 rounded-full" />
+								</div>
+							</Card>
+						))}
+					</div>
+				</div>
 			) : cats && cats.length === 0 ? (
 				<div className="rounded-xl border border-hairline-cloud p-8 text-center">
 					<p className="mb-4 text-muted">

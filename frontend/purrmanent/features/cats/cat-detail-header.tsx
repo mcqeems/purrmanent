@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { differenceInCalendarDays, format, parseISO, isValid } from 'date-fns';
 import { HeartPulse, AlertTriangle, Settings } from 'lucide-react';
-import { Button, Pill, Spinner } from '@/components/ui';
+import { Button, Pill, Skeleton } from '@/components/ui';
 import { useCat } from './hooks';
 import { capitalizeFirstChar } from '@/lib/utils';
 
@@ -15,7 +15,27 @@ function fmtDate(d: string) {
 export function CatDetailHeader({ catId }: { catId: number }) {
 	const { data: cat, isLoading, isError } = useCat(catId);
 
-	if (isLoading) return <Spinner className="size-6 text-accent-violet" />;
+	if (isLoading)
+		return (
+			<header className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+				<div className="flex items-center gap-4">
+					<Skeleton className="size-16 rounded-xl" />
+					<div className="space-y-2">
+						<div className="flex items-center gap-2">
+							<Skeleton className="h-6 w-32" />
+							<Skeleton className="h-5 w-16 rounded-full" />
+						</div>
+						<Skeleton className="h-3 w-40" />
+						<Skeleton className="h-3 w-28" />
+					</div>
+				</div>
+				<div className="flex gap-2">
+					<Skeleton className="h-9 w-20 rounded-md" />
+					<Skeleton className="h-9 w-20 rounded-md" />
+					<Skeleton className="h-9 w-20 rounded-md" />
+				</div>
+			</header>
+		);
 	if (isError || !cat)
 		return <p className="text-sm text-accent-pink">Could not load this cat.</p>;
 
