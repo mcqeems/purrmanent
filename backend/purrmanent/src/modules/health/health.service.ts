@@ -53,9 +53,17 @@ export class HealthService {
   }
 
   private async ownedRecord(userId: number, id: number): Promise<HealthRecord> {
-    const record = await this.records.findOne({ where: { id } });
+    // Scoped lookup: join health record with cat ownership in a single query
+    // to prevent existence oracle. Returns null if record doesn't exist OR
+    // if the record's cat is not owned by userId.
+    const record = await this.records
+      .createQueryBuilder('r')
+      .innerJoin(Cat, 'c', 'c.id = r.cat_id')
+      .where('r.id = :id', { id })
+      .andWhere('c.user_id = :userId', { userId })
+      .getOne();
+    
     if (!record) throw new NotFoundException('Health record not found');
-    await this.catsService.findOneForUser(userId, record.catId); // throws if not owned
     return record;
   }
 
