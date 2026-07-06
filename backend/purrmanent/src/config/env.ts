@@ -5,9 +5,9 @@ import { z } from 'zod';
  * The app refuses to start if a required var is missing or malformed.
  *
  * ponytail: only DATABASE_URL is strictly required to boot. External service
- * keys (LLM, Resend, VAPID, Google, Tavily, Supabase) are optional so local
- * dev boots without every integration configured; the feature that needs a
- * missing key fails at call-time with a clear error, not at boot.
+ * keys (LLM, Resend, VAPID, Google) are optional so local dev boots without
+ * every integration configured; the feature that needs a missing key fails
+ * at call-time with a clear error, not at boot.
  */
 export const envSchema = z.object({
   // Core
@@ -39,17 +39,11 @@ export const envSchema = z.object({
   LLM_BASE_URL: z.string().default('https://router.bynara.id/v1'),
   LLM_MODEL: z.string().default('mimo-v2.5-hermes'),
   LLM_MODEL_PRO: z.string().default('mimo-v2.5-pro-hermes'),
-  TAVILY_API_KEY: z.string().optional(),
 
   // Web Push (VAPID)
   VAPID_PUBLIC_KEY: z.string().optional(),
   VAPID_PRIVATE_KEY: z.string().optional(),
   VAPID_SUBJECT: z.string().default('mailto:team@purrmanent.app'),
-
-  // Supabase Storage
-  SUPABASE_URL: z.string().optional(),
-  SUPABASE_SERVICE_ROLE_KEY: z.string().optional(),
-  SUPABASE_BUCKET: z.string().default('cat-images'),
 
   // Default daily-reset / reminder timezone (plan §3.6 ceiling: WIB only)
   APP_TIMEZONE: z.string().default('Asia/Jakarta'),

@@ -1,30 +1,47 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { Cron } from '@nestjs/schedule';
+import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
+import { SchedulerRegistry } from '@nestjs/schedule';
+import { CronJob } from 'cron';
+import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Cat } from '../../entities';
 import { ChecklistGenerationService } from './checklist-generation.service';
+import type { Env } from '../../config/env';
 
 /**
  * Nightly daily-board reset + phase-milestone injection (spec §2.1).
  *
- * ponytail: single 00:00 Asia/Jakarta cron. Ceiling = correct only for WIB
- * users. Upgrade path = an hourly cron that resets each user whose *local*
+ * Reads APP_TIMEZONE from env at boot (default: Asia/Jakarta).
+ * Upgrade path = an hourly cron that resets each user whose *local*
  * clock just crossed midnight (multi-tz is optional scope, spec §2.9 / R4).
  *
  * Historical dates are never deleted (streaks/gamification read them);
  * "wipe incomplete daily" = simply not carrying yesterday's items into today.
  */
 @Injectable()
-export class ChecklistCronService {
+export class ChecklistCronService implements OnModuleInit {
   private readonly logger = new Logger(ChecklistCronService.name);
 
   constructor(
     @InjectRepository(Cat) private readonly cats: Repository<Cat>,
     private readonly generation: ChecklistGenerationService,
+    private readonly schedulerRegistry: SchedulerRegistry,
+    private readonly config: ConfigService<Env, true>,
   ) {}
 
-  @Cron('0 0 * * *', { timeZone: 'Asia/Jakarta' })
+  onModuleInit() {
+    const tz = this.config.get('APP_TIMEZONE', { infer: true });
+    const job = new CronJob(
+      '0 0 * * *',
+      () => this.runDailyReset(),
+      null,
+      true,
+      tz,
+    );
+    this.schedulerRegistry.addCronJob('checklist-daily-reset', job);
+    this.logger.log(`Scheduled daily reset cron at 00:00 ${tz}`);
+  }
+
   async runDailyReset(): Promise<void> {
     const today = new Date().toISOString().slice(0, 10);
     const activeCats = await this.cats.find({ where: { isActive: true } });

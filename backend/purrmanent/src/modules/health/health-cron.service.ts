@@ -1,24 +1,41 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { Cron } from '@nestjs/schedule';
+import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
+import { SchedulerRegistry } from '@nestjs/schedule';
+import { CronJob } from 'cron';
+import { ConfigService } from '@nestjs/config';
 import { HealthService } from './health.service';
 import { NotificationService } from '../notification/notification.service';
+import type { Env } from '../../config/env';
 
 /**
  * Health due-date reminders (spec §2.5): notify 3 days before and on the due
  * date. Reuses NotificationService.send (plan §8/§9).
  *
- * ponytail: single 08:00 Asia/Jakarta cron (WIB ceiling per §3.6).
+ * Reads APP_TIMEZONE from env at boot (default: Asia/Jakarta).
  */
 @Injectable()
-export class HealthCronService {
+export class HealthCronService implements OnModuleInit {
   private readonly logger = new Logger(HealthCronService.name);
 
   constructor(
     private readonly health: HealthService,
     private readonly notifications: NotificationService,
+    private readonly schedulerRegistry: SchedulerRegistry,
+    private readonly config: ConfigService<Env, true>,
   ) {}
 
-  @Cron('0 8 * * *', { timeZone: 'Asia/Jakarta' })
+  onModuleInit() {
+    const tz = this.config.get('APP_TIMEZONE', { infer: true });
+    const job = new CronJob(
+      '0 8 * * *',
+      () => this.sendDueReminders(),
+      null,
+      true,
+      tz,
+    );
+    this.schedulerRegistry.addCronJob('health-due-reminders', job);
+    this.logger.log(`Scheduled health reminders cron at 08:00 ${tz}`);
+  }
+
   async sendDueReminders(): Promise<void> {
     const today = new Date();
     const from = today.toISOString().slice(0, 10);

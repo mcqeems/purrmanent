@@ -1,27 +1,44 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { Cron } from '@nestjs/schedule';
+import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
+import { SchedulerRegistry } from '@nestjs/schedule';
+import { CronJob } from 'cron';
+import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PushSubscription } from '../../entities';
 import { NotificationService } from './notification.service';
+import type { Env } from '../../config/env';
 
 /**
  * Daily checklist reminder (spec §2.10). One push/day to each subscribed user —
  * capped to avoid spam.
  *
- * ponytail: single 08:00 Asia/Jakarta cron (same WIB ceiling as §3.6).
+ * Reads APP_TIMEZONE from env at boot (default: Asia/Jakarta).
  */
 @Injectable()
-export class NotificationCronService {
+export class NotificationCronService implements OnModuleInit {
   private readonly logger = new Logger(NotificationCronService.name);
 
   constructor(
     @InjectRepository(PushSubscription)
     private readonly subs: Repository<PushSubscription>,
     private readonly notifications: NotificationService,
+    private readonly schedulerRegistry: SchedulerRegistry,
+    private readonly config: ConfigService<Env, true>,
   ) {}
 
-  @Cron('0 8 * * *', { timeZone: 'Asia/Jakarta' })
+  onModuleInit() {
+    const tz = this.config.get('APP_TIMEZONE', { infer: true });
+    const job = new CronJob(
+      '0 8 * * *',
+      () => this.sendDailyReminders(),
+      null,
+      true,
+      tz,
+    );
+    this.schedulerRegistry.addCronJob('notification-daily-reminder', job);
+    this.logger.log(`Scheduled daily reminder cron at 08:00 ${tz}`);
+  }
+
   async sendDailyReminders(): Promise<void> {
     const rows = await this.subs
       .createQueryBuilder('s')

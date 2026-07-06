@@ -452,7 +452,7 @@ export class CoachService {
     res: ActionResult,
   ): Promise<string> {
     if (!res.ok) {
-      return 'Sorry, I couldn\'t complete that. Please make sure the cat or item still exists and try again.';
+      return "Sorry, I couldn't complete that. Please make sure the cat or item still exists and try again.";
     }
     const done = `Done — I've completed "${res.action}".`;
     if (!this.llm.enabled) return done;
