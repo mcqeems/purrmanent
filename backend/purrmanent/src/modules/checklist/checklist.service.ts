@@ -57,6 +57,7 @@ export class ChecklistService {
       .addSelect('ci.kanban_status', 'status')
       .addSelect('COUNT(*)', 'count')
       .where('ci.cat_id IN (:...ids)', { ids: cats.map((c) => c.id) })
+      .andWhere('ci.board = :board', { board: 'daily' })
       .groupBy('ci.cat_id')
       .addGroupBy('ci.kanban_status')
       .getRawMany<{ catId: number; status: string; count: string }>();
