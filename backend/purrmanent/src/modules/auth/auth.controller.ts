@@ -7,7 +7,7 @@ import { Public, CurrentUser } from './auth.decorators';
 import type { SessionUser } from './auth.service';
 
 /**
- * Manual email/password auth endpoints (spec §2.7), proxied to better-auth's
+ * Manual email/password auth endpoints, proxied to better-auth's
  * server API. These complement — they don't replace — better-auth's native
  * routes and Google OAuth (GET /api/auth/sign-in/social), both still served by
  * the catch-all handler mounted in main.ts. The catch-all skips these specific

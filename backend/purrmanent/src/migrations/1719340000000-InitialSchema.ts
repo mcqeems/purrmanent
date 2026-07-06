@@ -1,17 +1,17 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
 /**
- * Initial schema (plan §7 / spec §5.2).
+ * Initial schema.
  *
  * Layout:
  *   1. pgvector extension (must precede the VECTOR column).
  *   2. better-auth tables (users, user_sessions, accounts, verifications) using
  *      integer ids (useNumberId) + camelCase columns (kysely default).
  *   3. App-domain tables, FK -> users(id) / cats(id).
- *   4. Indexes (spec §5.3), incl. ivfflat for RAG.
+ *   4. Indexes, incl. ivfflat for RAG.
  *
- * Plan decisions applied: checklist_items.board discriminator (§3.8);
- * ai_coach_corpus.embedding VECTOR(384) for all-MiniLM-L6-v2 (§3.3 / R9).
+ * Plan decisions applied: checklist_items.board discriminator;
+ * ai_coach_corpus.embedding VECTOR(384) for all-MiniLM-L6-v2.
  */
 export class InitialSchema1719340000000 implements MigrationInterface {
   name = 'InitialSchema1719340000000';
@@ -132,7 +132,7 @@ export class InitialSchema1719340000000 implements MigrationInterface {
         UNIQUE ("phase", "day_in_phase", "time_of_day", "order_index")
       )`);
 
-    // ---- checklist_items (board discriminator, plan §3.8) ----
+    // ---- checklist_items (board discriminator) ----
     await q.query(`
       CREATE TABLE "checklist_items" (
         "id" SERIAL PRIMARY KEY,
@@ -180,7 +180,7 @@ export class InitialSchema1719340000000 implements MigrationInterface {
         "duration_seconds" INTEGER
       )`);
 
-    // ---- ai_coach_corpus (embedding handled raw, plan §3.3) ----
+    // ---- ai_coach_corpus (embedding handled raw) ----
     await q.query(`
       CREATE TABLE "ai_coach_corpus" (
         "id" SERIAL PRIMARY KEY,
@@ -274,7 +274,7 @@ export class InitialSchema1719340000000 implements MigrationInterface {
         "clicked" BOOLEAN NOT NULL DEFAULT false
       )`);
 
-    // ---- indexes (spec §5.3) ----
+    // ---- indexes ----
     await q.query(
       `CREATE INDEX "idx_checklist_items_cat_date" ON "checklist_items" ("cat_id", "scheduled_date")`,
     );

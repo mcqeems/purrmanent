@@ -15,7 +15,7 @@ import { CurrentUser } from '../auth/auth.decorators';
 export class ChecklistController {
   constructor(private readonly checklist: ChecklistService) {}
 
-  // user is derived from the session, never trusted from the query (§18).
+  // user is derived from the session, never trusted from the query.
   @Get('global')
   global(@CurrentUser('id') userId: number) {
     return this.checklist.getGlobal(userId);

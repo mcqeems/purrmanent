@@ -11,7 +11,7 @@ export type Auth = ReturnType<typeof betterAuth>;
 export const AUTH_INSTANCE = 'AUTH_INSTANCE';
 
 /**
- * Async factory that builds the better-auth instance (plan §2 / §3.2).
+ * Async factory that builds the better-auth instance.
  *
  * Why a factory (not onModuleInit): async providers are resolved during
  * `NestFactory.create()`, so the instance exists when main.ts reads it to mount
@@ -161,7 +161,7 @@ ${opts.note}
         sendOnSignUp: true,
         autoSignInAfterVerification: true,
         // verification links expire (not forever); a fresh one can be requested
-        // via POST /api/auth/send-verification (spec §2.7).
+        // via POST /api/auth/send-verification.
         expiresIn: 60 * 60 * 24, // 24 hours
         sendVerificationEmail: async ({
           user,
@@ -212,13 +212,13 @@ ${opts.note}
       },
       session: {
         modelName: 'user_sessions',
-        expiresIn: 60 * 60 * 24 * 30, // 30 days (plan §2.7)
+        expiresIn: 60 * 60 * 24 * 30,
         updateAge: 60 * 60 * 24, // refresh daily
       },
       account: { modelName: 'accounts' },
       verification: { modelName: 'verifications' },
       // Auth routes are mounted on express ahead of Nest guards, so they are
-      // rate-limited by better-auth itself (plan §2.7 / §8.4).
+      // rate-limited by better-auth itself.
       rateLimit: {
         enabled: true,
         window: 60,

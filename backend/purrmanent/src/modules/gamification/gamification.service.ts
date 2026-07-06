@@ -13,8 +13,8 @@ import type {
 } from '../../common/events/events';
 
 /**
- * Thin, event-driven points balance (spec §2.6 / §8.7). The emitters guarantee
- * once-only emission per genuine completion (plan §3.7), so this listener stays
+ * Thin, event-driven points balance. The emitters guarantee
+ * once-only emission per genuine completion, so this listener stays
  * dumb — no dedup logic. The increment is atomic at the DB (race-safe).
  */
 @Injectable()

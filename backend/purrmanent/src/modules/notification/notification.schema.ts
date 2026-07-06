@@ -1,7 +1,7 @@
 import { createZodDto } from 'nestjs-zod';
 import { z } from 'zod';
 
-/** Standard browser PushSubscription JSON shape (spec §2.10). */
+/** Standard browser PushSubscription JSON shape. */
 export const pushSubscribeSchema = z.object({
   endpoint: z.string().url(),
   keys: z.object({

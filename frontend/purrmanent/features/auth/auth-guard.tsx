@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useSession } from '@/lib/auth/client';
 import { Spinner } from '@/components/ui';
 
-/** Redirects to /login when there is no session (FRONTEND_BUILD_PLAN.md §8). */
+/** Redirects to /login when there is no session. */
 export function AuthGuard({ children }: { children: ReactNode }) {
   const { data, isPending } = useSession();
   const router = useRouter();

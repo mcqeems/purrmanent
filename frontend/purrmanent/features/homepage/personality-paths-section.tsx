@@ -86,7 +86,6 @@ const PATH_BALANCED_STEPS = [
 	},
 ];
 
-// ponytail: three path cards share the same layout, extracted the repeated inner markup into a helper
 function PathCard({
 	label,
 	title,

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-/** A single crisis slide: one markdown panel + one todo list (spec §2.3). */
+/** A single crisis slide: one markdown panel + one todo list. */
 export const slideSchema = z.object({
   title: z.string(),
   markdown: z.string(),
@@ -11,7 +11,7 @@ export type Slide = z.infer<typeof slideSchema>;
 
 /**
  * Splits a protocol markdown document into slides at `##` headings and extracts
- * `- [ ]` / `- [x]` checkbox lines as todos (spec §2.3 format). Pure function.
+ * `- [ ]` / `- [x]` checkbox lines as todos. Pure function.
  *
  * The markdown body of each slide excludes the todo checkbox lines (they render
  * in the dedicated todo panel, not the markdown panel).

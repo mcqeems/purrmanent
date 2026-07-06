@@ -18,11 +18,11 @@ export class CoachController {
   constructor(private readonly coach: CoachService) {}
 
   /**
-   * Streamed Copilot chat (spec §2.4/§8.5). Manual SSE over POST: the browser
+   * Streamed Copilot chat. Manual SSE over POST: the browser
    * sends an already-resolved `contextMention` enum; the server streams token
    * deltas as `data:` events and a final `[DONE]` sentinel.
    *
-   * Rate-limited to 100/min (proposal §8.4). ponytail: per-IP for the MVP;
+   * Rate-limited to 100/min. ponytail: per-IP for the MVP;
    * upgrade path = per-user key via a custom ThrottlerGuard getTracker.
    */
   @Throttle({ default: { ttl: 60_000, limit: 100 } })

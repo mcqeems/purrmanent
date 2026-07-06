@@ -2,7 +2,7 @@ import { createZodDto } from 'nestjs-zod';
 import { z } from 'zod';
 import { PERSONALITIES, GENDERS, ADOPTION_SOURCES } from '../cats/cat.schema';
 
-/** spec §2.2 questionnaire (+ location/timezone fields). */
+/** Questionnaire (+ location/timezone fields). */
 export const questionnaireSchema = z.object({
   catName: z.string().min(1).max(100),
   catAgeMonths: z.number().int().min(0).max(360).optional(),
@@ -17,7 +17,7 @@ export const questionnaireSchema = z.object({
   householdComposition: z.string().max(50).optional(),
   concerns: z.array(z.string()).optional(),
   otherConcerns: z.string().optional(),
-  // persisted on the user — drives crons + Copilot language (plan §9)
+  // persisted on the user — drives crons + Copilot language
   timezone: z.string().max(50).optional(),
   preferredLanguage: z.string().max(5).optional(),
 });

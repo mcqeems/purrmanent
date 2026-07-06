@@ -93,7 +93,7 @@ export class AuthService {
   /**
    * (Re)send a verification email. better-auth issues a fresh, time-limited
    * token (emailVerification.expiresIn = 24h) each call, so a user whose first
-   * link expired can request a new one (spec §2.7).
+   * link expired can request a new one.
    */
   sendVerificationEmail(body: {
     email: string;

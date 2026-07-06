@@ -42,7 +42,7 @@ export class CrisisService {
     private readonly emitter: EventEmitter2,
   ) {}
 
-  /** Rule match first; AI fallback only on no match (spec §2.3). */
+  /** Rule match first; AI fallback only on no match. */
   async identify(
     userId: number,
     dto: IdentifyCrisisDto,
@@ -109,7 +109,7 @@ export class CrisisService {
   }
 
   /**
-   * Record a completed step. Idempotent per step index (plan §3.7-style guard):
+   * Record a completed step. Idempotent per step index:
    * emits the points event only when the index is newly added.
    */
   async step(
@@ -141,7 +141,7 @@ export class CrisisService {
     return { stepsCompleted: arr };
   }
 
-  /** Persist resolution outcome (spec §2.3). */
+  /** Persist resolution outcome. */
   async resolve(userId: number, dto: ResolveCrisisDto): Promise<CrisisEvent> {
     const event = await this.ownedEvent(userId, dto.eventId);
     event.isDone = dto.isDone;

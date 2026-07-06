@@ -47,7 +47,7 @@ export class ChecklistService {
     return new Date().toISOString().slice(0, 10);
   }
 
-  /** Aggregated To-Do/Progress/Done counts per cat (Global Overview, §2.1). */
+  /** Aggregated To-Do/Progress/Done counts per cat. */
   async getGlobal(userId: number): Promise<CatBoardSummary[]> {
     const cats = await this.cats.findAllForUser(userId);
     if (cats.length === 0) return [];
@@ -193,7 +193,7 @@ export class ChecklistService {
   }
 
   /**
-   * Idempotent points (plan §3.7): award +10 only on the FIRST transition into
+   * Idempotent points: award +10 only on the FIRST transition into
    * 'done', detected atomically with `completed_at IS NULL`. Moving back out of
    * done clears completed_at but awards nothing.
    */

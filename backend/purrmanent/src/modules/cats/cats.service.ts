@@ -5,7 +5,7 @@ import { Cat } from '../../entities';
 import { CreateCatDto, UpdateCatDto } from './cat.schema';
 
 /**
- * Every method is scoped to the owning user (plan §9, §18 — no IDOR).
+ * Every method is scoped to the owning user (no IDOR).
  * The ownership check lives here in the service, not just the controller.
  */
 @Injectable()

@@ -7,7 +7,7 @@ import { CorpusRepository } from './corpus.repository';
 
 /**
  * Global DB module. synchronize is always false — schema changes go through
- * migrations only (plan §7 / acceptance §10.2).
+ * migrations only.
  */
 @Global()
 @Module({

@@ -4,7 +4,7 @@ import { KANBAN_STATUSES } from '../checklist/checklist.schema';
 
 export const chatMessageSchema = z.object({
   message: z.string().min(1).max(2000),
-  // already-resolved @mention enum from the browser (spec §8.5)
+  // already-resolved @mention enum from the browser
   contextMention: z.enum(KANBAN_STATUSES).nullish(),
   catId: z.number().int().positive().optional(),
   // continue a specific past conversation (else the latest for the cat is used)

@@ -15,7 +15,7 @@ Reduce ambient noise.
 `;
 
 describe('parseMarkdownSlides', () => {
-  it('splits at ## and extracts checkbox todos (spec §2.3)', () => {
+  it('splits at ## and extracts checkbox todos', () => {
     const slides = parseMarkdownSlides(SAMPLE);
     expect(slides).toHaveLength(2);
     expect(slides[0].title).toBe('Step 1: Warming the Food');

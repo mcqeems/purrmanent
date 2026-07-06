@@ -11,7 +11,7 @@ import { AUTH_INSTANCE, type Auth } from './modules/auth/auth.provider';
 
 async function bootstrap() {
   // bodyParser disabled: the better-auth handler must read the raw request
-  // stream, so it is mounted before any JSON body parser (plan §3.2).
+  // stream, so it is mounted before any JSON body parser.
   const app = await NestFactory.create(AppModule, { bodyParser: false });
   const config = app.get(ConfigService<Env, true>);
 

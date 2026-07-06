@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 /**
- * Environment schema — validated with Zod at boot (Phase 0 / plan §21).
+ * Environment schema — validated with Zod at boot.
  * The app refuses to start if a required var is missing or malformed.
  *
  * ponytail: only DATABASE_URL is strictly required to boot. External service
@@ -45,7 +45,7 @@ export const envSchema = z.object({
   VAPID_PRIVATE_KEY: z.string().optional(),
   VAPID_SUBJECT: z.string().default('mailto:team@purrmanent.app'),
 
-  // Default daily-reset / reminder timezone (plan §3.6 ceiling: WIB only)
+  // Default daily-reset / reminder timezone (ceiling: WIB only)
   APP_TIMEZONE: z.string().default('Asia/Jakarta'),
 });
 

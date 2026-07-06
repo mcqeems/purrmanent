@@ -1,5 +1,5 @@
 /**
- * The 3-3-3 rule (spec §2.1/§2.2):
+ * The 3-3-3 rule:
  *   - Decompression: days 1-3 (extended to 5 for shy cats, plan generator)
  *   - Routine:       days 4-21
  *   - Home:          days 22-90
@@ -37,7 +37,7 @@ export interface PersonalizedPlan {
 }
 
 /**
- * Rule-based plan generation (spec §2.2 / §8.2). Deterministic mapping:
+ * Rule-based plan generation. Deterministic mapping:
  * shy cats get an extended decompression window; first-time adopters get
  * educational tooltips enabled.
  */

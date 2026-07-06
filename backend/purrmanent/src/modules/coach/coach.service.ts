@@ -238,10 +238,10 @@ export class CoachService {
   }
 
   /**
-   * Orchestrates a single Copilot turn (spec §2.4/§8.5): inject @mention Kanban
+   * Orchestrates a single Copilot turn: inject @mention Kanban
    * context, retrieve corpus chunks, stream the answer, persist on completion.
    * Yields SSE-shaped events. Never throws to the client — failures yield a
-   * friendly fallback (spec §2.4 acceptance).
+   * friendly fallback.
    */
   async *run(userId: number, dto: ChatMessageDto): AsyncGenerator<CoachEvent> {
     try {

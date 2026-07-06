@@ -10,7 +10,6 @@ export const PERSONALITIES = [
 export const GENDERS = ['male', 'female', 'unknown'] as const;
 export const ADOPTION_SOURCES = ['shelter', 'self', 'rescue'] as const;
 
-/** spec §5.5 */
 export const createCatSchema = z.object({
   name: z.string().min(1).max(100),
   ageMonths: z.number().int().min(0).max(360).optional(),

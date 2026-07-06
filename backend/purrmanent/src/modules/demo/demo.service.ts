@@ -7,7 +7,7 @@ import { Cat } from '../../entities';
 export class DemoService {
   constructor(@InjectRepository(Cat) private readonly cats: Repository<Cat>) {}
 
-  /** Public onboarding prefill for a demo shelter code (spec §2.11). */
+  /** Public onboarding prefill for a demo shelter code. */
   async prefill(code: string) {
     const cat = await this.cats.findOne({ where: { shelterCode: code } });
     if (!cat) throw new NotFoundException('No demo cat for that code');

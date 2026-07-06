@@ -7,12 +7,12 @@ export interface ProtocolMeta {
   name: string;
   icon: string;
   severity: 'low' | 'medium' | 'high' | 'emergency';
-  /** lowercase keywords matched against the user's symptom prompt (§2.3 rule). */
+  /** lowercase keywords matched against the user's symptom prompt. */
   keywords: string[];
   file: string;
 }
 
-/** The 5 core rule-based protocols (spec §2.3 / plan §6). */
+/** The 5 core rule-based protocols. */
 export const PROTOCOLS: ProtocolMeta[] = [
   {
     scenarioKey: 'fasting_24h',

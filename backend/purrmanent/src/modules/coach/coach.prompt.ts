@@ -2,7 +2,7 @@ import { ChatMessage } from '../../common/llm/llm.service';
 import { RetrievedChunk } from './coach-tools.service';
 
 /**
- * Pure builder for the augmented Copilot prompt (spec §8.5): system persona +
+ * Pure builder for the augmented Copilot prompt: system persona +
  * injected @mention tasks + retrieved corpus chunks + the user's language.
  * Extracted so the @mention-injection contract is unit-testable.
  */

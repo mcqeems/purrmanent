@@ -17,7 +17,7 @@ export class ChecklistTemplate {
   @Column({ type: 'varchar', length: 30 })
   category: string; // 'health' | 'mental' | 'interaction' | 'environment'
 
-  // plan §3.8: 'daily' (default) | 'phase' discriminator so the daily board and
+  // 'daily' (default) | 'phase' discriminator so the daily board and
   // the 90-day milestone board can be queried independently.
   @Column({ type: 'varchar', length: 10, default: 'daily' })
   board: string;

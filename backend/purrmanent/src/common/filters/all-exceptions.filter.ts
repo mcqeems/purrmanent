@@ -11,7 +11,7 @@ import { Response } from 'express';
 import type { ZodError } from 'zod';
 
 /**
- * Global exception filter producing the spec §6.2 error envelope:
+ * Global exception filter producing the standard error envelope:
  *   { error: { code, message, details } }
  *
  * - Zod validation errors  -> 400 VALIDATION_ERROR (+ field details)

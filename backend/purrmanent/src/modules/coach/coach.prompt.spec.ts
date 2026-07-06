@@ -1,6 +1,6 @@
 import { buildCoachPrompt } from './coach.prompt';
 
-describe('buildCoachPrompt (@mention context, spec §8.5)', () => {
+describe('buildCoachPrompt (@mention context)', () => {
   it('injects the mentioned column card texts into the system prompt', () => {
     const msgs = buildCoachPrompt({
       message: 'Why is my cat ignoring tasks in @todo?',

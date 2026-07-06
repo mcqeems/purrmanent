@@ -53,7 +53,7 @@ export class AiCoachMessage {
 
 /**
  * Corpus rows. The `embedding VECTOR(384)` column is intentionally NOT mapped
- * here (plan §3.3): TypeORM has no native vector type. All embedding writes and
+ * here: TypeORM has no native vector type. All embedding writes and
  * similarity search go through the raw-SQL CorpusRepository.
  */
 @Entity('ai_coach_corpus')

@@ -11,7 +11,7 @@ const DISMISS_KEY = 'purrmanent.unverifiedBannerDismissed';
 
 /**
  * Soft banner for unverified accounts. [BACKEND-TRUTH] verification is optional
- * (BACKEND_IMPLEMENTATION.md §6.7), so we nudge rather than block.
+ * so we nudge rather than block.
  */
 export function UnverifiedBanner() {
 	const { data } = useSession();

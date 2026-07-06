@@ -21,7 +21,7 @@ export class OnboardingService {
   constructor(private readonly dataSource: DataSource) {}
 
   /**
-   * Single atomic transaction (spec §8.2): create Cat -> QuestionnaireResponse
+   * Single atomic transaction: create Cat -> QuestionnaireResponse
    * (with generated_plan) -> run rule-based generatePlan -> seed Day-1 daily
    * checklist items from templates. Rolls back entirely on any failure.
    */

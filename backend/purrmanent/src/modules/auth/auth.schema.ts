@@ -1,7 +1,7 @@
 import { createZodDto } from 'nestjs-zod';
 import { z } from 'zod';
 
-/** Manual email/password registration (spec §2.7: min 8 chars, letter+number). */
+/** Manual email/password registration (min 8 chars, letter+number). */
 export const registerSchema = z.object({
   email: z.email(),
   password: z

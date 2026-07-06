@@ -37,7 +37,7 @@ function parseBlock(raw: string, handlers: CoachStreamHandlers): boolean {
 /**
  * POST /api/coach/chat returns text/event-stream (not JSON, not EventSource —
  * EventSource is GET-only). Read the body stream and dispatch SSE-shaped events
- * (sources / delta / confirm / [DONE]). See FRONTEND_BUILD_PLAN.md §5.4.
+ * (sources / delta / confirm / [DONE]).
  */
 export async function streamCoachChat(
   body: ChatMessageInput,

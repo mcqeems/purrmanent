@@ -9,7 +9,7 @@ import { NotificationService } from './notification.service';
 import type { Env } from '../../config/env';
 
 /**
- * Daily checklist reminder (spec §2.10). One push/day to each subscribed user —
+ * Daily checklist reminder. One push/day to each subscribed user —
  * capped to avoid spam.
  *
  * Reads APP_TIMEZONE from env at boot (default: Asia/Jakarta).

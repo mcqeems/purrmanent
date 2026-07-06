@@ -10,7 +10,7 @@ import { PROTOCOLS, loadProtocolSlides } from '../modules/crisis/protocols';
 import { dayNumberFor, phaseForDay } from '../common/plan/plan';
 
 /**
- * Idempotent seeder (spec §2.11). Seeds BOTH:
+ * Idempotent seeder. Seeds BOTH:
  *   1. Reference data — checklist_templates + crisis_scenarios — required at
  *      runtime by onboarding, the daily cron, and Crisis Mode.
  *   2. Demo data — 1 shelter (codes), 1 demo user, 3 cats at different phases

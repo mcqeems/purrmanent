@@ -18,7 +18,7 @@ export interface CorpusSearchResult {
 }
 
 /**
- * Isolates the pgvector quirk (plan §3.3): TypeORM has no native vector type,
+ * Isolates the pgvector quirk: TypeORM has no native vector type,
  * so all writes/reads of `ai_coach_corpus.embedding VECTOR(384)` go through raw
  * parameterized SQL here. The rest of the schema stays idiomatic TypeORM.
  */
@@ -51,7 +51,7 @@ export class CorpusRepository {
     );
   }
 
-  /** Cosine-distance nearest neighbours (plan §5.3 ivfflat index). */
+  /** Cosine-distance nearest neighbours. */
   async searchSimilar(
     embedding: number[],
     k = 5,

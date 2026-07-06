@@ -11,7 +11,7 @@ async function main() {
   console.log('Clearing existing corpus…');
   await corpus.clear();
 
-  // curated knowledge: one chunk per file under data/corpus/ (spec §8.2)
+  // curated knowledge: one chunk per file under data/corpus/
   const baseChunks = loadCorpusChunks();
 
   // crisis protocol slides become retrievable chunks too

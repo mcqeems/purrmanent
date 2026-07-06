@@ -10,7 +10,7 @@ export interface RetrievedChunk {
 }
 
 /**
- * Framework-agnostic Copilot tools (plan §3.5/§7). Driven directly here rather
+ * Framework-agnostic Copilot tools. Driven directly here rather
  * than through a Flue harness (R3). Shared shape so Crisis AI-fallback could
  * reuse them later.
  */

@@ -7,8 +7,8 @@ import { NotificationService } from '../notification/notification.service';
 import type { Env } from '../../config/env';
 
 /**
- * Health due-date reminders (spec §2.5): notify 3 days before and on the due
- * date. Reuses NotificationService.send (plan §8/§9).
+ * Health due-date reminders: notify 3 days before and on the
+ * due date.
  *
  * Reads APP_TIMEZONE from env at boot (default: Asia/Jakarta).
  */

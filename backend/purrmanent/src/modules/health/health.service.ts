@@ -102,7 +102,7 @@ export class HealthService {
 
   /**
    * Records whose next_due_date falls within [from, to] inclusive — used by the
-   * reminder cron (spec §2.5: fire 3 days before and on the due date).
+   * reminder cron (fire 3 days before and on the due date).
    */
   async findDue(from: string, to: string): Promise<DueRecord[]> {
     const rows = await this.records

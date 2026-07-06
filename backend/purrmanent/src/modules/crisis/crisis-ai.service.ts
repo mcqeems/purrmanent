@@ -3,9 +3,9 @@ import { LlmService } from '../../common/llm/llm.service';
 import { Slide, slidesSchema } from './parsers/markdown-slide.parser';
 
 /**
- * AI fallback for unmatched crisis prompts (spec §2.3 / plan §6). Composes a
+ * AI fallback for unmatched crisis prompts. Composes a
  * slide array in the SAME schema as the rule-based protocols, validated with
- * Zod before return (external/LLM output is untrusted, plan §18).
+ * Zod before return (external/LLM output is untrusted).
  *
  * ponytail: Phase 6 uses a direct LLM composition. Upgrade path (Phase 7): feed
  * retrieved corpus chunks + webSearch results into the prompt for grounding.

@@ -3,7 +3,7 @@ import { ChecklistService } from './checklist.service';
 import { CHECKLIST_ITEM_COMPLETED } from '../../common/events/events';
 
 /**
- * Idempotency check (plan §3.7 / §4): two consecutive moves to 'done' award
+ * Idempotency check: two consecutive moves to 'done' award
  * points exactly once. The atomic `completed_at IS NULL` guard is simulated by
  * the conditional UPDATE returning affected=1 the first time, 0 the second.
  */

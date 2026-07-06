@@ -10,7 +10,7 @@ export const HEALTH_RECORD_TYPES = [
 ] as const;
 
 /**
- * record_data is type-specific (spec §2.5). We keep a single ZodObject (so it
+ * record_data is type-specific. We keep a single ZodObject (so it
  * works with createZodDto / the global pipe) and enforce per-record_type
  * required fields with superRefine — equivalent to a discriminated union but
  * extendable as a DTO class.

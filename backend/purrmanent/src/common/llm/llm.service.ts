@@ -24,7 +24,7 @@ export interface ParsedToolCall {
  *
  * ponytail: the openai SDK is CJS-safe, so a static import works. The same two
  * tools (retrieveCorpus/webSearch) can drive this directly — no Flue harness
- * needed (plan §3.5 / R3).
+ * needed.
  */
 @Injectable()
 export class LlmService {

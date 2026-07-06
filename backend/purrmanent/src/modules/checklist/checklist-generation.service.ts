@@ -12,7 +12,7 @@ import {
 
 /**
  * Generates checklist items from templates. Shared by the nightly cron and the
- * on-demand guard (spec §2.1: "missing checklist items auto-generate").
+ * on-demand guard ("missing checklist items auto-generate").
  *
  * Daily templates are keyed (phase, day_in_phase=1, board='daily') — the
  * representative daily routine for a phase. Phase-milestone templates use
@@ -71,7 +71,7 @@ export class ChecklistGenerationService {
   }
 
   /**
-   * Inject phase-milestone items when a cat crosses Day 3/21/90 (spec §2.1).
+   * Inject phase-milestone items when a cat crosses Day 3/21/90.
    * Idempotent: only inserts for the exact threshold day, orIgnore on conflict.
    */
   async injectPhaseMilestones(

@@ -26,7 +26,7 @@ import { LlmModule } from './common/llm/llm.module';
     }),
     ScheduleModule.forRoot(),
     EventEmitterModule.forRoot(),
-    // Global rate limit (plan §11/§8.4). Default 120 req/min per IP; sensitive
+    // Global rate limit. Default 120 req/min per IP; sensitive
     // routes override via @Throttle. Auth routes are rate-limited by
     // better-auth itself (they bypass Nest guards — mounted on express).
     ThrottlerModule.forRoot([{ ttl: 60_000, limit: 120 }]),

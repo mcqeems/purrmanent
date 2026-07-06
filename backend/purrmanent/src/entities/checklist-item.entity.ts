@@ -34,7 +34,7 @@ export class ChecklistItem {
   @Column({ name: 'is_custom', type: 'boolean', default: false })
   isCustom: boolean;
 
-  // plan §3.8 discriminator: 'daily' | 'phase'
+  // 'daily' | 'phase' discriminator
   @Column({ type: 'varchar', length: 10, default: 'daily' })
   board: Board;
 

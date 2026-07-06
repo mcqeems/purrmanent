@@ -7,7 +7,7 @@ import {
 } from './plan';
 
 describe('generatePlan', () => {
-  it('extends decompression for shy cats (spec §2.2 acceptance)', () => {
+  it('extends decompression for shy cats', () => {
     const plan = generatePlan({ catPersonality: 'shy' });
     expect(plan.decompressionDays).toBe(SHY_DECOMPRESSION_DAYS);
     expect(plan.phases[0]).toMatchObject({ phase: 'decompression', endDay: 5 });

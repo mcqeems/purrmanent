@@ -1,6 +1,6 @@
 import { createHealthRecordSchema } from './health.schema';
 
-describe('createHealthRecordSchema (discriminated union, spec §2.5)', () => {
+describe('createHealthRecordSchema (discriminated union)', () => {
   it('rejects a weight record missing weightGrams', () => {
     const res = createHealthRecordSchema.safeParse({
       recordType: 'weight',

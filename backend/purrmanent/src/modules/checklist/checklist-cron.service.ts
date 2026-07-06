@@ -9,11 +9,11 @@ import { ChecklistGenerationService } from './checklist-generation.service';
 import type { Env } from '../../config/env';
 
 /**
- * Nightly daily-board reset + phase-milestone injection (spec §2.1).
+ * Nightly daily-board reset + phase-milestone injection.
  *
  * Reads APP_TIMEZONE from env at boot (default: Asia/Jakarta).
  * Upgrade path = an hourly cron that resets each user whose *local*
- * clock just crossed midnight (multi-tz is optional scope, spec §2.9 / R4).
+ * clock just crossed midnight (multi-tz is optional scope).
  *
  * Historical dates are never deleted (streaks/gamification read them);
  * "wipe incomplete daily" = simply not carrying yesterday's items into today.

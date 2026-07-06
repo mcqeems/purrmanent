@@ -1,6 +1,6 @@
 import { matchProtocol, loadProtocolSlides, PROTOCOLS } from './protocols';
 
-describe('matchProtocol (rule engine, spec §2.3)', () => {
+describe('matchProtocol (rule engine)', () => {
   it('matches known symptom keywords to the right scenario', () => {
     expect(matchProtocol('my cat is not eating')?.scenarioKey).toBe(
       'fasting_24h',

@@ -16,7 +16,7 @@ export function useGamificationStatus() {
 	});
 }
 
-/** Client-derived milestone badges (no badges endpoint exists — see FRONTEND_BUILD_PLAN §12). */
+/** Client-derived milestone badges (no badges endpoint exists). */
 export const BADGES = [
 	{ points: 50, label: 'Getting started', icon: '🌱', image: seedling },
 	{ points: 150, label: 'Committed', icon: '⭐', image: star },
