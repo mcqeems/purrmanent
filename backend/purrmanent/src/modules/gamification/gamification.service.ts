@@ -51,7 +51,24 @@ export class GamificationService {
     });
     if (!user) return { points: 0, streak: 0 };
 
-    // Lazily update the login streak once per (server) day on status read.
+    // Read-only: return current streak without updating.
+    // To update the streak, the client must explicitly POST to /gamification/check-in.
+    return { points: user.points ?? 0, streak: user.loginStreak ?? 0 };
+  }
+
+  async checkIn(userId: number): Promise<{ points: number; streak: number }> {
+    const user = await this.users.findOne({
+      where: { id: userId },
+      select: {
+        id: true,
+        points: true,
+        loginStreak: true,
+        lastActiveDate: true,
+      },
+    });
+    if (!user) return { points: 0, streak: 0 };
+
+    // Update the login streak once per (server) day on explicit check-in.
     // ponytail ceiling: uses server-local date, not the user's timezone.
     const today = new Date().toISOString().slice(0, 10);
     let streak = user.loginStreak ?? 0;
