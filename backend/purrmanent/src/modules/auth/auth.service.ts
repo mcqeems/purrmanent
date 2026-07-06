@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, BadRequestException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AUTH_INSTANCE } from './auth.provider';
 import type { Auth } from './auth.provider';
@@ -30,6 +30,46 @@ export class AuthService {
       .get('FRONTEND_ORIGINS', { infer: true })
       .split(',')[0]
       .trim();
+  }
+
+  /** All configured frontend origins — allowlist for callback URL validation. */
+  private get allowedOrigins(): string[] {
+    return this.config
+      .get('FRONTEND_ORIGINS', { infer: true })
+      .split(',')
+      .map((o) => o.trim());
+  }
+
+  /**
+   * Validate that a callback URL's origin is in the FRONTEND_ORIGINS allowlist.
+   * This prevents open-redirect attacks where an attacker supplies a malicious
+   * callback URL to redirect users after email verification.
+   *
+   * @param callbackURL - The URL to validate
+   * @returns The validated URL if it matches an allowed origin
+   * @throws BadRequestException if the URL's origin is not in the allowlist
+   */
+  private validateCallbackURL(callbackURL: string): string {
+    let parsedURL: URL;
+    try {
+      parsedURL = new URL(callbackURL);
+    } catch {
+      throw new BadRequestException(
+        'callbackURL must be a valid absolute URL',
+      );
+    }
+
+    const urlOrigin = parsedURL.origin;
+    const allowed = this.allowedOrigins;
+
+    // Check if the URL's origin matches any allowed origin
+    if (!allowed.includes(urlOrigin)) {
+      throw new BadRequestException(
+        `callbackURL origin "${urlOrigin}" is not in the allowlist. Allowed origins: ${allowed.join(', ')}`,
+      );
+    }
+
+    return callbackURL;
   }
 
   get instance(): Auth {
@@ -94,17 +134,23 @@ export class AuthService {
    * (Re)send a verification email. better-auth issues a fresh, time-limited
    * token (emailVerification.expiresIn = 24h) each call, so a user whose first
    * link expired can request a new one.
+   *
+   * The callbackURL is validated against the FRONTEND_ORIGINS allowlist to
+   * prevent open-redirect attacks.
    */
   sendVerificationEmail(body: {
     email: string;
     callbackURL?: string;
   }): Promise<Response> {
+    // Validate the callback URL if provided, otherwise use the default frontend origin
+    const validatedCallbackURL = body.callbackURL
+      ? this.validateCallbackURL(body.callbackURL)
+      : this.frontendOrigin;
+
     return this.auth.api.sendVerificationEmail({
-      // default to the frontend origin (not the API root) so the post-verify
-      // redirect lands on the app, not on this backend.
       body: {
         email: body.email,
-        callbackURL: body.callbackURL ?? this.frontendOrigin,
+        callbackURL: validatedCallbackURL,
       },
       asResponse: true,
     });
