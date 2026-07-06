@@ -1,5 +1,7 @@
 import { createAuthClient } from 'better-auth/react';
-import { API_BASE_URL } from '@/lib/api/config';
+
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://localhost:3001';
 
 /**
  * better-auth React client. Points at the backend's native auth handler
