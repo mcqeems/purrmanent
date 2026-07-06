@@ -1,4 +1,4 @@
-import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
+import { Injectable, Logger, OnModuleInit, BadRequestException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -11,6 +11,35 @@ export interface PushPayload {
   title: string;
   body: string;
   url?: string;
+}
+
+/**
+ * Validates a push subscription endpoint URL against an allowlist of permitted domains.
+ * @param endpoint - The push subscription endpoint URL to validate
+ * @returns The validated endpoint URL
+ * @throws BadRequestException if the endpoint is invalid or not in the allowlist
+ */
+function validatePushEndpoint(endpoint: string): string {
+  const allowedDomains = ['example.com']; // add your allowed domains here
+
+  try {
+    const url = new URL(endpoint);
+
+    // Only allow http and https protocols
+    if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+      throw new Error('Invalid protocol');
+    }
+
+    // Extract hostname and validate against allowlist
+    const hostname = url.hostname;
+    if (!allowedDomains.includes(hostname)) {
+      throw new Error('Domain not allowed');
+    }
+
+    return endpoint;
+  } catch (err) {
+    throw new BadRequestException('Invalid URL');
+  }
 }
 
 @Injectable()
@@ -45,12 +74,13 @@ export class NotificationService implements OnModuleInit {
     userId: number,
     dto: PushSubscribeDto,
   ): Promise<{ success: true }> {
+    const validatedEndpoint = validatePushEndpoint(dto.endpoint);
     await this.subs
       .createQueryBuilder()
       .insert()
       .values({
         userId,
-        endpoint: dto.endpoint,
+        endpoint: validatedEndpoint,
         p256dhKey: dto.keys.p256dh,
         authKey: dto.keys.auth,
         userAgent: dto.userAgent ?? null,
