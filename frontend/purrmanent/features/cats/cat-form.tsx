@@ -14,7 +14,6 @@ import type { Cat } from '@/lib/types/api';
 import { Button, Field, Input, SelectField } from '@/components/ui';
 import { useCreateCat, useUpdateCat } from './hooks';
 import { PhotoUpload } from './photo-upload';
-import { capitalizeFirstChar } from '@/lib/utils';
 import { toast } from '@/components/ui';
 
 export function CatForm({ cat, onDone }: { cat?: Cat; onDone?: () => void }) {
@@ -115,7 +114,7 @@ export function CatForm({ cat, onDone }: { cat?: Cat; onDone?: () => void }) {
 								placeholder="Male"
 								options={GENDERS.map((g) => ({
 									value: g,
-									label: capitalizeFirstChar(g),
+									label: g.charAt(0).toUpperCase() + g.slice(1),
 								}))}
 							/>
 						)}
@@ -141,7 +140,7 @@ export function CatForm({ cat, onDone }: { cat?: Cat; onDone?: () => void }) {
 								onValueChange={field.onChange}
 								options={PERSONALITIES.map((p) => ({
 									value: p,
-									label: capitalizeFirstChar(p),
+									label: p.charAt(0).toUpperCase() + p.slice(1),
 								}))}
 							/>
 						)}
@@ -162,7 +161,7 @@ export function CatForm({ cat, onDone }: { cat?: Cat; onDone?: () => void }) {
 								onValueChange={field.onChange}
 								options={ADOPTION_SOURCES.map((s) => ({
 									value: s,
-									label: capitalizeFirstChar(s),
+									label: s.charAt(0).toUpperCase() + s.slice(1),
 								}))}
 							/>
 						)}

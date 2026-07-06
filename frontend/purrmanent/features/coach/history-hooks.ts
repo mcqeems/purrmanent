@@ -9,11 +9,3 @@ export function useConversations() {
     queryFn: coachHistoryApi.list,
   });
 }
-
-export function useConversationMessages(id: number | null) {
-  return useQuery({
-    queryKey: ['coach', 'conversations', id, 'messages'],
-    queryFn: () => coachHistoryApi.messages(id as number),
-    enabled: id != null,
-  });
-}

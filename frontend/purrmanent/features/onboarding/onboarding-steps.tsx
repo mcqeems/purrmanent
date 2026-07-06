@@ -10,7 +10,6 @@ import {
 	ADOPTER_EXPERIENCE,
 } from '@/lib/validation/schemas';
 import { Field, Input, SelectField } from '@/components/ui';
-import { capitalizeFirstChar } from '@/lib/utils';
 
 const CONCERNS = [
 	'Litter box habits',
@@ -92,7 +91,7 @@ export function OnboardingStepFields({
 								placeholder="Male"
 								options={GENDERS.map((g) => ({
 									value: g,
-									label: capitalizeFirstChar(g),
+									label: g.charAt(0).toUpperCase() + g.slice(1),
 								}))}
 							/>
 						)}
@@ -124,7 +123,7 @@ export function OnboardingStepFields({
 								onValueChange={field.onChange}
 								options={PERSONALITIES.map((p) => ({
 									value: p,
-									label: capitalizeFirstChar(p),
+									label: p.charAt(0).toUpperCase() + p.slice(1),
 								}))}
 							/>
 						)}
@@ -159,7 +158,7 @@ export function OnboardingStepFields({
 								onValueChange={field.onChange}
 								options={ADOPTION_SOURCES.map((s) => ({
 									value: s,
-									label: capitalizeFirstChar(s),
+									label: s.charAt(0).toUpperCase() + s.slice(1),
 								}))}
 							/>
 						)}
@@ -193,7 +192,7 @@ export function OnboardingStepFields({
 							onValueChange={field.onChange}
 							options={ADOPTER_EXPERIENCE.map((e) => ({
 								value: e,
-								label: capitalizeFirstChar(e),
+								label: e.charAt(0).toUpperCase() + e.slice(1),
 							}))}
 						/>
 					)}

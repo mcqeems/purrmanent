@@ -6,7 +6,6 @@ import { Card, Pill, Skeleton } from '@/components/ui';
 import type { HealthRecord } from '@/lib/types/api';
 import { useDeleteRecord, useHealthTimeline } from './hooks';
 import { RecordForm } from './record-form';
-import { capitalizeFirstChar } from '@/lib/utils';
 
 function fmt(date: string) {
 	const d = parseISO(date);
@@ -83,7 +82,7 @@ export function HealthView({ catId }: { catId: number }) {
 								<div className="flex flex-col gap-1">
 									<div className="flex items-center gap-2">
 										<Pill tone="neutral">
-											{capitalizeFirstChar(r.recordType.replace('_', ' '))}
+											{r.recordType.replace('_', ' ').charAt(0).toUpperCase() + r.recordType.replace('_', ' ').slice(1)}
 										</Pill>
 										<span className="text-xs text-muted">
 											{fmt(r.recordedAt)}

@@ -15,7 +15,6 @@ import {
 import type { HealthRecordType } from '@/lib/types/api';
 import { HEALTH_RECORD_TYPES } from '@/lib/validation/schemas';
 import { useCreateRecord } from './hooks';
-import { capitalizeFirstChar } from '@/lib/utils';
 
 // Mirrors the backend per-type required field (createHealthRecordSchema superRefine).
 const FIELD: Record<
@@ -83,7 +82,7 @@ export function RecordForm({ catId }: { catId: number }) {
 							onValueChange={(v) => setType(v as HealthRecordType)}
 							options={HEALTH_RECORD_TYPES.map((t) => ({
 								value: t,
-								label: capitalizeFirstChar(t.replace('_', ' ')),
+								label: t.replace('_', ' ').charAt(0).toUpperCase() + t.replace('_', ' ').slice(1),
 							}))}
 						/>
 					</Field>

@@ -15,7 +15,6 @@ import {
 } from '@/components/ui';
 import { useCats } from './hooks';
 import { CatForm } from './cat-form';
-import { capitalizeFirstChar } from '@/lib/utils';
 
 export function AllCats() {
 	const { data: cats, isLoading, isError } = useCats();
@@ -97,7 +96,7 @@ export function AllCats() {
 								<div className="flex items-center justify-between">
 									<h3 className="text-lg font-semibold">{cat.name}</h3>
 									<Pill tone="lime">
-										{capitalizeFirstChar(cat.personality ?? 'Unknown')}
+										{(cat.personality ?? 'Unknown').charAt(0).toUpperCase() + (cat.personality ?? 'Unknown').slice(1)}
 									</Pill>
 								</div>
 								<p className="text-sm text-muted">

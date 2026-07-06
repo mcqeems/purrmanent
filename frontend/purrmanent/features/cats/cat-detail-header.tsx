@@ -5,7 +5,6 @@ import { differenceInCalendarDays, format, parseISO, isValid } from 'date-fns';
 import { HeartPulse, AlertTriangle, Settings } from 'lucide-react';
 import { Button, Pill, Skeleton } from '@/components/ui';
 import { useCat } from './hooks';
-import { capitalizeFirstChar } from '@/lib/utils';
 
 function fmtDate(d: string) {
 	const date = parseISO(d);
@@ -59,18 +58,18 @@ export function CatDetailHeader({ catId }: { catId: number }) {
 					/>
 				) : (
 					<div className="flex size-16 items-center justify-center rounded-xl bg-accent-violet-deep text-xl font-bold text-on-primary">
-						{capitalizeFirstChar(cat.name)}
+						{cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}
 					</div>
 				)}
 				<div>
 					<div className="flex items-center gap-2">
 						<h1 className="text-2xl font-semibold text-ink-deep">{cat.name}</h1>
-						<Pill tone="lime">{capitalizeFirstChar(cat.personality)}</Pill>
+							<Pill tone="lime">{cat.personality.charAt(0).toUpperCase() + cat.personality.slice(1)}</Pill>
 					</div>
 					<p className="text-sm text-muted">
 						{[
 							cat.breed ?? 'Cat',
-							capitalizeFirstChar(cat.gender ?? 'Unknown'),
+							(cat.gender ?? 'Unknown').charAt(0).toUpperCase() + (cat.gender ?? 'Unknown').slice(1),
 							cat.ageMonths != null ? `${cat.ageMonths} months` : null,
 						]
 							.filter(Boolean)
