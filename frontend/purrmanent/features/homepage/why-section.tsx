@@ -4,7 +4,6 @@ import {
 	Trophy,
 	ClipboardList,
 	ShieldCheck,
-	Building,
 } from 'lucide-react';
 import { Card, Stagger, FadeInItem } from '@/components/ui';
 import Image from 'next/image';
@@ -12,34 +11,29 @@ import catInCardboard from '@/app/assets/home/cat-in-cardboard-box-illustration.
 
 const FEATURES = [
 	{
-		icon: Building,
-		title: 'Sponsored by Shelters',
-		desc: 'Free for adopters. Progressive shelters license Purrmanent to guide adopters and actively reduce shelter return rates.',
-	},
-	{
 		icon: ClipboardList,
-		title: 'Structured 90-Day Roadmap',
-		desc: 'A day-by-day interactive roadmap customized around the scientific 3-3-3 decompression rule of shelter cats.',
-	},
-	{
-		icon: ShieldCheck,
-		title: 'Expert & Vet-Reviewed Content',
-		desc: 'Every milestone checklist, body language guide, and decompression protocol is vetted by board-certified veterinarians.',
+		title: '90-Day Roadmap',
+		desc: 'Daily checklists that follow the 3-3-3 adjustment rule. Tasks adapt to your cat\'s personality.',
 	},
 	{
 		icon: Sparkles,
-		title: 'AI Behaviorist Copilot',
-		desc: '24/7 floating chat assistant backed by vet-reviewed behavior documents. Support @mention commands to reference Kanban tasks.',
+		title: 'AI Coach',
+		desc: 'Ask questions about your cat\'s behavior. Gets answers from a curated knowledge base. Not a replacement for a vet.',
 	},
 	{
 		icon: HeartPulse,
-		title: 'Interactive Health Log',
-		desc: 'Track weight trends, vaccinations, deworming cycles, and set automated reminders to ensure health compliance.',
+		title: 'Health Log',
+		desc: 'Track vaccinations, weight, and vet visits. Set reminders so nothing gets missed.',
+	},
+	{
+		icon: ShieldCheck,
+		title: 'Crisis Guidance',
+		desc: 'Step-by-step protocols when something seems wrong — not eating, hiding, or acting out.',
 	},
 	{
 		icon: Trophy,
-		title: 'Gamification & Graduation',
-		desc: 'Earn points and unlock badges in real-time as you complete checklist tasks. Receive a digital printable certificate on Day 90.',
+		title: 'Progress & Badges',
+		desc: 'Earn points for completing tasks. Graduate your cat on Day 90.',
 	},
 ];
 
@@ -60,12 +54,8 @@ export function WhySection() {
 							WHY PURRMANENT?
 						</span>
 						<h2 className="font-display text-4xl font-bold text-ink-deep">
-							Everything you need to guide your cat home
+							What&apos;s inside
 						</h2>
-						<p className="text-muted text-base leading-relaxed max-w-xl">
-							Interactive tools and vet-approved schedules designed to make
-							decompression stress-free for both cat and parent.
-						</p>
 					</FadeInItem>
 
 					<FadeInItem
@@ -88,10 +78,10 @@ export function WhySection() {
 				<Stagger
 					viewport={true}
 					delay={0.08}
-					className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+					className="flex flex-wrap justify-center gap-6"
 				>
 					{FEATURES.map(({ icon: Icon, title, desc }) => (
-						<FadeInItem key={title} yOffset={20} className="h-full">
+						<FadeInItem key={title} yOffset={20} className="w-full sm:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)]">
 							<Card
 								variant="light"
 								className="flex flex-col gap-3 p-8 border border-hairline-cloud rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgba(106,95,193,0.08)] hover:-translate-y-1 hover:border-accent-violet/30 transition-all duration-300 h-full"

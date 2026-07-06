@@ -17,12 +17,11 @@ export function CtaSection() {
 					<Image src={logo} alt="Purrmanent Logo" width={250} height={250} />
 				</div>
 				<h2 className="font-display text-4xl font-bold text-on-primary">
-					Ready to help your cat settle in?
+					Ready to start?
 				</h2>
 
 				<p className="text-on-dark-muted leading-[1.8] max-w-sm mx-auto text-base">
-					Start your custom 90-day interactive guide today. Protect their
-					health, log progress, and build a permanent bond.
+					Free. No credit card needed.
 				</p>
 
 				<div className="pt-4">

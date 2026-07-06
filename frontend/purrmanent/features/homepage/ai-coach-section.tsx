@@ -319,14 +319,14 @@ const LEFT_CARDS = [
 	{
 		icon: MessageSquare,
 		label: 'Conversational AI',
-		title: 'Conversational Coach',
-		desc: "Ask anything — our intelligent assistant understands your cat's behavior and history.",
+		title: 'Ask anything',
+		desc: 'Ask about behavior, feeding, health, or transitions.',
 	},
 	{
 		icon: HeartPulse,
 		label: 'Health Tracking',
-		title: 'Health & Vet Logging',
-		desc: 'Record vaccinations, weight, deworming, or vet visits seamlessly in one integrated flow.',
+		title: 'Health log',
+		desc: 'Log vaccinations, weight, and vet visits.',
 	},
 ] as const;
 
@@ -334,14 +334,14 @@ const RIGHT_CARDS = [
 	{
 		icon: ClipboardCheck,
 		label: 'Daily Management',
-		title: 'Checklist Control',
-		desc: 'View, add, or move daily & phase checklist items to stay on top of daily adjustments.',
+		title: 'Checklists',
+		desc: 'Manage your daily and phase checklists.',
 	},
 	{
 		icon: AlertTriangle,
-		label: 'Emergency Aid',
-		title: 'Crisis Response',
-		desc: 'Guide through emergency protocols step-by-step when your cat needs immediate assistance.',
+		label: 'Crisis Support',
+		title: 'When something\'s wrong',
+		desc: 'Get step-by-step guidance when your cat needs help.',
 	},
 ] as const;
 
@@ -365,8 +365,11 @@ export function AiCoachSection() {
 						AI Coach
 					</span>
 					<h2 className="font-display text-4xl md:text-5xl font-bold text-on-primary tracking-tight mt-4">
-						Your AI Behaviorist
+						AI Coach
 					</h2>
+					<p className="text-on-dark-muted mt-3 max-w-xl mx-auto text-sm leading-relaxed">
+						Ask questions. Get answers from a cat care knowledge base.
+					</p>
 				</motion.div>
 
 				<div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">

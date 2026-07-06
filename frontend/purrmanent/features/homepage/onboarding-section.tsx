@@ -11,32 +11,32 @@ import { Button, Stagger, FadeInItem } from '@/components/ui';
 const ONBOARDING_STEPS = [
 	{
 		number: '1',
-		title: 'Link Your Shelter Account',
-		desc: "Connect using your shelter code or adoption ID to load your cat's baseline medical records.",
+		title: 'Add your cat',
+		desc: 'Name, age, personality. A shelter code is optional.',
 		icon: Building,
 	},
 	{
 		number: '2',
-		title: 'Complete Onboarding Profile',
-		desc: "Fill out our behavioral questionnaire detailing your cat's initial temperament (shy, active, or bold).",
+		title: 'Tell us about your cat',
+		desc: 'Shy, active, or balanced. This sets your starting phase.',
 		icon: ClipboardList,
 	},
 	{
 		number: '3',
-		title: 'Receive Custom 90-Day Plan',
-		desc: "Our system generates your custom plan tailored to your cat's specific traits and your home environment.",
+		title: 'Get your plan',
+		desc: "Daily tasks appear based on your cat's phase. You can add your own too.",
 		icon: Calendar,
 	},
 	{
 		number: '4',
-		title: 'Track Checklists & Logs Daily',
-		desc: 'Check off daily habits, log health metrics, and chat with our behaviorist AI when issues occur.',
+		title: 'Track daily',
+		desc: 'Check off tasks, log health, ask the AI coach when you need help.',
 		icon: ListChecks,
 	},
 	{
 		number: '5',
-		title: 'Graduate & Unlock Bond',
-		desc: 'Graduate on Day 90 with a fully decompressed, confident cat and a signed graduation certificate.',
+		title: 'Graduate on Day 90',
+		desc: 'Earn a certificate when your cat completes the program.',
 		icon: Trophy,
 	},
 ];
@@ -54,15 +54,11 @@ export function OnboardingSection() {
 					className="text-center mb-16 max-w-2xl mx-auto"
 				>
 					<span className="text-xs font-bold uppercase tracking-[2px] text-accent-violet bg-accent-violet/10 px-3 py-1 rounded-full">
-						ROADMAP PIPELINE
+						HOW IT WORKS
 					</span>
 					<h2 className="font-display text-4xl font-bold text-ink-deep mt-4">
-						How the program works
+						How it works
 					</h2>
-					<p className="text-muted mt-3 text-base leading-relaxed">
-						A systematic transition structure from shelter adoption to fully
-						integrated family member.
-					</p>
 				</FadeInItem>
 
 				<div className="relative">
@@ -100,7 +96,7 @@ export function OnboardingSection() {
 					</Stagger>
 				</div>
 
-				<div className="text-center mt-14">
+				<FadeInItem viewport={true} yOffset={16} className="text-center mt-14">
 					<Button
 						id="btn-steps-register"
 						asChild
@@ -110,7 +106,7 @@ export function OnboardingSection() {
 					>
 						<Link href="/register">Register Now</Link>
 					</Button>
-				</div>
+				</FadeInItem>
 			</div>
 		</section>
 	);

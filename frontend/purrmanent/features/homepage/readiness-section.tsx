@@ -1,5 +1,5 @@
 import { Check, Home as HomeIcon, Info, Activity } from 'lucide-react';
-import { Card, FadeInItem } from '@/components/ui';
+import { Card, FadeInItem, Stagger } from '@/components/ui';
 import catGearSetup from '@/app/assets/home/cat-gear-setup.png';
 import Image from 'next/image';
 
@@ -50,14 +50,13 @@ export function ReadinessSection() {
 						className="md:col-span-2 text-left space-y-4"
 					>
 						<span className="text-xs font-bold uppercase tracking-[2px] text-accent-violet bg-accent-violet/10 px-3 py-1 rounded-full inline-block">
-							PREPARATION REQUIREMENT
+							BEFORE YOU START
 						</span>
 						<h2 className="font-display text-4xl font-bold text-ink-deep">
-							Adoption Prerequisites: Is your home ready?
+							Before you bring your cat home
 						</h2>
 						<p className="text-muted text-base leading-relaxed max-w-xl">
-							Adopting is a commitment. Verify these administrative, space, and
-							setup requirements before bringing your cat home.
+							A few things to prepare.
 						</p>
 					</FadeInItem>
 
@@ -84,41 +83,46 @@ export function ReadinessSection() {
 					</FadeInItem>
 				</div>
 
-				<div className="grid gap-8 md:grid-cols-3">
+				<Stagger
+					viewport={true}
+					delay={0.1}
+					className="grid gap-8 md:grid-cols-3"
+				>
 					{HOME_READINESS.map((col) => {
 						const CategoryIcon = col.icon;
 						return (
-							<Card
-								key={col.category}
-								variant="light"
-								className="bg-surface-press-light/30 border border-hairline-cloud hover:border-accent-violet/20 hover:shadow-md transition-all flex flex-col p-8 rounded-xl h-full shadow-sm"
-							>
-								<div className="flex items-center gap-3 mb-6">
-									<div className="size-9 rounded-lg bg-accent-violet/10 flex items-center justify-center text-accent-violet shrink-0">
-										<CategoryIcon size={18} />
+							<FadeInItem key={col.category} yOffset={20} className="h-full">
+								<Card
+									variant="light"
+									className="bg-surface-press-light/30 border border-hairline-cloud hover:border-accent-violet/20 hover:shadow-md transition-all flex flex-col p-8 rounded-xl h-full shadow-sm"
+								>
+									<div className="flex items-center gap-3 mb-6">
+										<div className="size-9 rounded-lg bg-accent-violet/10 flex items-center justify-center text-accent-violet shrink-0">
+											<CategoryIcon size={18} />
+										</div>
+										<h3 className="font-display text-md font-bold text-ink-deep">
+											{col.category}
+										</h3>
 									</div>
-									<h3 className="font-display text-md font-bold text-ink-deep">
-										{col.category}
-									</h3>
-								</div>
-								<ul className="space-y-4 flex-1">
-									{col.items.map((item, i) => (
-										<li
-											key={i}
-											className="flex gap-2.5 items-start text-xs text-muted leading-relaxed"
-										>
-											<Check
-												size={14}
-												className="text-accent-violet shrink-0 mt-0.5"
-											/>
-											<span>{item}</span>
-										</li>
-									))}
-								</ul>
-							</Card>
+									<ul className="space-y-4 flex-1">
+										{col.items.map((item, i) => (
+											<li
+												key={i}
+												className="flex gap-2.5 items-start text-xs text-muted leading-relaxed"
+											>
+												<Check
+													size={14}
+													className="text-accent-violet shrink-0 mt-0.5"
+												/>
+												<span>{item}</span>
+											</li>
+										))}
+									</ul>
+								</Card>
+							</FadeInItem>
 						);
 					})}
-				</div>
+				</Stagger>
 			</div>
 		</section>
 	);

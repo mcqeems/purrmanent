@@ -1,3 +1,5 @@
+'use client';
+
 import { Check } from 'lucide-react';
 import {
 	Button,
@@ -8,6 +10,7 @@ import {
 	TabsContent,
 	FadeInItem,
 } from '@/components/ui';
+import { motion } from 'motion/react';
 import Link from 'next/link';
 import Image, { type StaticImageData } from 'next/image';
 import shyCatHiding from '@/app/assets/home/shy-cat-hiding.png';
@@ -202,20 +205,20 @@ export function PersonalityPathsSection() {
 					className="text-center mb-16 max-w-2xl mx-auto"
 				>
 					<span className="text-xs font-bold uppercase tracking-[2px] text-accent-violet bg-accent-violet/10 px-3 py-1 rounded-full">
-						PERSONALIZED PATHS
+						PERSONALITY TRACKS
 					</span>
 					<h2 className="font-display text-4xl font-bold text-ink-deep mt-4">
-						Choose your cat&apos;s adaptation track
+						Personality tracks
 					</h2>
 					<p className="text-muted mt-3 text-base leading-relaxed">
-						We structure 3 personality tracks. Complete the onboarding
-						questionnaire to verify which path fits your newly adopted feline.
+						Your cat&apos;s personality determines their starting plan.
 					</p>
 				</FadeInItem>
 
-				<Tabs defaultValue="shy" className="w-full">
-					<div className="flex justify-center mb-10">
-						<TabsList className="grid w-full max-w-md grid-cols-3 bg-surface-press-light border border-hairline-cloud p-1 rounded-xl">
+				<FadeInItem viewport={true} yOffset={20}>
+					<Tabs defaultValue="shy" className="w-full">
+						<div className="flex justify-center mb-10">
+							<TabsList className="grid w-full max-w-md grid-cols-3 bg-surface-press-light border border-hairline-cloud p-1 rounded-xl">
 							<TabsTrigger
 								id="tab-shy"
 								value="shy"
@@ -241,68 +244,87 @@ export function PersonalityPathsSection() {
 					</div>
 
 					<TabsContent value="shy">
-						<PathCard
-							label="Plan Option 1"
-							title="The Shy/Fearful Cat Path"
-							desc="Designed for shelter cats that hide, freeze, or avoid human presence. Focuses heavily on basecamp restriction, scent swaps, and gradual confidence building."
-							steps={PATH_SHY_STEPS}
-							outcome="Confident explorer, trusts adopters, vocalizing needs."
-							support={[
-								'24/7 AI Behavior Coach',
-								'Decompression checklist',
-								'Medical logs',
-							]}
-							btnId="btn-shy-activate"
-							btnLabel="Activate Shy Plan"
-							illustration={shyCatHiding}
-							illustrationName="Shy Cat Hiding"
-							illustrationDesc="A shy cat peeking out from behind a curtain."
-							illustrationPrompt='"A hand-drawn pencil sketch and watercolor wash illustration of a shy cat hiding behind a curtain, peeking out, soft colors, white background, simple outline doodle. Purrmanent theme: accent lime #c2ef4e and violet #6a5fc1 as dominant tones, must work on dark #1f1633 and light #ffffff backgrounds --no 3d render, photorealistic"'
-						/>
+						<motion.div
+							initial={{ opacity: 0, y: 12 }}
+							animate={{ opacity: 1, y: 0 }}
+							transition={{ duration: 0.3, ease: 'easeOut' }}
+						>
+							<PathCard
+								label="Plan Option 1"
+								title="The Shy/Fearful Cat Path"
+								desc="Designed for shelter cats that hide, freeze, or avoid human presence. Focuses heavily on basecamp restriction, scent swaps, and gradual confidence building."
+								steps={PATH_SHY_STEPS}
+								outcome="Confident explorer, trusts adopters, vocalizing needs."
+								support={[
+									'24/7 AI Behavior Coach',
+									'Decompression checklist',
+									'Medical logs',
+								]}
+								btnId="btn-shy-activate"
+								btnLabel="Activate Shy Plan"
+								illustration={shyCatHiding}
+								illustrationName="Shy Cat Hiding"
+								illustrationDesc="A shy cat peeking out from behind a curtain."
+								illustrationPrompt='"A hand-drawn pencil sketch and watercolor wash illustration of a shy cat hiding behind a curtain, peeking out, soft colors, white background, simple outline doodle. Purrmanent theme: accent lime #c2ef4e and violet #6a5fc1 as dominant tones, must work on dark #1f1633 and light #ffffff backgrounds --no 3d render, photorealistic"'
+							/>
+						</motion.div>
 					</TabsContent>
 
 					<TabsContent value="bold">
-						<PathCard
-							label="Plan Option 2"
-							title="The Bold/Active Cat Path"
-							desc="Designed for highly active, loud, or younger felines. Focuses on preventing boredom-related biting, establishing play boundaries, and installing vertical climbing zones."
-							steps={PATH_BOLD_STEPS}
-							outcome="Drained energy, zero scratching on couches, puzzle master."
-							support={[
-								'Play stimulation timers',
-								'Escape-proofing guide',
-								'Activity log',
-							]}
-							btnId="btn-bold-activate"
-							btnLabel="Activate Bold Plan"
-							illustration={activeCatLeaping}
-							illustrationName="Active Cat Leaping"
-							illustrationDesc="An active cat leaping in the air catching a feather toy."
-							illustrationPrompt='"A hand-drawn pencil sketch and watercolor wash illustration of an active cat leaping in the air catching a feather toy, soft colors, white background, simple outline doodle. Purrmanent theme: accent lime #c2ef4e and violet #6a5fc1 as dominant tones, must work on dark #1f1633 and light #ffffff backgrounds --no 3d render, photorealistic"'
-						/>
+						<motion.div
+							initial={{ opacity: 0, y: 12 }}
+							animate={{ opacity: 1, y: 0 }}
+							transition={{ duration: 0.3, ease: 'easeOut' }}
+						>
+							<PathCard
+								label="Plan Option 2"
+								title="The Bold/Active Cat Path"
+								desc="Designed for highly active, loud, or younger felines. Focuses on preventing boredom-related biting, establishing play boundaries, and installing vertical climbing zones."
+								steps={PATH_BOLD_STEPS}
+								outcome="Drained energy, zero scratching on couches, puzzle master."
+								support={[
+									'Play stimulation timers',
+									'Escape-proofing guide',
+									'Activity log',
+								]}
+								btnId="btn-bold-activate"
+								btnLabel="Activate Bold Plan"
+								illustration={activeCatLeaping}
+								illustrationName="Active Cat Leaping"
+								illustrationDesc="An active cat leaping in the air catching a feather toy."
+								illustrationPrompt='"A hand-drawn pencil sketch and watercolor wash illustration of an active cat leaping in the air catching a feather toy, soft colors, white background, simple outline doodle. Purrmanent theme: accent lime #c2ef4e and violet #6a5fc1 as dominant tones, must work on dark #1f1633 and light #ffffff backgrounds --no 3d render, photorealistic"'
+							/>
+						</motion.div>
 					</TabsContent>
 
 					<TabsContent value="balanced">
-						<PathCard
-							label="Plan Option 3"
-							title="The Confident/Balanced Cat Path"
-							desc="Designed for felines showing standard stress levels. Follows the default 3-3-3 rule framework to expand roaming spaces, build brushing routines, and establish permanent scratching posts."
-							steps={PATH_BALANCED_STEPS}
-							outcome="Comfortable grooming, full household integration, stable routine."
-							support={[
-								'Grooming tracker logs',
-								'Standard 3-3-3 template',
-								'AI Behavior support',
-							]}
-							btnId="btn-balanced-activate"
-							btnLabel="Activate Balanced Plan"
-							illustration={balancedCatWalking}
-							illustrationName="Balanced Cat Walking"
-							illustrationDesc="A happy cat walking forward confidently with its tail up."
-							illustrationPrompt='"A hand-drawn pencil sketch and watercolor wash illustration of a happy cat walking forward confidently, tail up, soft colors, white background, simple outline doodle. Purrmanent theme: accent lime #c2ef4e and violet #6a5fc1 as dominant tones, must work on dark #1f1633 and light #ffffff backgrounds --no 3d render, photorealistic"'
-						/>
+						<motion.div
+							initial={{ opacity: 0, y: 12 }}
+							animate={{ opacity: 1, y: 0 }}
+							transition={{ duration: 0.3, ease: 'easeOut' }}
+						>
+							<PathCard
+								label="Plan Option 3"
+								title="The Confident/Balanced Cat Path"
+								desc="Designed for felines showing standard stress levels. Follows the default 3-3-3 rule framework to expand roaming spaces, build brushing routines, and establish permanent scratching posts."
+								steps={PATH_BALANCED_STEPS}
+								outcome="Comfortable grooming, full household integration, stable routine."
+								support={[
+									'Grooming tracker logs',
+									'Standard 3-3-3 template',
+									'AI Behavior support',
+								]}
+								btnId="btn-balanced-activate"
+								btnLabel="Activate Balanced Plan"
+								illustration={balancedCatWalking}
+								illustrationName="Balanced Cat Walking"
+								illustrationDesc="A happy cat walking forward confidently with its tail up."
+								illustrationPrompt='"A hand-drawn pencil sketch and watercolor wash illustration of a happy cat walking forward confidently, tail up, soft colors, white background, simple outline doodle. Purrmanent theme: accent lime #c2ef4e and violet #6a5fc1 as dominant tones, must work on dark #1f1633 and light #ffffff backgrounds --no 3d render, photorealistic"'
+							/>
+						</motion.div>
 					</TabsContent>
 				</Tabs>
+				</FadeInItem>
 			</div>
 		</section>
 	);

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Activity, Check } from 'lucide-react';
 import { Card, FadeInItem } from '@/components/ui';
+import { motion } from 'motion/react';
 import Image from 'next/image';
 import catHiding from '@/app/assets/home/cat-hiding.png';
 import catPlayingToys from '@/app/assets/home/cat-playing-toys.png';
@@ -75,14 +76,14 @@ export function TimelineSection() {
 			<div className="mx-auto max-w-5xl relative z-10">
 				<FadeInItem viewport={true} yOffset={20} className="text-center mb-16">
 					<span className="text-xs font-bold uppercase tracking-[2px] text-accent-lime bg-accent-lime/10 px-3 py-1 rounded-full">
-						3-3-3 ADJUSTMENT TIMELINE
+						3-3-3 RULE
 					</span>
 					<h2 className="font-display text-3.5xl font-bold text-on-primary mt-4">
-						Click a Phase to Reveal Checklist Tasks
+						The 3-3-3 Rule
 					</h2>
 					<p className="text-on-dark-muted mt-3 max-w-xl mx-auto text-sm leading-relaxed">
-						Cats adapt in stages. Click any timeline block below to explore
-						sample tasks and structured behavioral checkmarks.
+						Most cats follow this pattern. Your plan adjusts based on your
+						cat&apos;s personality.
 					</p>
 				</FadeInItem>
 
@@ -90,7 +91,7 @@ export function TimelineSection() {
 					{TIMELINE_PHASES.map((p, idx) => {
 						const isSelected = activeTimeline === idx;
 						return (
-							<FadeInItem key={p.title} yOffset={24} className="h-full">
+							<FadeInItem key={p.title} viewport={true} yOffset={24} className="h-full">
 								<button
 									id={`btn-timeline-phase-${idx}`}
 									onClick={() => setActiveTimeline(idx)}
@@ -177,7 +178,13 @@ export function TimelineSection() {
 							</div>
 						</div>
 
-						<div className="grid gap-4 sm:grid-cols-2">
+						<motion.div
+							key={activeTimeline}
+							initial={{ opacity: 0, y: 12 }}
+							animate={{ opacity: 1, y: 0 }}
+							transition={{ duration: 0.3, ease: 'easeOut' }}
+							className="grid gap-4 sm:grid-cols-2"
+						>
 							{TIMELINE_PHASES[activeTimeline].tasks.map((task, i) => (
 								<div
 									key={i}
@@ -191,7 +198,7 @@ export function TimelineSection() {
 									</p>
 								</div>
 							))}
-						</div>
+						</motion.div>
 					</Card>
 				</FadeInItem>
 

@@ -24,7 +24,7 @@ export function HeroSection() {
 			>
 				<FadeInItem yOffset={8}>
 					<ShinyText
-						text="90-DAY SCIENTIFIC CAT-PARENT GUIDE"
+						text="90-DAY CAT ADOPTION GUIDE"
 						className="text-xs font-semibold uppercase tracking-[2px]"
 						color="#bdb8c0"
 						shineColor="#c2ef4e"
@@ -34,15 +34,15 @@ export function HeroSection() {
 
 				<FadeInItem yOffset={12}>
 					<h1 className="font-display text-5xl font-bold leading-tight sm:text-7.5xl relative max-w-3xl mx-auto">
-						The first 90 days of cat adoption{' '}
+						A clear plan for your cat&apos;s first{' '}
 						<span className="bg-accent-lime text-ink-deep font-bold px-3 py-0.5 rounded-xs inline-block">
-							made calm
+							90 days
 						</span>
 						<CircularText
 							text="PURRMANENT • PURRMANENT • "
 							spinDuration={12}
 							radius={45}
-							className="text-xs scale-75 text-accent-lime tracking-[1.5px] font-mono opacity-80 hover:opacity-100 transition-opacity absolute right-2 -top-25 hidden md:block"
+							className="text-xs scale-75 text-accent-lime tracking-[1.5px] font-mono opacity-80 hover:opacity-100 transition-opacity absolute -right-19 -top-23 hidden md:block"
 							image={logo}
 						/>
 					</h1>
@@ -51,7 +51,7 @@ export function HeroSection() {
 				<FadeInItem yOffset={16}>
 					<div className="max-w-2xl text-lg md:text-xl text-on-dark-muted leading-[2.0] mt-2">
 						<BlurText
-							text="Transforms the stressful early months of cat adoption into a clear, interactive roadmap based on the scientific 3-3-3 adjustment rule."
+							text="Daily checklists, health tracking, and AI coaching — based on the 3-3-3 adjustment rule."
 							delay={15}
 							animateBy="words"
 							className="flex justify-center items-center"
@@ -99,10 +99,8 @@ export function HeroSection() {
 							Purrmanent
 						</h2>
 						<p className="text-center">
-							Purrmanent is a cat adoption tracker that helps you keep track of
-							your cat&apos;s progress through the 3-3-3 adjustment rule, with a
-							powerful feature that helps you visualize your cat's progress over
-							time.
+							Daily checklists, health tracking, and an AI coach — everything
+							you need for your cat&apos;s first 90 days home.
 						</p>
 					</div>
 				</FadeInItem>
