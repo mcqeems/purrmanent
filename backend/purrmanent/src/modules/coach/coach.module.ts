@@ -3,7 +3,6 @@ import { CoachService } from './coach.service';
 import { CoachController } from './coach.controller';
 import { CoachToolsService } from './coach-tools.service';
 import { CoachActionsService } from './coach-actions.service';
-import { EmbeddingsService } from '../../common/embeddings/embeddings';
 import { CatsModule } from '../cats/cats.module';
 import { ChecklistModule } from '../checklist/checklist.module';
 import { HealthModule } from '../health/health.module';
@@ -19,12 +18,7 @@ import { CrisisModule } from '../crisis/crisis.module';
     CrisisModule,
   ],
   controllers: [CoachController],
-  providers: [
-    CoachService,
-    CoachToolsService,
-    CoachActionsService,
-    EmbeddingsService,
-  ],
-  exports: [CoachToolsService, EmbeddingsService],
+  providers: [CoachService, CoachToolsService, CoachActionsService],
+  exports: [CoachToolsService],
 })
 export class CoachModule {}
