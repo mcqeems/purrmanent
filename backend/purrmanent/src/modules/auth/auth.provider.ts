@@ -239,7 +239,11 @@ ${opts.note}
           ? { crossSubDomainCookies: { enabled: true, domain: cookieDomain } }
           : {}),
         defaultCookieAttributes: {
-          sameSite: isProd ? ('none' as const) : ('lax' as const),
+          // SameSite=Lax provides CSRF protection by preventing cookies from being
+          // sent on cross-site POST/PUT/DELETE requests while still allowing them
+          // on top-level navigation (GET). This mitigates cross-site form POST
+          // attacks without requiring explicit CSRF tokens.
+          sameSite: 'lax' as const,
           secure: isProd,
         },
       },
