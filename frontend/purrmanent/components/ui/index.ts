@@ -34,7 +34,6 @@ export {
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarHeader,
   SidebarInset,
   SidebarMenu,
@@ -43,5 +42,4 @@ export {
   SidebarProvider,
   SidebarSeparator,
   SidebarTrigger,
-  useSidebar,
 } from './sidebar';

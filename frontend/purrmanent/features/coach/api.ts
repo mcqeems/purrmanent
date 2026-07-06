@@ -3,7 +3,7 @@ import type {
   CoachConversation,
   CoachStoredMessage,
   ConfirmActionResult,
-  MentionColumn,
+  KanbanStatus,
 } from '@/lib/types/api';
 import { KANBAN_STATUSES } from '@/lib/validation/schemas';
 
@@ -26,8 +26,8 @@ export const coachHistoryApi = {
 };
 
 /** Resolve a free-text @mention into the backend's contextMention enum. */
-export function parseMention(message: string): MentionColumn | undefined {
+export function parseMention(message: string): KanbanStatus | undefined {
   const m = message.toLowerCase().match(/@(todo|progress|done)\b/);
-  const found = m?.[1] as MentionColumn | undefined;
+  const found = m?.[1] as KanbanStatus | undefined;
   return found && KANBAN_STATUSES.includes(found) ? found : undefined;
 }
