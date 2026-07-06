@@ -2,7 +2,6 @@ import { createZodDto } from 'nestjs-zod';
 import { z } from 'zod';
 
 export const KANBAN_STATUSES = ['todo', 'progress', 'done'] as const;
-export const MENTION_COLUMNS = ['todo', 'progress', 'done'] as const;
 
 export const customTodoSchema = z.object({
   catId: z.number().int().positive(),

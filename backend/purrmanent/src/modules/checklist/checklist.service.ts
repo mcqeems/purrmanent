@@ -147,23 +147,6 @@ export class ChecklistService {
     }
     return out;
     // ── END REAL LOGIC ──────────────────────────────────────────────────── */
-
-    // ── DUMMY: all cats immediately graduated (for UI testing) ─────────
-    // return cats.map((cat) => {
-    //   const created = new Date(cat.createdAt);
-    //   const gradDate = new Date(created.getTime() + 90 * 24 * 60 * 60 * 1000);
-    //   return {
-    //     catId: cat.id,
-    //     name: cat.name,
-    //     daysElapsed: 90,
-    //     qualifyingDays: 90,
-    //     missedDays: 0,
-    //     requiredDays: 90,
-    //     graduated: true,
-    //     graduationDate: gradDate.toISOString().slice(0, 10),
-    //   };
-    // });
-    // ── END DUMMY ──────────────────────────────────────────────────────
   }
 
   /** Daily board for a cat; generates on-demand if today's set is missing. */
