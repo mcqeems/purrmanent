@@ -1,5 +1,5 @@
 import { readdirSync, readFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { join, resolve, relative } from 'node:path';
 import { z } from 'zod';
 
 /**
@@ -51,8 +51,14 @@ export function loadCorpusChunks(dir = CORPUS_DIR): CorpusChunk[] {
     .sort();
 
   return files.map((file) => {
+    const base = resolve(dir);
+    const target = resolve(base, file);
+    const rel = relative(base, target);
+    if (rel.startsWith('..') || resolve(rel) === rel) {
+      throw new Error(`Invalid file path: "${file}"`);
+    }
     const { meta, body } = parseFrontmatter(
-      readFileSync(join(dir, file), 'utf-8'),
+      readFileSync(target, 'utf-8'),
     );
     const parsed = corpusChunkSchema.safeParse({ ...meta, text: body });
     if (!parsed.success) {
