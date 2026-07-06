@@ -14,41 +14,41 @@ export interface PushPayload {
 }
 
 /**
- * Validates a push subscription endpoint URL to prevent SSRF attacks.
- * Blocks private/internal IP ranges and non-HTTPS endpoints.
- * @param endpoint - The push subscription endpoint URL to validate
- * @returns The validated endpoint URL
- * @throws BadRequestException if the endpoint is invalid or targets an internal host
+ * Known browser push-service origins. All real browser push notifications
+ * route through one of these providers. Any endpoint outside this list is
+ * rejected to prevent SSRF via arbitrary public URLs.
+ */
+const ALLOWED_PUSH_ORIGINS = new Set([
+  'fcm.googleapis.com', // Chrome, Edge
+  'updates.push.services.mozilla.com', // Firefox
+  'web.push.apple.com', // Safari
+  'wns.windows.com', // Windows
+]);
+
+/**
+ * Validates a push subscription endpoint against the allowlist of known
+ * browser push-service origins. Blocks non-HTTPS, non-allowlisted, and
+ * private/internal endpoints.
  */
 function validatePushEndpoint(endpoint: string): string {
+  let url: URL;
   try {
-    const url = new URL(endpoint);
-
-    // Only allow HTTPS (push services like Firebase, OneSignal, etc. all use HTTPS)
-    if (url.protocol !== 'https:') {
-      throw new Error('Only HTTPS endpoints are allowed');
-    }
-
-    // Block private/internal IP ranges to prevent SSRF
-    const hostname = url.hostname;
-    const isPrivate =
-      hostname === 'localhost' ||
-      hostname === '127.0.0.1' ||
-      hostname === '::1' ||
-      hostname.startsWith('10.') ||
-      hostname.startsWith('172.') ||
-      hostname.startsWith('192.168.') ||
-      hostname.startsWith('0.') ||
-      hostname.endsWith('.local');
-
-    if (isPrivate) {
-      throw new Error('Internal endpoints are not allowed');
-    }
-
-    return endpoint;
+    url = new URL(endpoint);
   } catch {
     throw new BadRequestException('Invalid push endpoint URL');
   }
+
+  if (url.protocol !== 'https:') {
+    throw new BadRequestException('Push endpoint must use HTTPS');
+  }
+
+  if (!ALLOWED_PUSH_ORIGINS.has(url.hostname)) {
+    throw new BadRequestException(
+      `Push endpoint host "${url.hostname}" is not a recognized push service`,
+    );
+  }
+
+  return endpoint;
 }
 
 @Injectable()
@@ -120,6 +120,14 @@ export class NotificationService implements OnModuleInit {
     const subscriptions = await this.subs.find({ where: { userId } });
     let delivered = 0;
     for (const sub of subscriptions) {
+      // Defense-in-depth: re-validate endpoint before sending
+      try {
+        validatePushEndpoint(sub.endpoint);
+      } catch {
+        this.logger.warn(`Skipping invalid push endpoint: ${sub.endpoint}`);
+        await this.subs.delete(sub.id);
+        continue;
+      }
       try {
         await webpush.sendNotification(
           {
