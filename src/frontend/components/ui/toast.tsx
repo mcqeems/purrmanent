@@ -45,7 +45,7 @@ function ToastBody({
       )}
     >
       <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-accent-lime">
-        <Image src={logo} alt="" width={20} height={20} className="rounded-full" />
+        <Image src={logo} alt="Purrmanent logo" width={20} height={20} className="rounded-full" />
       </span>
       <p className="flex-1 truncate text-sm font-medium text-ink-deep">
         {message}

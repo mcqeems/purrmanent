@@ -173,11 +173,13 @@ function PathCard({
 						Prompt for Image Generation Model:
 						{illustrationPrompt}
 					*/}
-					<div className="w-full h-full rounded-xl overflow-hidden flex items-center justify-center">
+					<div className="w-full h-full rounded-xl overflow-hidden relative flex items-center justify-center">
 						<Image
 							src={illustration}
 							alt={illustrationName}
-							className="object-contain w-full h-full"
+							fill
+							className="object-contain"
+							sizes="(max-width: 768px) 100vw, 33vw"
 						/>
 					</div>
 					<div className="mt-8">

@@ -288,6 +288,7 @@ function PhoneMockup() {
 				src={phoneFrame}
 				alt="Phone frame"
 				fill
+				sizes="300px"
 				className="object-contain z-10 pointer-events-none"
 			/>
 

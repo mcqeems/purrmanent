@@ -25,11 +25,13 @@ export function CertificatePreview({
 			>
 				{/* Logo Icon */}
 				<div className="absolute top-[20%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[12%] aspect-square pointer-events-none">
-					<div className="bg-accent-lime rounded-full p-2">
+					<div className="bg-accent-lime rounded-full p-2 relative">
 						<Image
 							src={logo}
 							alt="Purrmanent Logo"
-							className="w-full h-full object-contain"
+							fill
+							className="object-contain"
+							sizes="48px"
 							priority
 						/>
 					</div>

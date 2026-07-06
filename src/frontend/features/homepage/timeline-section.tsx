@@ -132,7 +132,9 @@ export function TimelineSection() {
 											<Image
 												src={p.illustration}
 												alt={p.illustrationName}
-												className={`w-full h-full object-cover rounded-lg opacity-75 group-hover:scale-105 group-hover:opacity-100 ${isSelected ? 'scale-105 opacity-100' : 'scale-100 opacity-75'} transition-all duration-300`}
+												width={400}
+												height={240}
+												className={`w-full h-auto object-cover rounded-lg opacity-75 group-hover:scale-105 group-hover:opacity-100 ${isSelected ? 'scale-105 opacity-100' : 'scale-100 opacity-75'} transition-all duration-300`}
 											/>
 										</div>
 									</div>
