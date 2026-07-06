@@ -34,7 +34,7 @@ export function SidebarUserMenu() {
 
 	async function logout() {
 		await authClient.signOut();
-		window.location.replace(`${process.env.NEXT_PUBLIC_BASE_URL}/login`);
+		window.location.replace(`${window.location.origin}/login`);
 	}
 
 	return (

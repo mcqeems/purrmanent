@@ -1,0 +1,61 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: change-me
+      POSTGRES_DB: purrmanent
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./backend/purrmanent
+    ports:
+      - "3001:3001"
+    environment:
+      NODE_ENV: production
+      PORT: "3001"
+      API_GLOBAL_PREFIX: api
+      FRONTEND_ORIGINS: http://localhost:3000
+      DATABASE_URL: postgresql://postgres:change-me@postgres:5432/purrmanent
+      BETTER_AUTH_SECRET: change-me
+      BETTER_AUTH_URL: http://localhost:3001
+      GOOGLE_CLIENT_ID: ""
+      GOOGLE_CLIENT_SECRET: ""
+      COOKIE_DOMAIN: localhost
+      RESEND_API_KEY: ""
+      MAIL_FROM: "Purrmanent <noreply@example.com>"
+      LLM_API_KEY: ""
+      LLM_BASE_URL: https://router.bynara.id/v1
+      LLM_MODEL: mimo-v2.5-hermes
+      LLM_MODEL_PRO: mimo-v2.5-pro-hermes
+      VAPID_PUBLIC_KEY: ""
+      VAPID_PRIVATE_KEY: ""
+      VAPID_SUBJECT: mailto:team@example.com
+      APP_TIMEZONE: Asia/Jakarta
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  frontend:
+    build: ./frontend/purrmanent
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_PUBLIC_API_BASE_URL: http://localhost:3001
+      NEXT_PUBLIC_BASE_URL: http://localhost:3000
+      NEXT_PUBLIC_SUPABASE_URL: ""
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ""
+      NEXT_PUBLIC_SUPABASE_BUCKET: cat-images
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:

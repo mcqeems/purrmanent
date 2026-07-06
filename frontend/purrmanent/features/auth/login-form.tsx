@@ -31,7 +31,7 @@ export function LoginForm() {
 			setServerError(error.message ?? 'Login failed. Check your details.');
 			return;
 		}
-		window.location.replace(`${process.env.NEXT_PUBLIC_BASE_URL}/dashboard`);
+		window.location.replace(`${window.location.origin}/dashboard`);
 	}
 
 	return (

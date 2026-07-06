@@ -39,7 +39,7 @@ export function RegisterForm() {
 			setServerError(error.message ?? 'Could not create your account.');
 			return;
 		}
-		window.location.replace(`${process.env.NEXT_PUBLIC_BASE_URL}/dashboard`);
+		window.location.replace(`${window.location.origin}/dashboard`);
 	}
 
 	return (
