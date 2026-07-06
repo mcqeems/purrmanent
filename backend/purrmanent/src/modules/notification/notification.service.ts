@@ -14,31 +14,40 @@ export interface PushPayload {
 }
 
 /**
- * Validates a push subscription endpoint URL against an allowlist of permitted domains.
+ * Validates a push subscription endpoint URL to prevent SSRF attacks.
+ * Blocks private/internal IP ranges and non-HTTPS endpoints.
  * @param endpoint - The push subscription endpoint URL to validate
  * @returns The validated endpoint URL
- * @throws BadRequestException if the endpoint is invalid or not in the allowlist
+ * @throws BadRequestException if the endpoint is invalid or targets an internal host
  */
 function validatePushEndpoint(endpoint: string): string {
-  const allowedDomains = ['example.com']; // add your allowed domains here
-
   try {
     const url = new URL(endpoint);
 
-    // Only allow http and https protocols
-    if (url.protocol !== 'http:' && url.protocol !== 'https:') {
-      throw new Error('Invalid protocol');
+    // Only allow HTTPS (push services like Firebase, OneSignal, etc. all use HTTPS)
+    if (url.protocol !== 'https:') {
+      throw new Error('Only HTTPS endpoints are allowed');
     }
 
-    // Extract hostname and validate against allowlist
+    // Block private/internal IP ranges to prevent SSRF
     const hostname = url.hostname;
-    if (!allowedDomains.includes(hostname)) {
-      throw new Error('Domain not allowed');
+    const isPrivate =
+      hostname === 'localhost' ||
+      hostname === '127.0.0.1' ||
+      hostname === '::1' ||
+      hostname.startsWith('10.') ||
+      hostname.startsWith('172.') ||
+      hostname.startsWith('192.168.') ||
+      hostname.startsWith('0.') ||
+      hostname.endsWith('.local');
+
+    if (isPrivate) {
+      throw new Error('Internal endpoints are not allowed');
     }
 
     return endpoint;
-  } catch (err) {
-    throw new BadRequestException('Invalid URL');
+  } catch {
+    throw new BadRequestException('Invalid push endpoint URL');
   }
 }
 
