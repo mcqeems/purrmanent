@@ -30,6 +30,7 @@ export interface GraduationStatus {
   missedDays: number;
   requiredDays: number;
   graduated: boolean;
+  graduationDate?: string;
 }
 
 @Injectable()
@@ -93,6 +94,7 @@ export class ChecklistService {
     const today = this.today();
     const out: GraduationStatus[] = [];
 
+    // /* ── REAL LOGIC (commented out for UI testing) ────────────────────────
     for (const cat of cats) {
       const rows = await this.items
         .createQueryBuilder('ci')
@@ -107,11 +109,16 @@ export class ChecklistService {
 
       let qualifyingDays = 0;
       let missedDays = 0;
+      const qualifyingDates: string[] = [];
       for (const r of rows) {
         const total = Number(r.total);
         const done = Number(r.done);
-        if (total > 0 && done === total) qualifyingDays += 1;
-        else if (r.date < today) missedDays += 1; // a past day left incomplete
+        if (total > 0 && done === total) {
+          qualifyingDays += 1;
+          qualifyingDates.push(r.date);
+        } else if (r.date < today) {
+          missedDays += 1; // a past day left incomplete
+        }
       }
 
       const created = new Date(cat.createdAt);
@@ -120,6 +127,13 @@ export class ChecklistService {
         1,
       );
 
+      qualifyingDates.sort();
+      const graduated = qualifyingDays >= 90;
+      const graduationDate =
+        graduated && qualifyingDates.length >= 90
+          ? qualifyingDates[89]
+          : undefined;
+
       out.push({
         catId: cat.id,
         name: cat.name,
@@ -127,10 +141,29 @@ export class ChecklistService {
         qualifyingDays,
         missedDays,
         requiredDays: 90,
-        graduated: qualifyingDays >= 90,
+        graduated,
+        graduationDate,
       });
     }
     return out;
+    // ── END REAL LOGIC ──────────────────────────────────────────────────── */
+
+    // ── DUMMY: all cats immediately graduated (for UI testing) ─────────
+    // return cats.map((cat) => {
+    //   const created = new Date(cat.createdAt);
+    //   const gradDate = new Date(created.getTime() + 90 * 24 * 60 * 60 * 1000);
+    //   return {
+    //     catId: cat.id,
+    //     name: cat.name,
+    //     daysElapsed: 90,
+    //     qualifyingDays: 90,
+    //     missedDays: 0,
+    //     requiredDays: 90,
+    //     graduated: true,
+    //     graduationDate: gradDate.toISOString().slice(0, 10),
+    //   };
+    // });
+    // ── END DUMMY ──────────────────────────────────────────────────────
   }
 
   /** Daily board for a cat; generates on-demand if today's set is missing. */
