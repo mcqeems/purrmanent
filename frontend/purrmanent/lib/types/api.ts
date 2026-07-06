@@ -66,6 +66,7 @@ export interface GraduationStatus {
   missedDays: number;
   requiredDays: number;
   graduated: boolean;
+  graduationDate?: string;
 }
 
 export interface MoveResult {

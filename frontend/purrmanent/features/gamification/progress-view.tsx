@@ -1,5 +1,6 @@
 'use client';
 
+import * as React from 'react';
 import { Info } from 'lucide-react';
 import {
 	Button,
@@ -15,6 +16,8 @@ import { useGraduation } from '@/features/checklist/hooks';
 import { BADGES, useGamificationStatus } from './hooks';
 import Image from 'next/image';
 import trophy from '@/app/assets/badges/trophy.png';
+import type { GraduationStatus } from '@/lib/types/api';
+import { CertificateDialog } from './certificate-dialog';
 
 function GraduationHelp() {
 	return (
@@ -53,6 +56,7 @@ function GraduationHelp() {
 export function ProgressView() {
 	const { data: status, isLoading } = useGamificationStatus();
 	const { data: grads = [] } = useGraduation();
+	const [activeGrad, setActiveGrad] = React.useState<GraduationStatus | null>(null);
 	const points = status?.points ?? 0;
 
 	const graduated = grads.filter((g) => g.graduated);
@@ -62,14 +66,15 @@ export function ProgressView() {
 
 	return (
 		<div className="space-y-8">
-			<Card variant="featured" className="flex items-center justify-between">
+			<Card
+				variant="featured"
+				className="flex items-center justify-between shadow-emboss"
+			>
 				<div>
-					<p className="text-sm uppercase tracking-[0.2px] text-on-dark-muted">
+					<p className="text-sm uppercase tracking-[0.2px] text-accent-lime">
 						Total points
 					</p>
-					<p className="font-display text-5xl font-bold text-accent-lime">
-						{points}
-					</p>
+					<p className="font-display text-5xl font-bold">{points}</p>
 				</div>
 				<span className="h-[150px] w-[150px] " aria-hidden>
 					<Image src={trophy} alt="trophy" height={150} width={150} />
@@ -113,14 +118,28 @@ export function ProgressView() {
 				) : (
 					<div className="grid gap-3 sm:grid-cols-2">
 						{graduated.map((g) => (
-							<Card key={g.catId} variant="featured" className="text-center">
-								<p className="text-sm uppercase tracking-[0.2px] text-accent-lime">
-									Graduated 🎓
-								</p>
-								<p className="mt-2 font-display text-2xl font-bold">{g.name}</p>
-								<p className="mt-1 text-sm text-on-dark-muted">
-									90 qualifying days complete. You did it!
-								</p>
+							<Card
+								key={g.catId}
+								variant="featured"
+								className="flex flex-col items-center justify-between text-center shadow-emboss min-h-[190px] py-6"
+							>
+								<div>
+									<p className="text-sm uppercase tracking-[0.2px] text-accent-lime">
+										Graduated
+									</p>
+									<p className="mt-2 font-display text-2xl font-bold">{g.name}</p>
+									<p className="mt-1 text-sm text-on-dark-muted">
+										90 qualifying days complete. You did it!
+									</p>
+								</div>
+								<Button
+									variant="emboss"
+									size="sm"
+									className="mt-4"
+									onClick={() => setActiveGrad(g)}
+								>
+									View Certificate
+								</Button>
 							</Card>
 						))}
 
@@ -161,6 +180,17 @@ export function ProgressView() {
 					</div>
 				)}
 			</section>
+
+			{activeGrad && (
+				<CertificateDialog
+					isOpen={!!activeGrad}
+					onOpenChange={(open) => {
+						if (!open) setActiveGrad(null);
+					}}
+					catName={activeGrad.name}
+					graduationDate={activeGrad.graduationDate}
+				/>
+			)}
 		</div>
 	);
 }

@@ -39,6 +39,8 @@
     "driver.js": "^1.6.0",
     "embla-carousel-react": "^8.6.0",
     "gsap": "^3.13.0",
+    "html2canvas-pro": "^2.2.1",
+    "jspdf": "^4.2.1",
     "lucide-react": "^1.21.0",
     "motion": "^12.23.12",
     "next": "16.2.9",
