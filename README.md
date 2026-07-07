@@ -42,8 +42,14 @@ All issues from the Aikido code audit have been successfully resolved.
 git clone https://github.com/mcqeems/purrmanent.git
 cd purrmanent
 
-# Edit docker-compose.yml — fill in your env vars
-# At minimum: BETTER_AUTH_SECRET, LLM_API_KEY, RESEND_API_KEY
+# Create your env file from the example
+cp .env.example .env
+# Edit .env — fill in your env vars
+# At minimum: SERVICE_PASSWORD_POSTGRES, SERVICE_BASE64_AUTHSECRET, LLM_API_KEY
+
+# Create frontend env file
+cp src/frontend/.env.example src/frontend/.env.production
+# Edit src/frontend/.env.production with your domain/Supabase credentials
 
 # Start all services
 docker compose up --build
@@ -57,22 +63,9 @@ The backend automatically runs migrations, seeds demo data, and ingests the RAG 
 
 ### Environment Variables
 
-Edit `docker-compose.yml` to configure:
+Copy `.env.example` to `.env` and configure. Only `SERVICE_PASSWORD_POSTGRES` and `SERVICE_BASE64_AUTHSECRET` are strictly required to boot. External-service keys are optional — the feature that needs a missing key fails at call-time with a clear error, not at boot.
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `DATABASE_URL` | Yes | PostgreSQL connection string |
-| `BETTER_AUTH_SECRET` | Yes | Generate with `openssl rand -base64 32` |
-| `LLM_API_KEY` | Yes | API key for the LLM provider (Bynara router) |
-| `RESEND_API_KEY` | No | Email service key (emails disabled without it) |
-| `GOOGLE_CLIENT_ID` | No | Google OAuth client ID |
-| `GOOGLE_CLIENT_SECRET` | No | Google OAuth client secret |
-| `VAPID_PUBLIC_KEY` | No | Web push public key |
-| `VAPID_PRIVATE_KEY` | No | Web push private key |
-| `NEXT_PUBLIC_SUPABASE_URL` | No | Supabase project URL (for image uploads) |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | No | Supabase publishable key |
-
-Only `DATABASE_URL` is strictly required to boot. External-service keys are optional — the feature that needs a missing key fails at call-time with a clear error, not at boot.
+The frontend requires its own `.env.production` file (copy from `src/frontend/.env.example`). If you encounter env variable conflicts or mismatches between Docker and the frontend, uncomment the frontend variables at the bottom of the root `.env.example` and configure them there.
 
 ---
 
