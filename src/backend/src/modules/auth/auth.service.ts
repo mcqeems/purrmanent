@@ -120,6 +120,13 @@ export class AuthService {
     return this.auth.api.signInEmail({ body, asResponse: true });
   }
 
+  signInSocial(body: {
+    provider: string;
+    callbackURL?: string;
+  }): Promise<Response> {
+    return this.auth.api.signInSocial({ body, asResponse: true });
+  }
+
   async signOut(
     headers: Record<string, string | string[] | undefined>,
   ): Promise<Response> {

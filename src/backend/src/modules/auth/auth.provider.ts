@@ -129,7 +129,7 @@ ${opts.note}
       secret: config.get('BETTER_AUTH_SECRET', { infer: true }),
       baseURL,
       basePath: '/api/auth',
-      trustedOrigins: [...origins, baseURL],
+      trustedOrigins: [...origins, baseURL, 'purrmanent://', 'purrmanent://auth-callback'],
       emailAndPassword: {
         enabled: true,
         requireEmailVerification: false,

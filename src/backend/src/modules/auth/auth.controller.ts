@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Req, Res } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import type { Request, Response } from 'express';
 import { AuthService } from './auth.service';
@@ -27,6 +27,33 @@ export class AuthController {
     }
     const text = await r.text();
     res.type('application/json').send(text || '{}');
+  }
+
+  @Public()
+  @Get('google-login')
+  @ApiOperation({ summary: 'Initiate Google OAuth directly in browser' })
+  async googleLogin(
+    @Query('callbackURL') callbackURL: string,
+    @Res() res: Response,
+  ): Promise<void> {
+    const cb = callbackURL || 'purrmanent://auth-callback';
+    const result = await this.auth.signInSocial({
+      provider: 'google',
+      callbackURL: cb,
+    });
+    const r = result as unknown as globalThis.Response;
+    for (const cookie of r.headers.getSetCookie()) {
+      res.append('set-cookie', cookie);
+    }
+    const text = await r.text();
+    try {
+      const parsed = JSON.parse(text);
+      if (parsed?.url) {
+        res.redirect(parsed.url);
+        return;
+      }
+    } catch {}
+    res.status(r.status).type('application/json').send(text || '{}');
   }
 
   @Public()
