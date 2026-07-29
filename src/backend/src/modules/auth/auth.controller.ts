@@ -2,7 +2,7 @@ import { Body, Controller, Get, Post, Query, Req, Res } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import type { Request, Response } from 'express';
 import { AuthService } from './auth.service';
-import { RegisterDto, LoginDto, SendVerificationDto } from './auth.schema';
+import { RegisterDto, LoginDto, SendVerificationDto, GoogleIdTokenDto } from './auth.schema';
 import { Public, CurrentUser } from './auth.decorators';
 import type { SessionUser } from './auth.service';
 
@@ -26,7 +26,31 @@ export class AuthController {
       res.append('set-cookie', cookie);
     }
     const text = await r.text();
+    try {
+      const parsed = JSON.parse(text);
+      if (parsed && typeof parsed === 'object') {
+        if (!parsed.accessToken && parsed.token) {
+          parsed.accessToken = parsed.token;
+        }
+        if (!parsed.refreshToken) {
+          parsed.refreshToken = parsed.token || '';
+        }
+        res.type('application/json').send(JSON.stringify(parsed));
+        return;
+      }
+    } catch {}
     res.type('application/json').send(text || '{}');
+  }
+
+  @Public()
+  @Post('google-id-token')
+  @ApiOperation({ summary: 'Authenticate using Native Google ID Token' })
+  async googleIdToken(
+    @Body() dto: GoogleIdTokenDto,
+    @Res() res: Response,
+  ): Promise<void> {
+    const result = await this.auth.signInGoogleIdToken(dto.idToken);
+    await this.forward(result as unknown as Response, res);
   }
 
   @Public()

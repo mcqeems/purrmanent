@@ -32,6 +32,11 @@ export const sendVerificationSchema = z.object({
     .optional(),
 });
 
+export const googleIdTokenSchema = z.object({
+  idToken: z.string().min(1),
+});
+
 export class RegisterDto extends createZodDto(registerSchema) {}
 export class LoginDto extends createZodDto(loginSchema) {}
 export class SendVerificationDto extends createZodDto(sendVerificationSchema) {}
+export class GoogleIdTokenDto extends createZodDto(googleIdTokenSchema) {}

@@ -48,6 +48,7 @@ async function bootstrap() {
     `/${prefix}/auth/session`,
     `/${prefix}/auth/send-verification`,
     `/${prefix}/auth/google-login`,
+    `/${prefix}/auth/google-id-token`,
   ]);
   httpAdapter.all(
     '/api/auth/*splat',

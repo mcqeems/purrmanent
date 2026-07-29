@@ -9,28 +9,30 @@ export type Auth = ReturnType<typeof betterAuth>;
 
 /** DI token for the resolved better-auth instance. */
 export const AUTH_INSTANCE = 'AUTH_INSTANCE';
+export const AUTH_POOL = 'AUTH_POOL';
+
+export const authPoolProvider: Provider = {
+  provide: AUTH_POOL,
+  inject: [ConfigService],
+  useFactory: (config: ConfigService<Env, true>): Pool => {
+    return new Pool({
+      connectionString: config.get('DATABASE_URL', { infer: true }),
+    });
+  },
+};
 
 /**
  * Async factory that builds the better-auth instance.
- *
- * Why a factory (not onModuleInit): async providers are resolved during
- * `NestFactory.create()`, so the instance exists when main.ts reads it to mount
- * the handler — onModuleInit only runs later during app.init()/listen().
- *
- * better-auth is ESM-only -> dynamic import(); the project compiles to CJS.
- * Schema: better-auth owns users/user_sessions/accounts/verifications with
- * integer ids (useNumberId) so the app's integer FKs line up.
  */
 export const authInstanceProvider: Provider = {
   provide: AUTH_INSTANCE,
-  inject: [ConfigService],
-  useFactory: async (config: ConfigService<Env, true>): Promise<Auth> => {
+  inject: [ConfigService, AUTH_POOL],
+  useFactory: async (
+    config: ConfigService<Env, true>,
+    pool: Pool,
+  ): Promise<Auth> => {
     const logger = new Logger('AuthInstance');
     const { betterAuth } = await import('better-auth');
-
-    const pool = new Pool({
-      connectionString: config.get('DATABASE_URL', { infer: true }),
-    });
 
     const origins = config
       .get('FRONTEND_ORIGINS', { infer: true })
