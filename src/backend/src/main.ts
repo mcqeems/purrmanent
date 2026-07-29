@@ -47,6 +47,7 @@ async function bootstrap() {
     `/${prefix}/auth/logout`,
     `/${prefix}/auth/session`,
     `/${prefix}/auth/send-verification`,
+    `/${prefix}/auth/google-login`,
   ]);
   httpAdapter.all(
     '/api/auth/*splat',
@@ -92,6 +93,6 @@ async function bootstrap() {
   }
 
   const port = config.get('PORT', { infer: true });
-  await app.listen(port);
+  await app.listen(port, '0.0.0.0');
 }
 void bootstrap();
