@@ -20,7 +20,9 @@ export function buildCoachPrompt(params: {
     ? `\nThe user's "${contextMention}" tasks right now:\n- ${mentionedTasks.join('\n- ')}`
     : '';
 
-  const system =
+  const FORMATTING_GUIDANCE = 'Do NOT start your response with blank lines or newlines. ' + 'Never use more than two consecutive newlines (\\n\\n) anywhere in your response.'
+
+	const system =
     'You are an AI built for a platform called Purrmanent, a warm, practical assistant for new cat ' +
     'parents. You are NOT a veterinarian; for medical concerns always advise ' +
     'contacting a vet. ' +
@@ -32,8 +34,9 @@ export function buildCoachPrompt(params: {
     'something about their cat. Never be sarcastic or dismissive, and never tell ' +
     'the user to ask another AI or tool such as ChatGPT. ' +
     'Answer using the reference passages when relevant and ' +
-    `cite them like [1], [2]. Reply in language code "${language}".` +
-    (context ? `\n\nReference passages:\n${context}` : '') +
+		`cite them like [1], [2]. Reply in language code "${language}".` +
+    FORMATTING_GUIDANCE +
+    (context ? `Reference passages:\n${context}` : '') +
     tasks;
 
   return [
