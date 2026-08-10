@@ -1,4 +1,7 @@
-import { createHealthRecordSchema, updateHealthRecordSchema } from './health.schema';
+import {
+  createHealthRecordSchema,
+  updateHealthRecordSchema,
+} from './health.schema';
 
 describe('createHealthRecordSchema (discriminated union)', () => {
   it('rejects a weight record missing weightGrams', () => {

@@ -1,0 +1,11 @@
+allowBuilds:
+  '@firebase/util': false
+  '@scarf/scarf': false
+  protobufjs: true
+  sharp: true
+  unrs-resolver: false
+
+overrides:
+  protobufjs: ^7.6.3
+  'js-yaml@<=4.2.0': 4.2.0
+  'multer@<=2.2.0': 2.2.0

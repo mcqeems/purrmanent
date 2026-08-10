@@ -26,10 +26,7 @@ export const loginSchema = z.object({
  */
 export const sendVerificationSchema = z.object({
   email: z.email(),
-  callbackURL: z
-    .string()
-    .url('callbackURL must be a valid URL')
-    .optional(),
+  callbackURL: z.string().url('callbackURL must be a valid URL').optional(),
 });
 
 export const googleIdTokenSchema = z.object({

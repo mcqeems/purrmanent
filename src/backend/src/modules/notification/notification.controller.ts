@@ -1,6 +1,10 @@
 import { Body, Controller, Delete, Get, Post } from '@nestjs/common';
 import { NotificationService } from './notification.service';
-import { PushSubscribeDto, UnsubscribeDto } from './notification.schema';
+import {
+  PushSubscribeDto,
+  UnsubscribeDto,
+  FcmRegisterDto,
+} from './notification.schema';
 import { CurrentUser, Public } from '../auth/auth.decorators';
 
 @Controller('push')
@@ -21,5 +25,10 @@ export class NotificationController {
   @Delete('unsubscribe')
   unsubscribe(@CurrentUser('id') userId: number, @Body() dto: UnsubscribeDto) {
     return this.notifications.unsubscribe(userId, dto.endpoint);
+  }
+
+  @Post('fcm-register')
+  registerFcm(@CurrentUser('id') userId: number, @Body() dto: FcmRegisterDto) {
+    return this.notifications.registerFcm(userId, dto.fcmToken);
   }
 }

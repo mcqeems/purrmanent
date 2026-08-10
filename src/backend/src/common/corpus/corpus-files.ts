@@ -57,9 +57,7 @@ export function loadCorpusChunks(dir = CORPUS_DIR): CorpusChunk[] {
     if (rel.startsWith('..') || resolve(rel) === rel) {
       throw new Error(`Invalid file path: "${file}"`);
     }
-    const { meta, body } = parseFrontmatter(
-      readFileSync(target, 'utf-8'),
-    );
+    const { meta, body } = parseFrontmatter(readFileSync(target, 'utf-8'));
     const parsed = corpusChunkSchema.safeParse({ ...meta, text: body });
     if (!parsed.success) {
       throw new Error(

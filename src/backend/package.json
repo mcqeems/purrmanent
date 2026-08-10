@@ -40,6 +40,7 @@
     "better-auth": "1.6.22",
     "cron": "^4.4.0",
     "express": "5.2.1",
+    "firebase-admin": "^14.2.0",
     "helmet": "8.2.0",
     "nestjs-zod": "5.4.0",
     "openai": "6.45.0",
@@ -94,16 +95,5 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "sharp",
-      "protobufjs"
-    ],
-    "overrides": {
-      "protobufjs": "^7.6.3",
-      "js-yaml@<=4.2.0": "4.2.0",
-      "multer@<=2.2.0": "2.2.0"
-    }
   }
 }

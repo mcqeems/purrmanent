@@ -3,7 +3,12 @@ import { APP_GUARD } from '@nestjs/core';
 import { AuthService } from './auth.service';
 import { AuthGuard } from './auth.guard';
 import { CsrfGuard } from './csrf.guard';
-import { authInstanceProvider, authPoolProvider, AUTH_INSTANCE, AUTH_POOL } from './auth.provider';
+import {
+  authInstanceProvider,
+  authPoolProvider,
+  AUTH_INSTANCE,
+  AUTH_POOL,
+} from './auth.provider';
 import { AuthController } from './auth.controller';
 
 @Global()

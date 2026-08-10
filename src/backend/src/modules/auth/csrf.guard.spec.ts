@@ -1,6 +1,4 @@
-import {
-  ForbiddenException,
-} from '@nestjs/common';
+import { ForbiddenException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Reflector } from '@nestjs/core';
 import { CsrfGuard } from './csrf.guard';

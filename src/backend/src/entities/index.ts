@@ -10,6 +10,7 @@ import {
 } from './coach.entity';
 import { HealthRecord } from './health-record.entity';
 import { PushSubscription, NotificationLog } from './notification.entity';
+import { FcmToken } from './fcm-token.entity';
 
 export * from './user.entity';
 export * from './cat.entity';
@@ -19,6 +20,7 @@ export * from './crisis.entity';
 export * from './coach.entity';
 export * from './health-record.entity';
 export * from './notification.entity';
+export * from './fcm-token.entity';
 
 /** All entities, registered with TypeORM in one place. */
 export const entities = [
@@ -35,4 +37,5 @@ export const entities = [
   HealthRecord,
   PushSubscription,
   NotificationLog,
+  FcmToken,
 ];

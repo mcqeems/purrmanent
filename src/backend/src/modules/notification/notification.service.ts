@@ -1,9 +1,17 @@
-import { Injectable, Logger, OnModuleInit, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  Logger,
+  OnModuleInit,
+  BadRequestException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as webpush from 'web-push';
-import { NotificationLog, PushSubscription } from '../../entities';
+import { initializeApp, getApps, cert } from 'firebase-admin/app';
+import type { ServiceAccount } from 'firebase-admin/app';
+import { getMessaging } from 'firebase-admin/messaging';
+import { NotificationLog, PushSubscription, FcmToken } from '../../entities';
 import type { Env } from '../../config/env';
 import { PushSubscribeDto } from './notification.schema';
 
@@ -55,6 +63,7 @@ function validatePushEndpoint(endpoint: string): string {
 export class NotificationService implements OnModuleInit {
   private readonly logger = new Logger(NotificationService.name);
   private enabled = false;
+  private fcmEnabled = false;
   vapidPublicKey?: string;
 
   constructor(
@@ -62,6 +71,8 @@ export class NotificationService implements OnModuleInit {
     private readonly subs: Repository<PushSubscription>,
     @InjectRepository(NotificationLog)
     private readonly logs: Repository<NotificationLog>,
+    @InjectRepository(FcmToken)
+    private readonly fcmTokens: Repository<FcmToken>,
     private readonly config: ConfigService<Env, true>,
   ) {}
 
@@ -77,6 +88,8 @@ export class NotificationService implements OnModuleInit {
     } else {
       this.logger.warn('VAPID keys unset — push notifications disabled');
     }
+
+    this.initFcm();
   }
 
   async subscribe(
@@ -110,13 +123,52 @@ export class NotificationService implements OnModuleInit {
     return { success: true };
   }
 
-  /** Deliver a push to every subscription of a user; prune dead endpoints. */
+  /**
+   * Register (or re-register) a native Android FCM token. Tokens are globally
+   * unique; re-registering the same token simply moves/refreshes it for the
+   * current user and bumps its last-used timestamp.
+   */
+  async registerFcm(userId: number, token: string): Promise<{ success: true }> {
+    const existing = await this.fcmTokens.findOne({ where: { token } });
+    if (existing) {
+      if (existing.userId !== userId) {
+        await this.fcmTokens.update(existing.id, { userId });
+      }
+      await this.fcmTokens.update(existing.id, { lastUsedAt: new Date() });
+      return { success: true };
+    }
+    await this.fcmTokens.save(this.fcmTokens.create({ userId, token }));
+    return { success: true };
+  }
+
+  /** Deliver a push to every web-push and FCM subscription of a user. */
   async send(
     userId: number,
     payload: PushPayload,
     type = 'reminder',
   ): Promise<number> {
-    if (!this.enabled) return 0;
+    const webDelivered = this.enabled
+      ? await this.sendWebPush(userId, payload)
+      : 0;
+    const fcmDelivered = this.fcmEnabled
+      ? await this.sendFcm(userId, payload)
+      : 0;
+    const delivered = webDelivered + fcmDelivered;
+    await this.logs.save(
+      this.logs.create({
+        userId,
+        notificationType: type,
+        delivered: delivered > 0,
+      }),
+    );
+    return delivered;
+  }
+
+  /** Deliver via browser web-push subscriptions; prune dead endpoints. */
+  private async sendWebPush(
+    userId: number,
+    payload: PushPayload,
+  ): Promise<number> {
     const subscriptions = await this.subs.find({ where: { userId } });
     let delivered = 0;
     for (const sub of subscriptions) {
@@ -147,13 +199,69 @@ export class NotificationService implements OnModuleInit {
         }
       }
     }
-    await this.logs.save(
-      this.logs.create({
-        userId,
-        notificationType: type,
-        delivered: delivered > 0,
-      }),
-    );
     return delivered;
+  }
+
+  /** Deliver via native Android FCM tokens; prune dead tokens. */
+  private async sendFcm(userId: number, payload: PushPayload): Promise<number> {
+    const rows = await this.fcmTokens.find({ where: { userId } });
+    let delivered = 0;
+    for (const row of rows) {
+      try {
+        await getMessaging().send({
+          token: row.token,
+          notification: { title: payload.title, body: payload.body },
+          data: payload.url ? { url: payload.url } : undefined,
+          android: { priority: 'high' },
+        });
+        delivered++;
+        await this.fcmTokens.update(row.id, { lastUsedAt: new Date() });
+      } catch (err) {
+        const code = (err as { code?: string }).code;
+        if (
+          code === 'messaging/registration-token-not-registered' ||
+          code === 'messaging/invalid-registration-token'
+        ) {
+          await this.fcmTokens.delete(row.id); // prune dead token
+        } else {
+          this.logger.error(
+            `FCM send failed (${code ?? 'unknown'}): ${String(err)}`,
+          );
+        }
+      }
+    }
+    return delivered;
+  }
+
+  private initFcm(): void {
+    const serviceAccount = this.config.get('FIREBASE_SERVICE_ACCOUNT', {
+      infer: true,
+    });
+    const gacPath = this.config.get('GOOGLE_APPLICATION_CREDENTIALS', {
+      infer: true,
+    });
+    try {
+      if (serviceAccount && serviceAccount !== '...') {
+        if (getApps().length === 0) {
+          initializeApp({
+            credential: cert(JSON.parse(serviceAccount) as ServiceAccount),
+          });
+        }
+        this.fcmEnabled = true;
+      } else if (gacPath) {
+        if (getApps().length === 0) {
+          initializeApp({ credential: cert(gacPath) });
+        }
+        this.fcmEnabled = true;
+      } else {
+        this.logger.warn('FCM credentials unset — FCM notifications disabled');
+        return;
+      }
+      this.logger.log('Firebase Admin initialized — FCM enabled');
+    } catch (e) {
+      this.logger.warn(
+        `FCM init failed — FCM notifications disabled: ${String(e)}`,
+      );
+    }
   }
 }

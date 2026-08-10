@@ -45,6 +45,11 @@ export const envSchema = z.object({
   VAPID_PRIVATE_KEY: z.string().optional(),
   VAPID_SUBJECT: z.string().default('mailto:team@purrmanent.app'),
 
+  // Firebase Cloud Messaging (native Android) — service account JSON, or set
+  // GOOGLE_APPLICATION_CREDENTIALS to a service-account file path instead.
+  FIREBASE_SERVICE_ACCOUNT: z.string().optional(),
+  GOOGLE_APPLICATION_CREDENTIALS: z.string().optional(),
+
   // Default daily-reset / reminder timezone (ceiling: WIB only)
   APP_TIMEZONE: z.string().default('Asia/Jakarta'),
 });

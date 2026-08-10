@@ -122,21 +122,21 @@ describe('ChecklistService.graduationStatus', () => {
     expect(Number(rows[1].done)).toBeLessThan(Number(rows[1].total)); // not qualifying
   });
 
-	it('graduates at 90 qualifying days with correct date', async () => {
-		const cat = { id: 1, name: 'Mochi', createdAt: '2026-01-01' };
-		// Generate 90 qualifying rows with valid dates
-		const rows = Array.from({ length: 90 }, (_, i) => {
-			const d = new Date(2026, 0, 2 + i); // Jan 2 + i days
-			const date = d.toISOString().slice(0, 10);
-			return { date, total: '3', done: '3' };
-		});
-		const { service } = setupGraduation([cat], rows);
-		const result = await service.graduationStatus(1);
-		expect(result[0].graduated).toBe(true);
-		expect(result[0].qualifyingDays).toBe(90);
-		// 90th qualifying date = Jan 2 + 89 days = Mar 31
-		expect(result[0].graduationDate).toBe('2026-03-31');
-	});
+  it('graduates at 90 qualifying days with correct date', async () => {
+    const cat = { id: 1, name: 'Mochi', createdAt: '2026-01-01' };
+    // Generate 90 qualifying rows with valid dates
+    const rows = Array.from({ length: 90 }, (_, i) => {
+      const d = new Date(2026, 0, 2 + i); // Jan 2 + i days
+      const date = d.toISOString().slice(0, 10);
+      return { date, total: '3', done: '3' };
+    });
+    const { service } = setupGraduation([cat], rows);
+    const result = await service.graduationStatus(1);
+    expect(result[0].graduated).toBe(true);
+    expect(result[0].qualifyingDays).toBe(90);
+    // 90th qualifying date = Jan 2 + 89 days = Mar 31
+    expect(result[0].graduationDate).toBe('2026-03-31');
+  });
 
   it('handles multiple cats independently', async () => {
     const cats = [
@@ -149,9 +149,7 @@ describe('ChecklistService.graduationStatus', () => {
       { date: '2026-01-03', total: '3', done: '3' },
       { date: '2026-01-04', total: '3', done: '3' },
     ];
-    const lunaRows = [
-      { date: '2026-01-02', total: '2', done: '2' },
-    ];
+    const lunaRows = [{ date: '2026-01-02', total: '2', done: '2' }];
 
     // The service iterates cats, calling createQueryBuilder for each.
     // We need to return different rows per cat. Use a call counter.

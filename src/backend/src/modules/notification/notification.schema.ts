@@ -15,5 +15,11 @@ export const unsubscribeSchema = z.object({
   endpoint: z.string().url(),
 });
 
+/** Native Android FCM registration token. */
+export const fcmRegisterSchema = z.object({
+  fcmToken: z.string().min(1),
+});
+
 export class PushSubscribeDto extends createZodDto(pushSubscribeSchema) {}
 export class UnsubscribeDto extends createZodDto(unsubscribeSchema) {}
+export class FcmRegisterDto extends createZodDto(fcmRegisterSchema) {}

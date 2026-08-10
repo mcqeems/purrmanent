@@ -57,9 +57,7 @@ export class AuthService {
     try {
       parsedURL = new URL(callbackURL);
     } catch {
-      throw new BadRequestException(
-        'callbackURL must be a valid absolute URL',
-      );
+      throw new BadRequestException('callbackURL must be a valid absolute URL');
     }
 
     const urlOrigin = parsedURL.origin;
@@ -102,7 +100,9 @@ export class AuthService {
     if (typeof authHeader === 'string' && authHeader.startsWith('Bearer ')) {
       token = authHeader.replace(/^Bearer\s+/i, '').trim();
     } else if (typeof cookieHeader === 'string') {
-      const match = cookieHeader.match(/(?:better-auth\.session_token|session_token)=([^;]+)/);
+      const match = cookieHeader.match(
+        /(?:better-auth\.session_token|session_token)=([^;]+)/,
+      );
       if (match) token = match[1];
     }
 
@@ -187,7 +187,7 @@ export class AuthService {
     const name = payload.name || email.split('@')[0];
     const image = payload.picture || null;
 
-    let userResult = await this.pool.query(
+    const userResult = await this.pool.query(
       'SELECT * FROM users WHERE email = $1',
       [email],
     );

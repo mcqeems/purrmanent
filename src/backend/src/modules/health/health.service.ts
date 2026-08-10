@@ -62,7 +62,7 @@ export class HealthService {
       .where('r.id = :id', { id })
       .andWhere('c.user_id = :userId', { userId })
       .getOne();
-    
+
     if (!record) throw new NotFoundException('Health record not found');
     return record;
   }

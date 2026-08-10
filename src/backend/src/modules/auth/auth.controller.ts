@@ -2,7 +2,12 @@ import { Body, Controller, Get, Post, Query, Req, Res } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import type { Request, Response } from 'express';
 import { AuthService } from './auth.service';
-import { RegisterDto, LoginDto, SendVerificationDto, GoogleIdTokenDto } from './auth.schema';
+import {
+  RegisterDto,
+  LoginDto,
+  SendVerificationDto,
+  GoogleIdTokenDto,
+} from './auth.schema';
 import { Public, CurrentUser } from './auth.decorators';
 import type { SessionUser } from './auth.service';
 
@@ -65,7 +70,7 @@ export class AuthController {
       provider: 'google',
       callbackURL: cb,
     });
-    const r = result as unknown as globalThis.Response;
+    const r = result;
     for (const cookie of r.headers.getSetCookie()) {
       res.append('set-cookie', cookie);
     }
@@ -77,7 +82,10 @@ export class AuthController {
         return;
       }
     } catch {}
-    res.status(r.status).type('application/json').send(text || '{}');
+    res
+      .status(r.status)
+      .type('application/json')
+      .send(text || '{}');
   }
 
   @Public()
